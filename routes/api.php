@@ -18,6 +18,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
+use App\Http\Controllers\Api\User\Workspace\WorkspaceController;
+
+Route::prefix('workspace')->group(function() {
+    Route::get('/get/all/{user_id}', [WorkspaceController::class, 'index']);
+    Route::post('/store', [WorkspaceController::class, 'store']);
+    Route::get('/edit/{id}', [WorkspaceController::class, 'edit']);
+    Route::post('/update', [WorkspaceController::class, 'update']);
+    Route::delete('/delete/{id}', [WorkspaceController::class, 'delete']);
+});
 
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
@@ -86,3 +95,4 @@ Route::prefix('system')->middleware(['throttle:60,1'])->group(base_path('routes/
 Route::prefix('ads')->middleware(['throttle:60,1'])->group(base_path('routes/api/ads/ad.php'));
 
 Route::prefix('tips')->middleware(['auth:sanctum', 'throttle:60,1'])->group(base_path('routes/api/user/tips.php'));
+//Route::middleware(['auth:sanctum', 'throttle:60,1'])->group(base_path('routes/api/user/workspace.php'));

@@ -2,6 +2,7 @@ import { defineStore } from 'pinia';
 import { useRouter } from 'vue-router';
 import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
 import { useAuthStore } from '@D/store/auth/auth.store.js';
+import { setupAuthTokenHandler } from '@D/plugins/auth-token-handler.js';
 
 const useAppStore = defineStore('app', {
     state: () => {
@@ -17,6 +18,10 @@ const useAppStore = defineStore('app', {
 
             const router = useRouter();
 
+            // Load auth data from localStorage first
+            authStore.loadFromLocalStorage();
+            authStore.loadTokenFromLocalStorage();
+
             await fetch('sanctum/csrf-cookie', {
                 method: 'GET',
                 credentials: 'include'
@@ -25,6 +30,8 @@ const useAppStore = defineStore('app', {
             await colibriAPI().bootstrap().getFrom('bootstrap').then(function(response) {
                 state.appData = response.data.data;
                 authStore.setUser(state.appData.auth.user);
+                // Try to get and store auth token
+                setupAuthTokenHandler();
             }).catch(function(error) {
                 if(error.response) {
                     router.push({ name: 'server_error_bootstrap' });

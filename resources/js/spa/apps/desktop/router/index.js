@@ -13,6 +13,7 @@ import Error404Page from '@D/views/errors/err404/Error404Page.vue';
 
 import WalletRoutes from '@D/router/wallet/index.js';
 import StoryRoutes from '@D/router/stories/index.js';
+import WorkspacePage from '@D/views/workspace/WorkspacePage.vue';
 
 const Router = createRouter({
 	history: createWebHistory(),
@@ -32,6 +33,29 @@ const Router = createRouter({
             },
             name: 'home_page'
 		},
+        {
+            path: '/workspace',
+            component: WorkspacePage,
+            alias: '/workspace',
+            meta: {
+                contextNavbar: true,
+                sectionName: 'workspace',
+                layout: Layouts.MAIN,
+                auth: true,
+                fluidLayout: true
+            },
+            name: 'workspace_page',
+            redirect: { name: 'my_workspace_page' },
+            children: [
+                {
+                    path: '/my-workspace',
+                    component: function() {
+                        return import('@D/views/workspace/children/WorkspaceIndexPage.vue');
+                    },
+                    name: 'my_workspace_page'
+                }
+            ]
+        },
         {
 			path: '/jobs',
 			component: JobsPage,

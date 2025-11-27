@@ -176,4 +176,13 @@ return [
     ],
     'blacklisted_content' => 'Blacklisted Content',
     'open' => 'Open',
+    'home' => 'Home',
+    'workspace' => 'Workspace',
+    'explore' => 'Explore',
+    'notifications' => 'Notifications',
+    'messages' => 'Messages',
+    'videos' => 'Videos',
+    'marketplace' => 'Marketplace',
+    'jobs' => 'Jobs',
+    'my_profile' => 'My Profile',
 ];

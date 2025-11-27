@@ -14,6 +14,19 @@
         </div>
 
         <div class="block">
+            <RouterLink v-bind:to="{ name: 'workspace_page' }" v-slot="{ isActive }" class="block">
+                <div class="flex items-center" v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
+                    <span class="size-icon-normal shrink-0">
+                        <SvgIcon name="home-smile" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
+                    </span>
+                    <span class="ml-3 text-par-l">
+                        Workspace
+                    </span>
+                </div>
+            </RouterLink>
+        </div>
+
+        <div class="block">
             <RouterLink v-bind:to="{ name: 'explore_posts_page' }" v-slot="{ isActive }" class="block">
                 <div class="flex items-center"  v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
                     <span class="size-icon-normal shrink-0">

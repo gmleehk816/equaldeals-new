@@ -54,6 +54,7 @@ class StepFour extends Component
             'status' => UserStatus::ACTIVE
         ]);
 
-        $this->redirect(route('user.desktop.index'));
+        //$this->redirect(route('user.desktop.index'));
+         $this->redirect(route('user.onboarding.index', 'five'));
     }
 }

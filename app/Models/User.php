@@ -377,4 +377,8 @@ class User extends Authenticatable
     {
         return $this->verified;
     }
+    public function workspace()
+    {
+        return $this->hasMany(Workspace::class, 'user_id', 'id');
+    }
 }

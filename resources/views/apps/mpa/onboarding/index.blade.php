@@ -13,6 +13,9 @@
                     </x-slot:caption>
                 </x-auth.parts.form-header>
             </div>
+            @if($step == 'five')
+                <h3 class="text-white text-center">Workspace Details</h3>
+            @endif
             <div class="mb-6">
                 <span class="text-lab-sc text-par-m mb-2 inline-block">
                     {{ __('labels.signup_steps', ['current' => $stepNumber, 'total' => $totalSteps]) }}
