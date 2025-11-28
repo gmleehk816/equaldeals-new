@@ -23,48 +23,54 @@
         />
     </div>
     
+    <div class="max-w-3xl w-full" v-else>
     <!-- Workspace Listing -->
-    <div class="w-full max-w-3xl grid grid-cols-1 md:grid-cols-2 gap-4" v-else>
-    <div 
-        v-for="(item, index) in workspaces" 
-        :key="index"
-        class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
-    >
-        <h2 class="font-semibold text-lg">{{ item.name }}</h2>
-        <p class="text-gray-600 text-sm mt-1">{{ item.description }}</p>
-
-        <!-- Actions -->
-        <div class="flex justify-between mt-4">
-        <router-link 
-            :to="`/workspace/${item.id}`"
-            class="text-blue-600 font-medium hover:underline"
+        <div class="grid grid-cols-1 md:grid-cols-1 text-center mt-5" v-if="workspaces.length === 0">
+            <h2>No Workspace Found!</h2>
+        </div>
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            
+        <div 
+            v-for="(item, index) in workspaces" 
+            :key="index"
+            class="bg-white p-4 rounded-lg shadow hover:shadow-lg transition"
         >
-            Open →
-        </router-link>
+            <h2 class="font-semibold text-lg">{{ item.name }}</h2>
+            <p class="text-gray-600 text-sm mt-1">{{ item.description }}</p>
 
-        <div class="flex space-x-3">
-            <button
-            @click="openEditModal(item)"
-            class="text-yellow-600 font-medium hover:underline"
+            <!-- Actions -->
+            <div class="flex justify-between mt-4">
+            <router-link 
+                :to="`/projects/${item.id}`"
+                class="text-blue-600 font-medium hover:underline"
             >
-            Edit
-            </button>
+                Open →
+            </router-link>
 
-            <button
-            @click="deleteWorkspace(item.id)"
-            class="text-red-600 font-medium hover:underline"
-            >
-            Delete
-            </button>
+            <div class="flex space-x-3">
+                <button
+                @click="openEditModal(item)"
+                class="text-yellow-600 font-medium hover:underline"
+                >
+                Edit
+                </button>
+
+                <button
+                @click="deleteWorkspace(item.id)"
+                class="text-red-600 font-medium hover:underline"
+                >
+                Delete
+                </button>
+            </div>
+            </div>
         </div>
         </div>
-    </div>
     </div>
 
     <!-- Add/Edit Workspace Modal -->
     <div 
     v-if="showModal" 
-    class="fixed inset-0 bg-black bg-opacity-50 flex justify-center items-center"
+    class="fixed inset-0 bg-black/40 flex justify-center items-center"
     >
     <div class="bg-white p-6 rounded-lg w-100 shadow-lg">
         <h2 class="text-xl font-semibold mb-4">{{ isEditing ? "Edit Workspace" : "Create Workspace" }}</h2>

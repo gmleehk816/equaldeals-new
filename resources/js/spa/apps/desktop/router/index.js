@@ -53,6 +53,13 @@ const Router = createRouter({
                         return import('@D/views/workspace/children/WorkspaceIndexPage.vue');
                     },
                     name: 'my_workspace_page'
+                },
+                {
+                    path: '/projects/:workspace_id',
+                    component: function() {
+                        return import('@D/views/workspace/children/ProjectPage.vue');
+                    },
+                    name: 'project_page',
                 }
             ]
         },

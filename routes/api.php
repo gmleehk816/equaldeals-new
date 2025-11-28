@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 use App\Http\Controllers\Api\User\Workspace\WorkspaceController;
+use App\Http\Controllers\Api\User\Project\ProjectController;
 
 Route::prefix('workspace')->group(function() {
     Route::get('/get/all/{user_id}', [WorkspaceController::class, 'index']);
@@ -26,6 +27,14 @@ Route::prefix('workspace')->group(function() {
     Route::get('/edit/{id}', [WorkspaceController::class, 'edit']);
     Route::post('/update', [WorkspaceController::class, 'update']);
     Route::delete('/delete/{id}', [WorkspaceController::class, 'delete']);
+});
+
+Route::prefix('project')->group(function() {
+    Route::get('/get/all/{workspace_id}', [ProjectController::class, 'index']);
+    Route::post('/store', [ProjectController::class, 'store']);
+    Route::get('/edit/{id}', [ProjectController::class, 'edit']);
+    Route::post('/update', [ProjectController::class, 'update']);
+    Route::delete('/delete/{id}', [ProjectController::class, 'delete']);
 });
 
 Route::post('/sanctum/token', function (Request $request) {
