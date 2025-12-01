@@ -14,6 +14,7 @@ import Error404Page from '@D/views/errors/err404/Error404Page.vue';
 import WalletRoutes from '@D/router/wallet/index.js';
 import StoryRoutes from '@D/router/stories/index.js';
 import WorkspacePage from '@D/views/workspace/WorkspacePage.vue';
+import ProjectManagePage from '@D/views/workspace/project/ProjectManagePage.vue';
 
 const Router = createRouter({
 	history: createWebHistory(),
@@ -45,23 +46,52 @@ const Router = createRouter({
                 fluidLayout: true
             },
             name: 'workspace_page',
-            redirect: { name: 'my_workspace_page' },
             children: [
                 {
-                    path: '/my-workspace',
-                    component: function() {
-                        return import('@D/views/workspace/children/WorkspaceIndexPage.vue');
-                    },
-                    name: 'my_workspace_page'
-                },
-                {
-                    path: '/projects/:workspace_id',
+                    path: ':workspace_id',
                     component: function() {
                         return import('@D/views/workspace/children/ProjectPage.vue');
                     },
                     name: 'project_page',
                 }
             ]
+        },
+        {
+            
+            path: '/project/:project_id',
+            component: ProjectManagePage,
+            meta: {
+                contextNavbar: true,
+                sectionName: 'workspace',
+                layout: Layouts.MAIN,
+                auth: true,
+                fluidLayout: true
+            },
+            name: 'project_manage_page',
+            children: [
+                {
+                    path: 'tasks',
+                    component: function() {
+                        return import('@D/views/workspace/project/children/TaskPage.vue');
+                    },
+                    name: 'project_tasks_page',
+                },
+                {
+                    path: 'checklist',
+                    component: function() {
+                        return import('@D/views/workspace/project/children/ChecklistPage.vue');
+                    },
+                    name: 'project_checklist_page', 
+                },
+                {
+                    path: 'add-task',
+                    component: function() {
+                        return import('@D/views/workspace/project/children/AddTaskPage.vue');
+                    },
+                    name: 'project_add_task_page',  
+                }
+            ]
+                
         },
         {
 			path: '/jobs',

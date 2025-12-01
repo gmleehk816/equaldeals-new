@@ -1,7 +1,7 @@
 <template>
   <div :style="_styles">
     <div v-for="i in count" :key="i">
-      <div class="skeleton w-100" :style="_styles"></div>
+      <div class="w-100" :class="theme" :style="_styles"></div>
     </div>
     <!-- <Skeleton width="100%" height="20" margin="2" /> -->
   </div>
@@ -29,6 +29,14 @@
       },
     },
     computed: {
+       theme() {
+            if(this.$global.theme == 'light') {
+                return 'skeleton-light';
+            }
+            if(this.$global.theme == 'dark') {
+                return 'skeleton-dark';
+            }
+        },
       _styles() {
         return {
           width: this._width,
@@ -59,7 +67,7 @@
 </script>
 
 <style scoped>
-  .skeleton {
+  .skeleton-light {
     display: inline-block;
     position: relative;
     overflow: hidden;
@@ -68,7 +76,33 @@
     background-color: #f2eef2ee;
   }
 
-  .skeleton::after {
+  .skeleton-light::after {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    transform: translateX(-100%);
+    background-image: linear-gradient(90deg,
+        rgba(255, 255, 255, 0) 0,
+        rgba(255, 255, 255, 0.2) 20%,
+        rgba(255, 255, 255, 0.5) 60%,
+        rgba(255, 255, 255, 0));
+    -webkit-animation: shimmer 1s infinite;
+    animation: shimmer 2s infinite;
+    content: "";
+  }
+
+  .skeleton-dark {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    /* background-color: #dddbdd; */
+    background-color: #2d2a2a;
+  }
+
+  .skeleton-dark::after {
     position: absolute;
     top: 0;
     right: 0;

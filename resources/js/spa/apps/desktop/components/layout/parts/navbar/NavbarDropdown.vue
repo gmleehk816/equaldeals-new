@@ -1,6 +1,6 @@
 <template>
-    <Menu as="div" class="relative cursor-pointer z-50 text-lab-sc">
-        <MenuButton>
+    <Menu as="div" class="relative cursor-pointer z-50 text-lab-sc navbar-menu">
+        <MenuButton class="navbar-menu-button flex items-center cursor-pointer py-2 px-3 rounded transition-all hover:bg-gray-100 dark:hover:bg-gray-700">
             <span class="flex items-center ">
                 <span class="size-icon-normal shrink-0 opacity-80">
                     <SvgIcon name="dots-horizontal" type="solid"></SvgIcon>
@@ -12,7 +12,7 @@
         </MenuButton>
 
         <PrimaryTransition>
-            <MenuItems class="origin-bottom-right bottom-full left-0 relative dropdown-menu w-80 z-50">
+            <MenuItems class="navbar-menu-items absolute top-full right-0 mt-1 dropdown-menu w-80 z-50 bg-white dark:bg-gray-900 rounded shadow-lg border border-gray-300 dark:border-gray-600 py-1 px-0 m-0">
                 <div v-if="isAdmin" class="block">
                     <MenuItem v-slot="{ active, close }">
                         <button class="group flex w-full items-center px-4 py-1">
@@ -112,3 +112,55 @@
         }
     });
 </script>
+
+<style scoped>
+/* Override Bootstrap CSS conflicts with Headless UI menu */
+.navbar-menu {
+    position: relative;
+    z-index: 50;
+}
+
+.navbar-menu-button {
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+    padding: 0.5rem 0.75rem;
+    border-radius: 0.375rem;
+    transition: all 0.2s;
+    background: transparent;
+    border: none;
+    outline: none;
+}
+
+.navbar-menu-button:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+}
+
+.dark .navbar-menu-button:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.navbar-menu-items {
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 0.25rem;
+    width: 20rem;
+    z-index: 50;
+    background-color: white;
+    border-radius: 0.5rem;
+    box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+    border: 1px solid #d1d5db;
+    padding: 0.25rem 0;
+    margin: 0;
+    display: block;
+    visibility: visible !important;
+    opacity: 1 !important;
+    transform: none !important;
+}
+
+.dark .navbar-menu-items {
+    background-color: #111827;
+    border-color: #374151;
+}
+</style>
