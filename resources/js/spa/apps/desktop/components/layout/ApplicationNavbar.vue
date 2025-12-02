@@ -1,12 +1,12 @@
 <template>
-    <div class="flex flex-col gap-3.5">
+    <div class="flex flex-col gap-3">
         <div class="block">
-            <RouterLink v-bind:to="{ name: 'home_page' }" v-slot="{ isActive }" class="block">
+            <RouterLink v-bind:to="{ name: 'home_index' }" v-slot="{ isActive }" class="block">
                 <div class="flex items-center" v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
                     <span class="size-icon-normal shrink-0">
                         <SvgIcon name="home-smile" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
                     </span>
-                    <span class="ml-3 text-par-l">
+                    <span class="ml-3 text-[19px]">
                         {{ $t('labels.home') }}
                     </span>
                 </div>
@@ -14,12 +14,12 @@
         </div>
 
         <div class="block">
-            <RouterLink v-bind:to="{ name: 'explore_posts_page' }" v-slot="{ isActive }" class="block">
+            <RouterLink v-bind:to="{ name: 'explore_posts' }" v-slot="{ isActive }" class="block">
                 <div class="flex items-center"  v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
                     <span class="size-icon-normal shrink-0">
                         <SvgIcon name="hash-02"></SvgIcon>
                     </span>
-                    <span class="ml-3 text-par-l">
+                    <span class="ml-3 text-[19px]">
                         {{ $t('labels.explore') }}
                     </span>
                 </div>
@@ -30,7 +30,7 @@
                 <span class="size-icon-normal shrink-0">
                     <SvgIcon name="bell-01" type="line"></SvgIcon>
                 </span>
-                <span class="ml-3 text-par-l">
+                <span class="ml-3 text-[19px]">
                     {{ $t('labels.notifications') }}
 
                     <BadgeCounter v-if="notificationsCount.raw" v-bind:count="notificationsCount.formatted"></BadgeCounter>
@@ -38,12 +38,12 @@
             </div>
         </div>
         <div class="block">
-            <RouterLink v-bind:to="{ name: 'messenger_page' }" v-slot="{ isActive }" class="block">
+            <RouterLink v-bind:to="{ name: 'messenger_index' }" v-slot="{ isActive }" class="block">
                 <div class="flex items-center"  v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
                     <span class="size-icon-normal shrink-0">
                         <SvgIcon name="message-chat-circle" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
                     </span>
-                    <span class="ml-3 text-par-l">
+                    <span class="ml-3 text-[19px]">
                         {{ $t('labels.messages') }}
 
                         <BadgeCounter v-if="inboxCount.raw" v-bind:count="inboxCount.formatted"></BadgeCounter>
@@ -51,50 +51,25 @@
                 </div>
             </RouterLink>
         </div>
-        <div class="block" v-if="$config('features.videos.enabled')">
-            <RouterLink v-bind:to="{ name: 'videos_page' }" v-slot="{ isActive }" class="block">
-                <div class="flex items-center"  v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
-                    <span class="size-icon-normal shrink-0">
-                        <SvgIcon name="clapperboard" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
-                    </span>
-                    <span class="ml-3 text-par-l">
-                        {{ $t('labels.videos') }}
-                    </span>
-                </div>
-            </RouterLink>
-        </div>
         <div class="block" v-if="$config('features.marketplace.enabled')">
-            <RouterLink v-bind:to="{ name: 'marketplace_page' }" v-slot="{ isActive }" class="block">
+            <RouterLink v-bind:to="{ name: 'marketplace_index' }" v-slot="{ isActive }" class="block">
                 <div class="flex items-center" v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
                     <span class="size-icon-normal shrink-0">
                         <SvgIcon name="shopping-bag-03" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
                     </span>
-                    <span class="ml-3 text-par-l">
+                    <span class="ml-3 text-[19px]">
                         {{ $t('labels.marketplace') }}
                     </span>
                 </div>
             </RouterLink>
         </div>
-        
-        <div class="block">
-            <RouterLink v-bind:to="{ name: 'bookmarks_page' }" v-slot="{ isActive }" class="block">
-                <div  class="flex items-center" v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
-                    <span class="size-icon-normal shrink-0">
-                        <SvgIcon name="bookmark" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
-                    </span>
-                    <span class="ml-3 text-par-l">
-                        {{ $t('labels.bookmarks') }}
-                    </span>
-                </div>
-            </RouterLink>
-        </div>
         <div class="block" v-if="$config('features.jobs.enabled')">
-            <RouterLink v-bind:to="{ name: 'jobs_page' }" v-slot="{ isActive }" class="block">
+            <RouterLink v-bind:to="{ name: 'jobs_index' }" v-slot="{ isActive }" class="block">
                 <div  class="flex items-center" v-bind:class="[((isActive == true) ? 'sidenav-active' : 'sidenav-inactive')]">
                     <span class="size-icon-normal shrink-0">
                         <SvgIcon name="briefcase-01" v-bind:type="(isActive == true) ? 'solid' : 'line'"></SvgIcon>
                     </span>
-                    <span class="ml-3 text-par-l">
+                    <span class="ml-3 text-[19px]">
                         {{ $t('labels.jobs') }}
                     </span>
                 </div>
@@ -102,19 +77,19 @@
         </div>
         
         <div class="block">
-            <RouterLink v-bind:to="{ name: 'profile_page', params: { id: userData.username } }" v-slot="{ isActive }" class="block">
+            <RouterLink v-bind:to="{ name: 'profile_index', params: { id: userData.username } }" v-slot="{ isActive }" class="block">
                 <div  class="flex items-center sidenav-inactive">
                     <span class="size-icon-normal shrink-0">
                         <SvgIcon name="user-01" type="line"></SvgIcon>
                     </span>
-                    <span class="ml-3 text-par-l">
+                    <span class="ml-3 text-[19px]">
                         {{ $t('labels.my_profile') }}
                     </span>
                 </div>
             </RouterLink>
         </div>
         <div class="block pl-icon-normal pr-6">
-            <span class="block bg-bord-sc h-px mx-2"></span>
+            <span class="block bg-bord-sc h-px mx-3"></span>
         </div>
         <div class="block">
             <NavbarDropdown></NavbarDropdown>
@@ -174,8 +149,6 @@
             });
 
             onUnmounted(() => {
-                colibriEventBus.off('notifications:received');
-
                 if(window.ColibriBRD) {
                     ColibriBRD.leave(BRD.getChannel('AUTH_USER', [authStore.userData.id]));
                 }

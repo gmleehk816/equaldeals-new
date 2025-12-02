@@ -8,12 +8,12 @@
 					v-bind:avatarSrc="accountData.avatar_url"
 					v-bind:verified="accountData.verified"
 					v-bind:name="accountData.name"
-					v-bind:hasRoute="false"
+					v-bind:linkRoute="{ name: 'profile_index', params: { id: accountData.username } }"
 				v-bind:caption="accountData.caption"></AvatarRightSided>
 				<div v-if="hasBio || hasWebsite" class="pl-small-avatar mt-2">
 					<div class="pl-2">
-						<p v-if="hasBio" class="text-par-s text-lab-pr2 content-text line-clamp-2" v-html="mdInlineRenderer(accountData.bio)"></p>
-						<a v-if="accountData.website" v-bind:href="accountData.website" class="inline-block text-par-s text-brand-900 content-text hover:underline leading-tight" target="_blank">
+						<p v-if="hasBio" class="text-par-m text-lab-pr2 markdown-text line-clamp-2" v-html="$mdInline(accountData.bio)"></p>
+						<a v-if="accountData.website" v-bind:href="accountData.website" class="inline-block text-par-m text-lab-pr2 markdown-text hover:underline leading-tight" target="_blank">
 							{{ accountData.website }}
 						</a>
 					</div>
@@ -34,7 +34,6 @@
 
 <script>
 	import { defineComponent, computed } from 'vue';
-	import { mdInlineRenderer } from '@/kernel/helpers/md/index.js';
 
 	import AvatarRightSided from '@D/components/general/avatars/sided/small/AvatarRightSided.vue';
 
@@ -48,7 +47,6 @@
 		emits: ['switch'],
 		setup: function(props) {
 			return {
-				mdInlineRenderer: mdInlineRenderer,
 				hasBio: computed(() => {
 					return props.accountData.bio.length > 0;
 				}),

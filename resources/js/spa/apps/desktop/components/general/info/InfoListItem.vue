@@ -1,13 +1,17 @@
 <template>
-	<div class="flex gap-3 leading-none mb-5">
-		<div class="shrink-0 w-6 text-lab-pr2">
-			<SvgIcon v-bind:name="iconName" v-bind:type="iconType"></SvgIcon>
+	<div class="flex gap-2.5 leading-none">
+		<div class="shrink-0 text-lab-pr2">
+			<div class="size-small-avatar flex-center bg-fill-tr rounded-full">
+				<div class="size-icon-small text-lab-pr2">
+					<SvgIcon v-bind:name="iconName" v-bind:type="iconType"></SvgIcon>
+				</div>
+			</div>
 		</div>
-		<div class="flex-1 text-par-s">
-			<h5 class="font-medium text-lab-pr mb-1">
+		<div class="flex-1">
+			<h5 class="font-semibold text-par-n text-lab-pr mb-1.5">
 				{{ labelText }}
 			</h5>
-			<p class="text-lab-sc">
+			<p class="text-lab-sc text-par-n">
 				{{ contentText }}
 			</p>
 		</div>

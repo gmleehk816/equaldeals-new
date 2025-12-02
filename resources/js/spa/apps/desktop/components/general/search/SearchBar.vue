@@ -1,22 +1,21 @@
 <template>
 	<div class="block">
-		<div class="pl-4 pr-6 bg-input-pr rounded-full flex items-center">
-			<div class="h-14 relative flex-1 mr-4">
-				<span class="absolute top-0 bottom-0 flex-center h-full left-0">
-					<SvgIcon type="solid" name="search-lg" classes="size-icon-normal text-lab-pr2"></SvgIcon>
+		<div class="border border-bord-card/80 rounded-full">
+			<div class="h-11 relative flex-1">
+				<span class="absolute top-0 bottom-0 flex-center h-full left-3">
+					<SvgIcon type="solid" name="search-lg" classes="size-icon-small text-lab-sc"></SvgIcon>
 				</span>
-				<input 
-					type="text"
+				<input type="text"
 					v-bind:value="modelValue"
 					v-on:input.lazy.debounce.500="updateModelValue"
-					class="bg-transparent h-full w-full pl-8 text-lab-pr2 text-par-m outline-hidden placeholder:text-lab-pr2 placeholder:font-light rounded-md border border-transparent"
+					class="bg-transparent placeholder-shown:text-center h-full w-full px-12 text-lab-pr2 text-par-l outline-hidden placeholder:text-lab-tr rounded-md border border-transparent"
 				v-bind:placeholder="placeholder">
+				<template v-if="$slots.default">
+					<div class="absolute top-0 bottom-0 flex-center h-full right-2.5">
+						<slot></slot>
+					</div>
+				</template>
 			</div>
-			<template v-if="$slots.default">
-				<div class="shrink-0 border-l border-edge-sc pl-4">
-					<slot></slot>
-				</div>
-			</template>
 		</div>
 	</div>
 </template>

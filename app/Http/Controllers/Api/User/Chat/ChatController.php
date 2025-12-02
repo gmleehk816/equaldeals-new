@@ -42,23 +42,55 @@ use App\Actions\Chat\MessagesLocalDeleteAction;
 use App\Http\Resources\User\Chat\ChatCollection;
 use App\Http\Resources\User\Chat\MessageCollection;
 use App\Http\Resources\User\Chat\ParticipantCollection;
+use App\Http\Resources\User\Chat\RequestCollection;
 use App\Http\Resources\User\Timeline\ReactionCollection;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use App\Http\Resources\User\Overview\UserOverviewResource;
+use App\Models\ChatInvite;
 use App\Notifications\User\Chat\MessageReceivedNotification;
 
 class ChatController extends Controller
 {
-    use SupportsApiResponses, AuthorizesRequests;
+    use SupportsApiResponses,
+        AuthorizesRequests;
 
     private $unreadCount = 0;
 
-    public function getChats(Request $request)
+    public function getChats()
     {
-        $chatsHistory = Chat::chatsHistory()->with(['interlocutor', 'lastMessage'])->latest('last_activity')->get();
+        $chatsHistory = Chat::chatsHistory()->with(['interlocutor', 'group', 'lastMessage'])->latest('last_activity')->get();
 
         return $this->responseSuccess([
             'data' => ChatCollection::make($chatsHistory)
+        ]);
+    }
+
+    public function getArchive()
+    {
+        $chatsHistory = Chat::chatsArchive()->with(['interlocutor', 'group', 'lastMessage'])->latest('last_activity')->get();
+
+        return $this->responseSuccess([
+            'data' => ChatCollection::make($chatsHistory)
+        ]);
+    }
+
+    public function getChatRequests()
+    {
+        $chatRequests = ChatInvite::pending()->where('receiver_id', me()->id)->with(['sender', 'chat.group'])->get();
+
+        return $this->responseSuccess([
+            'data' => RequestCollection::make($chatRequests)
+        ]);
+    }
+
+    public function getChatRequestsCount()
+    {
+        $count = ChatInvite::pending()->where('receiver_id', me()->id)->count();
+
+        return $this->responseSuccess([
+            'data' => [
+                'count' => $count,
+            ]
         ]);
     }
 
@@ -97,7 +129,7 @@ class ChatController extends Controller
                 $userParticipant = $chatData->participants()->where('user_id', me()->id)->first();
                 $lastMessageData = $chatData->messages()->latest()->first();
                 $statusUpdated = false;
-
+                
                 if($lastMessageData && $userParticipant) {
                     if($userParticipant->last_read_message_id < $lastMessageData->id) {
                         $statusUpdated = true;
@@ -135,7 +167,7 @@ class ChatController extends Controller
             $chatData = Chat::participatedChats()->where('chat_id', $chatId)->first();
 
             if($chatData) {
-                $chatParticipants = $chatData->participants()->with('user:id,first_name,last_name,username,avatar,last_active,verified')->take(7)->get();
+                $chatParticipants = $chatData->participants()->with('user:id,first_name,last_name,username,avatar,caption,last_active,verified')->take(7)->get();
     
                 return $this->responseSuccess([
                     'data' => ParticipantCollection::make($chatParticipants)
@@ -221,55 +253,87 @@ class ChatController extends Controller
             $chatData = Chat::participatedChats()->where('chat_id', $chatId)->first();
 
             if($chatData) {
+                $participantsCount = $chatData->participants()->count();
+                $isParticipant = $chatData->isParticipant(me()->id);
+
+                $chatInfo = [
+                    'type' => $chatData->type->value,
+                    'is_group' => $chatData->type->isGroup(),
+                    'chat_id' => $chatData->chat_id,
+                    'meta' => [
+                        'is_participant' => $isParticipant,
+                        'is_archived' => $chatData->isArchived(me()->id)
+                    ],
+                    'date' => [
+                        'timestamp' => $chatData->created_at->getTimestamp(),
+                        'iso' => $chatData->created_at->getIso(),
+                    ],
+                    'chat_info' => [
+                        'participants_count' => [
+                            'raw' => $participantsCount,
+                            'formatted' => Num::abbreviate($participantsCount)
+                        ],
+                        'verified' => false,
+                    ],
+                    'relations' => [
+                        'participants' => []
+                    ]
+                ];
+
+                // Check if the user is a participant and the chat is a direct chat.
+
                 if ($chatData->type == ChatType::DIRECT) {
-                    $participantData = $chatData->participants()->whereNot('user_id', me()->id)->first();
+                    $interlocutorData = $chatData->interlocutor;
+                    
+                    $interlocutorData = (empty($interlocutorData)) ? null : $interlocutorData->user;
+
+                    $chatInfo['relations']['participants'] = $chatData
+                        ->participants()
+                        ->whereNot('user_id', me()->id)
+                        ->select([
+                            'user_id',
+                            'last_read_message_id',
+                            'last_read_at',
+                        ])->get()->toArray();
 
                     // TODO: Add deleted user support.
-                    $participantUser = (empty($participantData)) ? null : $participantData->user;
 
-                    if ($participantUser) {
-                        return $this->responseSuccess([
-                            'data' => [
-                                'type' => $chatData->type->value,
-                                'chat_id' => $chatData->chat_id,
-                                'date' => [
-                                    'timestamp' => $chatData->created_at->getTimestamp(),
-                                    'iso' => $chatData->created_at->getIso(),
-                                ],
-                                'chat_info' => [
-                                    'id' => $participantUser->id,
-                                    'name' => $participantUser->name,
-                                    'username' => $participantUser->username,
-                                    'avatar_url' => $participantUser->avatar_url,
-                                    'description' => $participantUser->bio,
-                                    'verified' => $participantUser->isVerified(),
-                                    'followers_count' => [
-                                        'raw' => $participantUser->followers_count,
-                                        'formatted' => Num::abbreviate($participantUser->followers_count)
-                                    ],
-                                    'last_active' => [
-                                        'raw' => $participantUser->getLastActive()->getTimestamp(),
-                                        'formatted' => $participantUser->getLastActive()->getCalendar()
-                                    ],
-                                    'meta' => [
-                                        'relationship' => [
-                                            Relationship::FOLLOW_GROUP => [
-                                                Relationship::FOLLOWED_BY => $participantUser->isFollowing(me()),
-                                            ],
-                                        ]
-                                    ]
-                                ],
-                                'relations' => [
-                                    'participants' => $chatData->participants()->whereNot('user_id', me()->id)->select([
-                                        'user_id',
-                                        'last_read_message_id',
-                                        'last_read_at',
-                                    ])->get()->toArray()
-                                ]
+                    $chatInfo['chat_info']['id'] = $interlocutorData->id;
+                    $chatInfo['chat_info']['name'] = $interlocutorData->name;
+                    $chatInfo['chat_info']['username'] = $interlocutorData->username;
+                    $chatInfo['chat_info']['avatar_url'] = $interlocutorData->avatar_url;
+                    $chatInfo['chat_info']['description'] = $interlocutorData->bio;
+                    $chatInfo['chat_info']['verified'] = $interlocutorData->isVerified();
+                    $chatInfo['chat_info']['followers_count'] = [
+                        'raw' => $interlocutorData->followers_count,
+                        'formatted' => Num::abbreviate($interlocutorData->followers_count)
+                    ];
+                    $chatInfo['chat_info']['last_active'] = [
+                        'raw' => $interlocutorData->getLastActive()->getTimestamp(),
+                        'formatted' => $interlocutorData->getLastActive()->getCalendar()
+                    ];
+                    $chatInfo['chat_info']['meta'] = [
+                        'relationship' => [
+                            Relationship::FOLLOW_GROUP => [
+                                Relationship::FOLLOWED_BY => $interlocutorData->isFollowing(me()),
                             ]
-                        ]);
-                    }
+                        ]
+                    ];
                 }
+                
+                else if ($chatData->type == ChatType::GROUP) {
+                    $groupData = $chatData->group;
+
+                    $chatInfo['chat_info']['id'] = $groupData->id;
+                    $chatInfo['chat_info']['name'] = $groupData->name;
+                    $chatInfo['chat_info']['avatar_url'] = $groupData->avatar_url;
+                    $chatInfo['chat_info']['verified'] = $groupData->isVerified();
+                    $chatInfo['chat_info']['description'] = $groupData->description;
+                }
+
+                return $this->responseSuccess([
+                    'data' => $chatInfo
+                ]);
             }
         }
 
@@ -277,7 +341,7 @@ class ChatController extends Controller
     }
 
     public function sendMessage(Request $request)
-    {
+    {   
         $validator = Validator::make([
             'chat_id' => $request->get('chat_id'),
             'content' => $request->get('content'),
@@ -569,6 +633,40 @@ class ChatController extends Controller
         return $this->responseResourceNotFoundError('Chat', $chatId); 
     }
 
+    public function archiveChat(string $chatId) {
+        if(Str::isUuid($chatId)) {
+            $chatData = Chat::participatedChats()->where('chat_id', $chatId)->first();
+
+            if($chatData) {
+                if(! $chatData->isArchived(me()->id)) {
+                    $chatData->archiveChat(me()->id);
+                }
+
+                return $this->responseSuccess([
+                    'data' => null
+                ]);
+            }
+        }
+
+        return $this->responseResourceNotFoundError('Chat', $chatId);
+    }
+
+    public function unarchiveChat(string $chatId) {
+        if(Str::isUuid($chatId)) {
+            $chatData = Chat::participatedChats()->where('chat_id', $chatId)->first();
+
+            if($chatData) {
+                $chatData->unarchiveChat(me()->id);
+
+                return $this->responseSuccess([
+                    'data' => null
+                ]);
+            }
+        }
+
+        return $this->responseResourceNotFoundError('Chat', $chatId);
+    }
+
     public function deleteChat(string $chatId) {
         if(Str::isUuid($chatId)) {
             $chatData = Chat::participatedChats()->where('chat_id', $chatId)->first();
@@ -616,11 +714,9 @@ class ChatController extends Controller
                 'last_activity' => null
             ]);
 
-            $chatColors = config('chat.colors');
-            $chatData->participants()->createMany([
-                ['user_id' => me()->id, 'joined_at' => now(), 'metadata' => ['color' => $chatColors[array_rand($chatColors)]]],
-                ['user_id' => $userId, 'joined_at' => now(), 'metadata' => ['color' => $chatColors[array_rand($chatColors)]]],
-            ]);
+            
+            $chatData->addParticipant(me()->id);
+            $chatData->addParticipant($userId);
         }
 
         return $chatData;

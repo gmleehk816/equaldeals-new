@@ -1,30 +1,22 @@
 <template>
-    <div class="flex items-center overflow-hidden gap-2">
-        <div class="shrink-0">
-            <AvatarSmall 
-                v-bind:avatarSrc="avatarSrc"
-                v-bind:unreadIndicator="unreadIndicator"
-            v-bind:rounded="rounded"></AvatarSmall>
-        </div>
-        <div class="leading-4 overflow-hidden">
-            <RouterLink v-if="hasRoute" v-bind:to="linkRoute" class="cursor-pointer">
-                <h3 class="text-par-n font-medium text-lab-pr truncate mb-0.5">
-                    {{ name }} <VerificationBadge v-if="verified"></VerificationBadge>
+    <RouterLink v-bind:to="linkRoute" class="cursor-pointer">
+        <div class="flex items-center overflow-hidden gap-2">
+            <div class="shrink-0">
+                <AvatarSmall 
+                    v-bind:avatarSrc="avatarSrc"
+                    v-bind:unreadIndicator="unreadIndicator"
+                v-bind:rounded="rounded"></AvatarSmall>
+            </div>
+            <div class="leading-4 overflow-hidden">
+                <h3 class="text-par-m font-semibold text-lab-pr2 truncate mb-0.5">
+                    {{ name }} <VerificationBadge v-if="verified" size="xs"></VerificationBadge>
                 </h3>
-                <p class="text-cap-l text-lab-sc truncate">
-                    {{ caption }}
-                </p>
-            </RouterLink>
-            <div v-else>
-                <h3 class="text-par-n font-medium text-lab-pr truncate mb-0.5">
-                    {{ name }} <VerificationBadge v-if="verified"></VerificationBadge>
-                </h3>
-                <p class="text-cap-l text-lab-sc truncate">
+                <p class="text-par-s text-lab-sc truncate">
                     {{ caption }}
                 </p>
             </div>
         </div>
-    </div>
+    </RouterLink>
 </template>
 
 <script>
@@ -47,11 +39,7 @@
             },
             linkRoute: {
                 type: Object,
-                default: { name: 'home_page' }
-            },
-            hasRoute: {
-                type: Boolean,
-                default: true
+                default: { name: 'home_index' }
             },
             avatarSrc: {
                 type: String,

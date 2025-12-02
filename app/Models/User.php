@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Enums\User\UserRole;
+use App\Enums\User\UserType;
 use App\Enums\User\UserStatus;
 use App\Support\DateFormatter;
 use App\Database\Configs\Table;
@@ -13,7 +14,6 @@ use App\Services\World\WorldService;
 use Illuminate\Notifications\Notifiable;
 use App\Models\Traits\User\FetchesDrafts;
 use App\Support\Casts\ModelTimestampCast;
-use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use App\Models\Traits\Pagination\SupportsManualPagination;
@@ -23,7 +23,6 @@ class User extends Authenticatable
     use FetchesDrafts, 
         SupportsManualPagination,
         Notifiable,
-        SoftDeletes,
         HasApiTokens,
         Notifiable,
         HasFactory;
@@ -43,7 +42,8 @@ class User extends Authenticatable
             'tips' => 'array',
             'status' => UserStatus::class,
             'role' => UserRole::class,
-            'verified_at' => ModelTimestampCast::class
+            'verified_at' => ModelTimestampCast::class,
+            'type' => UserType::class
         ];
     }
 
@@ -75,6 +75,11 @@ class User extends Authenticatable
     public function story()
     {
         return $this->hasOne(Story::class, 'user_id', 'id');
+    }
+
+    public function groups()
+    {
+        return $this->hasMany(Group::class, 'user_id', 'id');
     }
 
     public function payments()
@@ -216,8 +221,8 @@ class User extends Authenticatable
             'following_id' => $user->id
         ])->delete();
         
-        $user->decrement('followers_count', 1);
-        $this->decrement('following_count', 1);
+        $user->decrement('followers_count', max(0, $user->followers_count - 1));
+        $this->decrement('following_count', max(0, $this->following_count - 1));
     }
 
     public function followRequested(User $user)
@@ -234,6 +239,16 @@ class User extends Authenticatable
     public function canFollow(User $user)
     {
         return $this->id !== $user->id;
+    }
+
+    public function scopeReader($query)
+    {
+        return $query->where('type', UserType::READER);
+    }
+
+    public function scopeAuthor($query)
+    {
+        return $query->where('type', UserType::AUTHOR);
     }
 
     public function scopeExcludeSelf($query)
@@ -307,7 +322,7 @@ class User extends Authenticatable
             return asset(config('user.avatar'));
         }
 
-        return storage_url($this->avatar, config('user.disks.avatar'));
+        return storage_url($this->avatar, static_storage_disk());
     }
 
     public function getCoverUrlAttribute()
@@ -316,7 +331,7 @@ class User extends Authenticatable
             return asset(config('user.cover'));
         }
 
-        return storage_url($this->cover, config('user.disks.cover'));
+        return storage_url($this->cover, static_storage_disk());
     }
 
     public function getProfileUrlAttribute()
@@ -334,6 +349,11 @@ class User extends Authenticatable
         return $this->hasMany(Post::class, 'user_id', 'id');
     }
 
+    public function authorshipRequest()
+    {
+        return $this->hasOne(AuthorshipRequest::class, 'user_id', 'id');
+    }
+
     public function devices()
     {
         return $this->hasMany(Device::class, 'user_id', 'id');
@@ -342,6 +362,11 @@ class User extends Authenticatable
     public function isAdmin()
     {
         return $this->role === UserRole::ADMIN;
+    }
+
+    public function isAuthor()
+    {
+        return $this->type === UserType::AUTHOR;
     }
 
     public function isOnline()

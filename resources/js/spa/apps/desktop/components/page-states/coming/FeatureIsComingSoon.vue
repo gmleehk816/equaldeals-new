@@ -5,14 +5,14 @@
         </div>
         <Border height="h-3"></Border>
         <div class="p-4">
-            <h4 class="text-title-3 tracking-tight font-bold mb-1 text-lab-pr2">
+            <h4 class="text-title-3 font-bold mb-1 text-lab-pr2">
                 This feature is coming soon!
             </h4>
             <p class="text-lab-pr3 text-par-m">
                 We're hard at work enhancing ColibriPlus to bring you an even better experience. <a v-bind:href="APP_NEWS_RESOURCE_URL" class="underline" target="_blank">Stay tuned for updates right here</a>!
             </p>
             <div class="mt-8">
-                <RouterLink v-bind:to="{ name: 'home_page' }">
+                <RouterLink v-bind:to="{ name: 'home_index' }">
                     <PrimaryPillButton buttonRole="accent" buttonText="Homepage" buttonSize="lm"></PrimaryPillButton>
                 </RouterLink>
             </div>

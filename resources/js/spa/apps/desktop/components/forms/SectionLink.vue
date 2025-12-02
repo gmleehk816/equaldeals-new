@@ -1,7 +1,7 @@
 <template>
     <div class="block">
         <RouterLink v-bind:to="link" class="cursor-pointer gap-3 flex items-center justify-between border border-bord-pr px-5 py-4 rounded-xl">
-            <div class="shrink-0 size-icon-normal text-lab-sc">
+            <div class="shrink-0 size-icon-normal text-lab-pr">
                 <SvgIcon v-bind:name="iconName" v-bind:type="iconType"/>
             </div>
             <div class="flex-1">

@@ -62,6 +62,7 @@ class PostController extends Controller
 
             if($quotedPost) {
                 $this->draftPost->quote_post_id = $quotedPost->id;
+                $this->draftPost->is_quoting = true;
 
                 $quotedPost->increment('quotes_count', 1);
             }
@@ -189,6 +190,8 @@ class PostController extends Controller
         $this->authorize('delete', $postData);
 
         (new DeletePostAction($postData))->execute();
+
+        $postData->user->decrementValue('publications_count', 1);
 
         return $this->responseSuccess([
             'data' => null

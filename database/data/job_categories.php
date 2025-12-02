@@ -1,34 +1,9 @@
 <?php
 
 return [
-    'Accounting & Finance',
-    'Administration',
-    'Architecture',
-    'Art & Design', 
-    'Banking',
-    'Business Development',
-    'Construction',
-    'Consulting',
-    'Customer Service',
-    'Education & Teaching',
-    'Engineering',
-    'Healthcare',
-    'Human Resources',
-    'Information Technology',
-    'Insurance',
-    'Legal',
-    'Manufacturing',
-    'Marketing',
-    'Media & Communication',
+    'Art & Design',
     'Project Management',
-    'Real Estate',
-    'Research & Development',
-    'Retail',
-    'Sales',
-    'Science',
     'Security',
     'Software Development',
-    'Supply Chain',
-    'Tourism & Hospitality',
-    'Transportation & Logistics'
+    'Web Development'
 ];

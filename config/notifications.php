@@ -2,7 +2,8 @@
 
 return [
 	'sounds' => [
-		'notification_received' => 'assets/sounds/notifications/notification-received.mp3'
+		'notification_received' => 'assets/sounds/notifications/notification-received.mp3',
+		'ui_feedback' => 'assets/sounds/notifications/ui-feedback.mp3'
 	],
 	'email' => [
 		'enabled' => env('NOTIFICATIONS_EMAIL_ENABLED', false),

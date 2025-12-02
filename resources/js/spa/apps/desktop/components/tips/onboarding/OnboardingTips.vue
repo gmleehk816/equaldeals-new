@@ -3,7 +3,7 @@
         <ContentModal>
             <div class="p-4">
                 <div class="mb-4">
-                    <h4 class="text-par-m font-medium text-lab-pr2 tracking-tighter">
+                    <h4 class="text-par-m font-medium text-lab-pr2">
                         {{ $t('labels.welcome_user', { name: userData.name, app_name: appName }) }}
                     </h4>
                 </div>

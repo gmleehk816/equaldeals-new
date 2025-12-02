@@ -12,7 +12,8 @@
         @vite([
             'resources/js/document/main.js',
             'resources/css/document/main.css',
-            'resources/fonts/sf-pro/stylesheet.css'
+            config('assets.fonts.sans'),
+            config('assets.fonts.mono')
         ])
 
         @stack('styles')
@@ -27,8 +28,8 @@
         @include('layouts.mpa.parts.header')
 
         <div class="flex-col flex min-h-screen">
-            <div class="flex justify-center py-12 md:py-24 flex-1">
-                <div class="app-container px-4 md:px-8">
+            <div class="flex justify-center py-12 flex-1">
+                <div class="max-w-3xl px-4 md:px-8 document-container">
                     @yield('pageContent')
                 </div>
             </div>

@@ -1,4 +1,4 @@
-<footer class="bg-fill-qt pb-4 pt-6 flex" style="min-width: 320px;">
+<footer class="pb-4 pt-6 flex" style="min-width: 320px;">
     <div class="app-container mx-auto flex-1 px-4 md:px-8">
         <nav class="flex flex-wrap gap-2 md:gap-4">
             <a href="{{ route('document.about.index') }}" class="text-par-s text-lab-pr2 hover:text-brand-900 smoothing">

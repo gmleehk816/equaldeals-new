@@ -1,7 +1,7 @@
 <template>
-	<div class="py-4 px-6" v-bind:class="[isReplaying ? 'border-t border-t-bord-pr' : '']">
+	<div class="py-4 px-6 bg-bg-pr" v-bind:class="[isReplaying ? 'border-t border-t-bord-pr' : '']">
 		<div v-if="isReplaying" class="mb-3">
-			<MessageReplyPreview v-on:cancelreply="cancelMessageReply" v-bind:key="repliedMessage.id" v-bind:messageData="repliedMessage"></MessageReplyPreview>
+			<MessageReplyPreview v-on:cancel="cancelMessageReply" v-bind:key="repliedMessage.id" v-bind:messageData="repliedMessage"></MessageReplyPreview>
 		</div>
 		<div class="block relative leading-none">
 			<div class="absolute left-4 top-3">
@@ -12,14 +12,14 @@
 					<template v-if="state.isEmojisPickerOpen">
 						<div class="block absolute bottom-6 left-0 w-80 z-50">
 							<EmojisPicker 
-								v-on:pickemoji="insertMessageEmoji"
+								v-on:pick="insertMessageEmoji"
 							v-on:close="state.isEmojisPickerOpen = false"></EmojisPicker>
 						</div>
 					</template>
 				</div>
 			</div>
 	
-			<textarea ref="messageInputField" class="resize-none pl-12 pr-36 pt-3.5 pb-2 leading-normal text-lab-pr font-normal text-par-n bg-fill-qt w-full h-12 min-h-12 max-h-40 overflow-x-hidden overflow-y-auto rounded-3xl outline-hidden placeholder:text-par-s placeholder:text-lab-sc placeholder:font-normal"
+			<textarea ref="messageInputField" class="resize-none pl-12 pr-36 pt-2.5 pb-2 leading-normal text-lab-pr font-normal text-par-l bg-fill-qt w-full h-12 min-h-12 max-h-40 overflow-x-hidden overflow-y-auto rounded-3xl outline-hidden placeholder:text-par-l placeholder:text-lab-sc placeholder:font-normal"
 				v-on:input.trim="messageInputHandler"
 				v-on:keydown.enter="submitForm"
 				v-model.trim="inputMessageText"
@@ -47,7 +47,7 @@
 
 <script>
 	import { defineComponent, ref, computed, reactive, defineAsyncComponent, onMounted } from 'vue';
-	import { useInputHandlers } from '@D/core/composables/input/index.js';
+	import { useInputHandlers } from '@/kernel/vue/composables/input/index.js';
 	import { useChatStore } from '@D/store/chats/chat.store.js';
 	import { colibriEventBus } from '@/kernel/events/bus/index.js';
 	import { colibriSounds } from '@/kernel/services/sounds/index.js';

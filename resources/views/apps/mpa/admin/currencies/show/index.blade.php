@@ -1,14 +1,13 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-<div class="mb-8">
-	<x-page-title titleText=" {{ __('admin/currencies.show_title') }}"></x-page-title>
-	<x-page-desc>
-		{{ __('admin/currencies.show_desc') }}
-	</x-page-desc>
-</div>
+	<div class="mb-4">
+		<x-page-title titleText=" {{ __('admin/currencies.show_title') }}"></x-page-title>
+		<x-page-desc>
+			{{ __('admin/currencies.show_desc') }}
+		</x-page-desc>
+	</div>
 
-<div>
 	<x-sided-content>
 		<x-slot:sideContent>
 			<x-entity.previews.currency></x-entity.previews.currency>
@@ -16,7 +15,7 @@
 
 		<div class="mb-4">
 			<x-entity.header 
-				avatarUrl="{{ asset('assets/avatars/currency-avatar.png') }}" 
+				avatarUrl="{{ asset('assets/icons/avatar/currency-euro-circle.png') }}" 
 				name="{{ $currencyData->name }} ({{ strtoupper($currencyData->alpha_3_code) }})">
 			</x-entity.header>
 		</div>
@@ -93,5 +92,4 @@
 			</x-striped-table.row>
 		</x-striped-table.table>
 	</x-sided-content>
-</div>
 @endsection

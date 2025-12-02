@@ -1,7 +1,7 @@
 <?php
 
 return [
-	'title' => 'Why do you want to report this account?',
+	'title' => 'Why do you want to report this user?',
 	'description' => 'Your complaint is anonymous. No one will know you reported this account.',
 	'reasons' => [
 		[

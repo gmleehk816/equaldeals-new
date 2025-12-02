@@ -18,6 +18,7 @@ namespace App\Http\Controllers\Api\User\Timeline;
 use App\Models\Post;
 use Illuminate\Http\Request;
 use App\Enums\Post\PostStatus;
+use App\Database\Configs\Table;
 use App\Http\Controllers\Controller;
 use App\Traits\Http\Api\SupportsApiResponses;
 use App\Http\Resources\User\Timeline\TimelineResource;
@@ -29,27 +30,47 @@ class FeedController extends Controller
 {
     use SupportsApiResponses;
 
+    private $me = null;
+    private $filter = [];
+
+    public function __construct()
+    {
+        $this->me = me();
+    }
+
     public function getFeed()
     {
         $filter = request()->array('filter');
 
-        $pageNumber = data_get_integer($filter, 'page', 1);
+        $this->filter['page'] = data_get_integer($filter, 'page', 1);
+        $this->filter['onset'] = data_get_integer($filter, 'onset', 0);
 
-        $processingPosts = me()->posts()->where('status', PostStatus::PROCESSING_VIDEO)->get();
+        $processingPosts = $this->me->posts()->where('status', PostStatus::PROCESSING_VIDEO)->get();
 
-        $timelinePosts = Post::timelineFormatPosts()
+        $feedORMQuery = Post::timelineFormatPosts()
+            ->when(! empty($this->filter['onset']), function($query) {
+                $query->where('id', '>', $this->filter['onset']);
+            })->when((! $this->me->isAdmin()), function($query) {
+                $query->where(function($query) {
+                    $query->where('user_id', $this->me->id)->orWhereHas('user', function($u) {
+                        $u->whereIn('user_id', function($query) {
+                            $query->select('following_id')->from(Table::FOLLOWS)->where('follower_id', $this->me->id);
+                        })->author();
+                    });
+                });
+            })
             ->orderBy('created_at', 'desc')
             ->orderBy('comments_count', 'desc')
             ->orderBy('bookmarks_count', 'desc')
             ->orderBy('views_count', 'desc')
-            ->orderBy('quotes_count', 'desc')
-            ->simplePaginateManual(config('post.paginate_per'), $pageNumber);
+            ->orderBy('quotes_count', 'desc');
+
+        $timelinePosts = $feedORMQuery->simplePaginateManual(config('post.paginate_per'), $this->filter['page']);
 
         $timelinePosts = $processingPosts->merge($timelinePosts);
         
-        return TimelineCollection::make($timelinePosts)->additional([
-            'status' => 'success',
-            'code' => 200
+        return $this->responseSuccess([
+            'data' => TimelineCollection::make($timelinePosts)
         ]);
     }
 
@@ -98,7 +119,7 @@ class FeedController extends Controller
     }
 
     private function fetchPostItemComments(Post $postData, int|string $cursorId = 0)
-    {
+    {   
         $postComments = $postData->comments()->with([
             'post:id,user_id',
             'user:id,first_name,last_name,avatar,username',

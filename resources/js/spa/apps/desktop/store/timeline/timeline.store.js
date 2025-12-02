@@ -2,21 +2,56 @@ import { defineStore } from 'pinia';
 import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
 
 const useTimelineStore = defineStore('timeline_store', {
+    // This is used to tell the postDeleteListener to listen to this store
+    // This is used only for timeline stores, on desktop and mobile with the same logic.
     deleteAware: true,
     state: function() {
 		return {
 			posts: [],
+            update: [],
 			filter: {
-				page: 1
+				page: 1,
+                onset: null
 			}
 		}
 	},
     actions: {
+        updateFeed: async function() {
+            let state = this;
+
+            await colibriAPI().userTimeline().params({
+                filter: {
+                    onset: state.posts.at(0).id
+                }
+            }).getFrom('feed').then((response) => {
+                state.update = response.data.data;
+            }).catch((error) => {
+                if(error.response) {
+                    state.update = [];
+                }
+            });
+        },
+        applyUpdate: function() {
+            // Check if post already exists before adding
+            // Otherwise, add the post to the beginning of the posts array.
+
+            this.update.forEach((postItem) => {
+                const exists = this.posts.slice(0, this.update.length).some((post) => {
+                    return post.id === postItem.id;
+                });
+                
+                if (! exists) {
+                    this.posts.unshift(postItem);
+                }
+            });
+
+            this.update = [];
+        },
         initialLoad: async function() {
             let state = this;
 
             if (! state.posts.length) {
-                this.load().then(function(response) {
+                await this.load().then(function(response) {
                     state.posts = response.data.data;
                 }).catch(function(error) {
                     state.posts = [];
@@ -52,7 +87,7 @@ const useTimelineStore = defineStore('timeline_store', {
         },
         setPostMedia: function(mediaData) {
             const postItem = this.posts.find((item) => {
-                return item.id == mediaData.post_id;
+                return item.id == mediaData.mediaable_id;
             });
 
             if(postItem?.relations?.media?.length) {

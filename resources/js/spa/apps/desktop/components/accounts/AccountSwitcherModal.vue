@@ -1,6 +1,6 @@
 <template>
-    <ContentModal v-if="state.isOpen">
-		<ModalHeader v-on:close="state.isOpen = false" v-bind:modalTitle="$t('labels.account_switcher.title')"></ModalHeader>
+    <ContentModal v-if="state.isOpen" v-on:close="state.isOpen = false">
+		<ModalHeader v-bind:modalTitle="$t('labels.account_switcher.title')"></ModalHeader>
 		<div v-if="state.isLoading" class="block">
 			<div class="py-12 flex justify-center">
 				<PrimarySpinAnimation></PrimarySpinAnimation>
@@ -20,9 +20,7 @@
 			<a v-bind:href="$getRoute('user_linker_index')" class="block">
 				<PrimaryPillButton
 					v-bind:buttonText="$t('labels.account_switcher.button')"
-					buttonSize="lm"
 					buttonType="button"
-					buttonRole="accent"
 				v-bind:buttonFluid="true"></PrimaryPillButton>
 			</a>
 		</div>

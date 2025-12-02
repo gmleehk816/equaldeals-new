@@ -1,4 +1,4 @@
-<x-header logo="{{ $logotypeUrl }}" name="{{ __('business/labels.business_account') }}" link="{{ route('business.dashboard.index') }}">
+<x-header>
     <x-slot:controls>
         @if(route_is('business.ads.*'))
             <x-header-btn link="{{ route('business.ads.create') }}" btnText="{{ __('business/ads.create_title') }}"></x-header-btn>

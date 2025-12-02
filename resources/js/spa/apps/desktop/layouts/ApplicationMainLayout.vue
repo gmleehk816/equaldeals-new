@@ -10,7 +10,6 @@
     <ToastNotification></ToastNotification>
 
     <PublicationEditorModal></PublicationEditorModal>
-    <PublicationAIModal></PublicationAIModal>
     <AccountSwitcherModal></AccountSwitcherModal>
     
     <StoriesEditorModal v-if="openStoriesEditorModal"></StoriesEditorModal>
@@ -43,7 +42,6 @@
     import ConfirmationModal from '@D/components/general/modals/prompt/ConfirmationModal.vue';
     import NotificationsModal from '@D/components/notifications/native/NotificationsModal.vue';
     import ReportModal from '@D/components/reports/ReportModal.vue';
-    import PublicationAIModal from '@D/components/timeline/modals/PublicationAIModal.vue';
     import PublicationEditorModal from '@D/components/timeline/modals/PublicationEditorModal.vue';
     import AccountSwitcherModal from '@D/components/accounts/AccountSwitcherModal.vue';
 
@@ -80,7 +78,6 @@
             ConfirmationModal: ConfirmationModal,
             NotificationsModal: NotificationsModal,
             LightboxPlayer: LightboxPlayer,
-            PublicationAIModal: PublicationAIModal,
             PublicationEditorModal: PublicationEditorModal,
             Soundbar: defineAsyncComponent(() => {
                 return import('@D/components/soundbar/Soundbar.vue')

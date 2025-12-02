@@ -4,15 +4,38 @@
 		v-on:dragenter.prevent="state.isDragging = true"
 		v-on:dragover.prevent="state.isDragging = true">
         <form class="block" v-on:submit.prevent="submitForm">
-            <div class="block px-4 mb-2">
-                <div class="mb-6">
-                    <textarea
-                        v-on:paste="onMediaPaste"
-                        v-on:input="textInputHandler"
-                        ref="postTextInputField"
-                        v-model="postData.content"
-                        class="resize-none w-full leading-5 bg-transparent text-par-n text-lab-pr2 pr-4 outline-hidden placeholder:font-light placeholder:text-par-m pt-0.5" 
-                    v-bind:placeholder="postTextInputPlaceholder"></textarea>
+            <div class="block px-5 pb-3 pt-6">
+                <div class="flex gap-2.5">
+                    <div class="shrink-0">
+                        <AvatarSmall v-bind:avatarSrc="userData.avatar_url"></AvatarSmall>
+                    </div>
+                    <div class="flex-1 pb-2">
+                        <div class="mb-1">
+                            <h4 class="text-par-m font-semibold text-lab-pr2">
+                                {{ userData.name }}
+                            </h4>
+                        </div>
+                        <textarea
+                            v-on:paste="onMediaPaste"
+                            v-on:input="textInputHandler"
+                            ref="postTextInputField"
+                            v-model="postData.content"
+                            class="resize-none w-full min-h-[80px] leading-5 bg-transparent text-par-l text-lab-pr2 pr-4 outline-hidden placeholder:font-light placeholder:text-par-l pt-0.5" 
+                        v-bind:placeholder="postTextInputPlaceholder"></textarea>
+
+                        <template v-if="state.emojisMenu.status">
+                            <div class="relative">
+                                <div class="absolute top-full left-0 w-80 z-50">
+                                    <EmojisPicker 
+                                        v-on:pick="insertPostEmoji"
+                                    v-on:close="state.emojisMenu.close"></EmojisPicker>
+                                </div>
+                            </div>
+                        </template>
+                    </div>
+                    <div class="shrink-0 opacity-90">
+                        <EmojisPickerButton v-on:click.stop="state.emojisMenu.open"></EmojisPickerButton>
+                    </div>
                 </div>
                 <div v-if="isAiGeneratedPost" class="block mb-3">
                     <div class="text-cap-s text-lab-sc font-medium">
@@ -49,10 +72,10 @@
                             v-on:delete="deletePostMedia"></PostVideoPreview>
                         </template>
                         <template v-else-if="PostTypeUtils.isGif(postData.type)">
-                            <PostGifPreview v-bind:postMedia="postMedia" v-on:deletemedia="deletePostMedia"></PostGifPreview>
+                            <PostGifPreview v-bind:postMedia="postMedia" v-on:delete="deletePostMedia"></PostGifPreview>
                         </template>
                         <template v-else-if="PostTypeUtils.isDocument(postData.type) || PostTypeUtils.isAudio(postData.type)">
-                            <PostDocumentPreview v-bind:postMedia="postMedia" v-on:deletemedia="deletePostMedia"></PostDocumentPreview>
+                            <PostDocumentPreview v-bind:postMedia="postMedia" v-on:delete="deletePostMedia"></PostDocumentPreview>
                         </template>
                     </div>
                     <div v-else-if="postHasPoll" class="block mb-3">
@@ -67,132 +90,132 @@
                     <div v-if="postHasQuotedPost" class="block mb-3">
                         <PublicationQuote v-bind:quotedPost="quotedPost" v-bind:key="quotedPost.id"></PublicationQuote>
                     </div>
-                    <div class="flex items-center">
-                        <div class="flex-1 flex items-center gap-2">
-                            <div class="relative">
-                                <MediaCreateButton 
-                                    v-on:click="selectImage" 
-                                    v-bind:disabled="postMediaButtonStatus(PostType.IMAGE)" 
-                                iconName="image-01"></MediaCreateButton>
-                            </div>
-                            <div class="relative">
-                                <MediaCreateButton 
-                                    v-on:click="selectVideo" 
-                                    v-bind:disabled="postMediaButtonStatus(PostType.VIDEO)" 
-                                iconName="video-recorder"></MediaCreateButton>
-                            </div>
-                            
-                            <div class="relative">
-                                <MediaCreateButton
-                                    v-on:click="selectAudio"
-                                    v-bind:disabled="postMediaButtonStatus(PostType.AUDIO)" 
-                                iconName="music-note-01"></MediaCreateButton>
-                            </div>
-
-                            <div class="relative">
-                                <MediaCreateButton
-                                    v-on:click="selectDocument"
-                                    v-bind:disabled="postMediaButtonStatus(PostType.DOCUMENT)" 
-                                iconName="file-attachment-01"></MediaCreateButton>
-                            </div>
-
-                            <div class="relative">
-                                <MediaCreateButton
-                                    v-on:click="createPoll"
-                                    v-bind:disabled="postMediaButtonStatus(PostType.POLL)" 
-                                iconName="bar-chart-12"></MediaCreateButton>
-                            </div>
-
-                            <div class="relative">
-                                <MediaCreateButton
-                                    v-on:click="toggleAudioRecorder('toggle')"
-                                    v-bind:disabled="postMediaButtonStatus(PostType.RECORDING)" 
-                                iconName="recording-02"></MediaCreateButton>
-
-                                <template v-if="state.openAudioRecorder">
-                                    <div class="block absolute top-6 left-0 w-80">
-                                        <PostRecordingForm v-on:uploadaudio="onAudioRecorded"></PostRecordingForm>
-                                    </div>
-                                </template>
-                            </div> 
-                            <div class="relative">
-                                <MediaCreateButton
-                                    v-on:click.stop="toggleGifsPicker('toggle')"
-                                    v-bind:disabled="postMediaButtonStatus(PostType.GIF)"
-                                iconName="gif"></MediaCreateButton>
-
-                                <template v-if="state.openGifsPicker">
-                                    <div class="block absolute top-6 left-0 w-80 z-50">
-                                        <PostGifForm 
-                                            v-on:remove="deletePostGif"
-                                            v-on:selectgif="selectGif"
-                                        v-on:close="toggleGifsPicker('close')"></PostGifForm>
-                                    </div>
-                                </template>
-                            </div>
-                        </div>
-
-                        <div class="ml-auto flex items-center gap-2.5 shrink-0">
-                            <div class="relative">
-                                <MediaCreateButton v-on:click.stop="toggleEmojisPicker('toggle')" iconName="face-smile"></MediaCreateButton>
-                                <template v-if="state.openEmojisPicker">
-                                    <div class="block absolute top-6 right-0 w-80 z-50">
-                                        <EmojisPicker 
-                                            v-on:pickemoji="insertPostEmoji"
-                                        v-on:close="toggleEmojisPicker('close')"></EmojisPicker>
-                                    </div>
-                                </template>
-                            </div>
-                            <MediaCreateButton v-on:click="openCheatSheetPanel" iconName="type-01"></MediaCreateButton>
-                        </div>
-                    </div>
                 </template>
             </div>
-            <div class="py-2.5 px-4 border-t border-bord-pr">      
-                <div class="flex justify-between">
-                    <PrimaryTextButton buttonType="submit" v-bind:loading="state.postSubmitting" v-bind:buttonText="$t('editor.publish')">
-                    </PrimaryTextButton>
-                    <div class="shrink-0 flex items-center gap-2">
-                        <template v-if="state.postMediaUploadProgress">
-                            <span class="inline-flex text-par-s items-center gap-2 text-lab-sc leading-none disabled:opacity-60">
-                                <span class="mt-0.5 text-brand-900">{{ $t('labels.uploading') }} <span class="inline-block w-8">{{ state.postMediaUploadProgress }}%</span></span>
-                            </span>
-                            <span class="w-px h-4 bg-bord-sc"></span>
-                        </template>
-                        <RouterLink v-bind:to="{ name: 'live_stream_page' }">
-                            <PrimaryTextButton buttonText="Live" buttonRole="marginal">
-                                <template v-slot:buttonIcon>
-                                    <SvgIcon type="line" name="signal-01" classes="size-full"></SvgIcon>
-                                </template>
-                            </PrimaryTextButton>
-                        </RouterLink>
-                        <span class="w-px h-4 bg-bord-sc"></span>
-                        <div class="shrink-0">
-                            <div class="relative">
-                                <button type="button" v-on:click.stop="toggleMainDropdown" class="outline-hidden text-lab-sc size-icon-small inline-flex items-center justify-center rounded-full">
-                                    <SvgIcon type="line" name="circle-dots"></SvgIcon>
-                                </button>
-                                <div class="absolute top-full right-0 z-50" v-if="state.isDropdownOpen">
-                                    <DropdownMenu v-outside-click="toggleMainDropdown" v-on:click="toggleMainDropdown">
-                                        <DropdownMenuItem v-on:click="markPostAsSensitive" iconName="alert-triangle" v-bind:textLabel="(isSensitivePost ? $t('editor.unmark_sensitive') : $t('editor.mark_sensitive'))"></DropdownMenuItem>
-                                        <DropdownMenuItem v-on:click="markPostAsAiGenerated" iconName="cpu-chip-02" v-bind:textLabel="(isAiGeneratedPost ? $t('editor.unmark_ai_generated') : $t('editor.mark_ai_generated'))"></DropdownMenuItem>
-                                        <a v-bind:href="$link('guide_links.publication_rules')" target="_blank">
-                                            <DropdownMenuItem
-                                                iconName="arrow-up-right"
-                                            v-bind:textLabel="$t('editor.publication_guidelines')"></DropdownMenuItem>
-                                        </a>
-                                    </DropdownMenu>
-                                </div>
-                            </div>
+            <div class="pb-4 px-5 pt-3">
+                <div class="flex items-center mb-5 gap-2.5">
+                    <div class="shrink-0 inline-flex relative">
+                        <MediaCreateButton v-on:click.stop="state.mainMenu.open" iconName="plus" iconType="solid"></MediaCreateButton>
+
+                        <div class="absolute w-96 top-full left-0 z-50" v-if="state.mainMenu.status">
+                            <RichMenu v-outside-click="state.mainMenu.close" v-on:click="state.mainMenu.close">
+                                <RichMenuItem
+                                    v-on:click="selectImage" 
+                                    v-bind:disabled="postMediaButtonStatus(PostType.IMAGE)" 
+                                    iconName="image-05"
+                                    v-bind:title="$t('editor.main_menu.image.title')"
+                                v-bind:description="$t('editor.main_menu.image.description')"></RichMenuItem>
+                                <RichMenuItem
+                                    v-on:click="selectVideo" 
+                                    v-bind:disabled="postMediaButtonStatus(PostType.VIDEO)" 
+                                    iconName="video-recorder"
+                                    v-bind:title="$t('editor.main_menu.video.title')"
+                                v-bind:description="$t('editor.main_menu.video.description')"></RichMenuItem>
+                                <RouterLink v-bind:to="{ name: 'live_index' }">
+                                    <RichMenuItem
+                                        iconName="signal-01"
+                                        iconType="line"
+                                        trailingIconName="arrow-up-right"
+                                        v-bind:title="$t('editor.main_menu.live.title')"
+                                    v-bind:description="$t('editor.main_menu.live.description')"></RichMenuItem>
+                                </RouterLink>
+                                <RichMenuItem
+                                    v-on:click="createPoll"
+                                    v-bind:disabled="postMediaButtonStatus(PostType.POLL)"
+                                    iconName="bar-chart-12"
+                                    v-bind:title="$t('editor.main_menu.poll.title')"
+                                v-bind:description="$t('editor.main_menu.poll.description')"></RichMenuItem>
+                                <RichMenuItem
+                                    v-on:click="selectAudio"
+                                    v-bind:disabled="postMediaButtonStatus(PostType.AUDIO)"
+                                    iconName="music-note-01"
+                                    v-bind:title="$t('editor.main_menu.audio.title')"
+                                v-bind:description="$t('editor.main_menu.audio.description')"></RichMenuItem>
+                                <RichMenuItem
+                                    v-on:click="selectDocument"
+                                    v-bind:disabled="postMediaButtonStatus(PostType.DOCUMENT)" 
+                                    iconName="sticker-square"
+                                    v-bind:title="$t('editor.main_menu.document.title')"
+                                v-bind:description="$t('editor.main_menu.document.description')"></RichMenuItem>
+                                <RichMenuItem
+                                    v-on:click="state.recorderMenu.open"
+                                    v-bind:disabled="postMediaButtonStatus(PostType.RECORDING)"  
+                                    iconName="recording-02"
+                                    iconType="line"
+                                    v-bind:title="$t('editor.main_menu.recording.title')"
+                                    trailingIconName="microphone-01"
+                                v-bind:description="$t('editor.main_menu.recording.description')"></RichMenuItem>
+                                <RichMenuItem
+                                    v-on:click.stop="state.gifMenu.open(); state.mainMenu.close();"
+                                    v-bind:disabled="postMediaButtonStatus(PostType.GIF)"  
+                                    iconName="gif"
+                                    iconType="line"
+                                    v-bind:title="$t('editor.main_menu.gif.title')"
+                                v-bind:description="$t('editor.main_menu.gif.description')"></RichMenuItem>
+                            </RichMenu>
                         </div>
+                        <template v-if="state.recorderMenu.status">
+                            <div class="absolute top-full left-0 w-80">
+                                <PostRecordingForm v-on:uploaded="onAudioRecorded" v-on:close="state.recorderMenu.close"></PostRecordingForm>
+                            </div>
+                        </template>
+
+                        <template v-if="state.gifMenu.status">
+                            <div class="absolute top-full left-0 w-80 z-50">
+                                <PostGifForm v-outside-click="state.gifMenu.close" v-on:select="selectGif"></PostGifForm>
+                            </div>
+                        </template>
+                    </div>
+                    <span class="w-px h-4 bg-bord-sc"></span>
+                    <div class="shrink-0 inline-flex relative">
+                        <MediaCreateButton v-on:click="openCheatSheetPanel" iconName="type-01"></MediaCreateButton>
+                    </div>
+                    <span class="w-px h-4 bg-bord-sc"></span>
+                    <div class="shrink-0 inline-flex relative">
+                        <MediaCreateButton v-on:click.stop="state.moreMenu.open" iconName="circle-dots"></MediaCreateButton>
+
+                        <div class="absolute top-full left-0 z-50" v-if="state.moreMenu.status">
+                            <DropdownMenu v-outside-click="state.moreMenu.close" v-on:click="state.moreMenu.close">
+                                <DropdownMenuItem v-on:click="markPostAsSensitive" iconName="alert-triangle" v-bind:textLabel="(isSensitivePost ? $t('editor.unmark_sensitive') : $t('editor.mark_sensitive'))"></DropdownMenuItem>
+                                <DropdownMenuItem v-on:click="markPostAsAiGenerated" iconName="cpu-chip-02" v-bind:textLabel="(isAiGeneratedPost ? $t('editor.unmark_ai_generated') : $t('editor.mark_ai_generated'))"></DropdownMenuItem>
+                                <Border/>
+                                <a v-bind:href="$link('guide_links.publication_rules')" target="_blank">
+                                    <DropdownMenuItem
+                                        iconName="arrow-up-right"
+                                    v-bind:textLabel="$t('editor.publication_guidelines')"></DropdownMenuItem>
+                                </a>
+                            </DropdownMenu>
+                        </div>
+                    </div>
+                    <template v-if="state.postMediaUploadProgress">
+                        <span class="w-px h-4 bg-bord-sc"></span>
+                        <div class="shrink-0 inline-flex">
+                            <span class="inline-flex text-par-s items-center gap-2 text-lab-sc leading-none disabled:opacity-60">
+                                <span class="text-brand-900">{{ $t('labels.uploading') }} <span class="inline-block w-8">{{ state.postMediaUploadProgress }}%</span></span>
+                            </span>
+                        </div>
+                    </template>
+
+                    <div class="ml-auto">
+                        <PrimaryTextButton buttonRole="marginal" buttonType="submit" v-bind:loading="state.postSubmitting" v-bind:buttonText="$t('editor.publish')"></PrimaryTextButton>
+                    </div>
+                </div>
+                <div class="block leading-normal">
+                    <div class="w-10/12">
+                        <p  v-if="userData.is_author" class="text-par-s text-lab-sc">
+                            {{ $t('editor.post_privacy') }}
+                        </p>
+                        <p v-else class="text-par-s text-lab-sc">
+                            {{ $t('editor.post_author_note') }} <a v-bind:href="$getRoute('become_author')" class="hover:underline text-brand-900">{{ $t('labels.learn_more') }}</a>
+                        </p>
                     </div>
                 </div>
             </div>
             <div class="hidden">
-                <input v-on:change="onImageSelect" type="file" capture="user" accept="image/*" ref="postImageFileInput">
-                <input v-on:change="onVideoSelect" type="file" capture="user" accept="video/*" ref="postVideoFileInput">
-                <input v-on:change="onDocumentSelect" type="file" capture="user" ref="postDocumentFileInput">
-                <input v-on:change="onAudioSelect" type="file" capture="user" accept="audio/*" ref="postAudioFileInput">
+                <input v-on:change="onImageSelect" type="file" accept="image/*" ref="postImageFileInput">
+                <input v-on:change="onVideoSelect" type="file" accept="video/*" ref="postVideoFileInput">
+                <input v-on:change="onDocumentSelect" type="file" ref="postDocumentFileInput">
+                <input v-on:change="onAudioSelect" type="file" accept="audio/*" ref="postAudioFileInput">
             </div>
         </form>
         <SensitivePostTape v-if="isSensitivePost"></SensitivePostTape>
@@ -201,27 +224,30 @@
 
 <script>
     import { defineComponent, defineAsyncComponent, onMounted, ref, reactive, computed, nextTick } from 'vue';
-    import { useI18n } from 'vue-i18n';
     import { PostTypeUtils, PostType } from '@/kernel/enums/post/post.type.js';
     
     import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
-    import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
     import { colibriEventBus } from '@/kernel/events/bus/index.js';
     import { imagePasteHandler } from '@/kernel/events/image-paste/index.js';
     import { useCheatSheet } from '@D/core/composables/cheat-sheet/index.js';
-    import { useInputHandlers } from '@D/core/composables/input/index.js';
+    import { useInputHandlers } from '@/kernel/vue/composables/input/index.js';
     import { useAuthStore } from '@D/store/auth/auth.store.js';
     import { useTimelineStore } from '@D/store/timeline/timeline.store.js';
     import { usePostEditorStore } from '@D/store/timeline/editor.store.js';
+    import { useMenu } from '@/kernel/vue/composables/menu/index.js';
 
     import DropdownButton from '@D/components/general/dropdowns/parts/DropdownButton.vue';
     
     import PrimaryTextButton from '@D/components/inter-ui/buttons/PrimaryTextButton.vue';
     import MediaCreateButton from '@D/components/timeline/editor/buttons/MediaCreateButton.vue';
+    import EmojisPickerButton from '@D/components/timeline/editor/buttons/EmojisPickerButton.vue';
     
     import MentionsPicker from '@D/components/mentions/MentionsPicker.vue';
     import DropdownMenu from '@D/components/general/dropdowns/parts/DropdownMenu.vue';
     import DropdownMenuItem from '@D/components/general/dropdowns/parts/DropdownMenuItem.vue';
+    import AvatarSmall from '@D/components/general/avatars/AvatarSmall.vue';
+    import RichMenu from '@D/components/general/rich-menu/RichMenu.vue';
+    import RichMenuItem from '@D/components/general/rich-menu/RichMenuItem.vue';
 
     export default defineComponent({
         setup: function(props, context) {
@@ -235,11 +261,9 @@
             const { openCheatSheetPanel } = useCheatSheet();
             const { autoResize, insertSymbolAtCaret, matchMention, matchLink, completeText } = useInputHandlers();
             
-            const { t } = useI18n();
             const authStore = useAuthStore();
             const timelineStore = useTimelineStore();
             const postEditorStore = usePostEditorStore();
-            const toastNotifier = new ToastNotifier();
             const userData = computed(() => {
                 return authStore.userData;
             });
@@ -251,13 +275,14 @@
             const state = reactive({
                 postSubmitting: false,
                 postMediaUploadProgress: 0,
-                openGifsPicker: false,
-                openAudioRecorder: false,
-                openEmojisPicker: false,
-                isDropdownOpen: false,
                 isDragging: false,
                 isLinkPreviewing: false,
-                isFetchingLinkPreview: false
+                isFetchingLinkPreview: false,
+                moreMenu: useMenu(),
+                emojisMenu: useMenu(),
+                recorderMenu: useMenu(),
+                gifMenu: useMenu(),
+                mainMenu: useMenu()
             });
 
             const textInputHandler = function() {
@@ -306,34 +331,6 @@
 
             onMounted(async function() {
                 await postEditorStore.fetchDraftPost();
-
-                if(postEditorStore.initialPostType) {
-                    switch(postEditorStore.initialPostType) {
-                        case PostType.TEXT:
-                            postTextInputField.value.focus();
-                            break;
-                        case PostType.IMAGE:
-                            selectImage();
-                        case PostType.DOCUMENT:
-                            selectDocument();
-                            break;
-                        case PostType.VIDEO:
-                            selectVideo();
-                            break;
-                        case PostType.AUDIO:
-                            selectAudio();
-                            break;
-                        case PostType.POLL:
-                            createPoll();
-                            break;
-                        case PostType.GIF:
-                            toggleGifsPicker('open');
-                            break;
-                        case PostType.RECORDING:
-                            toggleAudioRecorder('open');
-                            break;
-                    }
-                }
             });
 
             const uploadPostMedia = (mediaFile, type = 'image') => {
@@ -353,7 +350,7 @@
                     resetFileInputTags();
 
                 }).catch((error) => {
-                    toastNotifier.notifyShort(error.response.data.message);
+                    toastError(error.response.data.message);
 
                     state.postMediaUploadProgress = 0;
 
@@ -393,7 +390,7 @@
 
                     colibriEventBus.emit('post-editor:close');
                 }).catch((error) => {
-                    toastNotifier.notifyShort(error.response.data.message);
+                    toastError(error.response.data.message);
 
                     if(PostTypeUtils.isPoll(postData.value.type)) {
                         postEditorStore.validatePollOptions(error.response.data.errors);
@@ -425,58 +422,16 @@
                 });
             };
 
-            const toggleGifsPicker = (action = 'toggle') => {
-                if (action === 'open') {
-                    state.openGifsPicker = true;
-                }
-
-                else if (action === 'close') {
-                    state.openGifsPicker = false;
-                }
-
-                else if (action === 'toggle') {
-                    state.openGifsPicker = ! state.openGifsPicker;
-                }
-            };
-
-            const toggleAudioRecorder = (action = 'toggle') => {
-                if (action === 'open') {
-                    state.openAudioRecorder = true;
-                }
-
-                else if (action === 'close') {
-                    state.openAudioRecorder = false;
-                }
-
-                else if (action === 'toggle') {
-                    state.openAudioRecorder = ! state.openAudioRecorder;
-                }
-            };
-
-            const toggleEmojisPicker = (action = 'toggle') => {
-                if (action === 'open') {
-                    state.openEmojisPicker = true;
-                }
-
-                else if (action === 'close') {
-                    state.openEmojisPicker = false;
-                }
-
-                else if (action === 'toggle') {
-                    state.openEmojisPicker = ! state.openEmojisPicker;
-                }
-            };
-
             const selectGif = (gifItem) => {
                 colibriAPI().postEditor().with({
                     id: gifItem.id
                 }).sendTo('gif/create').then((response) => {
                     postEditorStore.fetchDraftPost();
                 }).catch((error) => {
-                    toastNotifier.notifyShort(error.response.data.message);
+                    toastError(error.response.data.message);
                 });
 
-                toggleGifsPicker('close');
+                state.gifMenu.close();
             };
 
             return {
@@ -501,7 +456,7 @@
                     uploadPostMedia(event.target.files[0], 'document');
                 },
                 onAudioRecorded: (audioFile) => {
-                    toggleAudioRecorder('close');
+                    state.recorderMenu.close();
 
                     uploadPostMedia(audioFile, 'audio');
                 },
@@ -529,7 +484,7 @@
                     });
                 },
                 deletePostPoll: () => {
-                    colibriAPI().userTimeline().delete('post/poll/delete').then(() => {
+                    colibriAPI().postEditor().delete('poll/delete').then(() => {
                         postEditorStore.fetchDraftPost();
                     });
                 },
@@ -562,9 +517,6 @@
                     return postData.value.relations.link_snapshot;
                 }),
                 selectGif: selectGif,
-                toggleGifsPicker: toggleGifsPicker,
-                toggleAudioRecorder: toggleAudioRecorder,
-                toggleEmojisPicker: toggleEmojisPicker,
                 createPoll: createPoll,
                 selectImage: selectImage,
                 selectVideo: selectVideo,
@@ -576,20 +528,20 @@
                 postAudioFileInput: postAudioFileInput,
                 postTextInputPlaceholder: computed(() => {
                     if(PostTypeUtils.isPoll(postData.value.type)) {
-                        return t('editor.post_poll_input_placeholder');
+                        return __t('editor.post_poll_input_placeholder');
                     }
                     else{
-                        return t('editor.post_text_input_placeholder');
+                        return __t('editor.post_text_input_placeholder');
                     }
                 }),
                 postMediaButtonStatus: (postType = null) => {
                     if (state.postSubmitting) {
                         return true;
                     }
-                    else if(state.openAudioRecorder && PostTypeUtils.isRecording(postType)) {
+                    else if(state.recorderMenu.status && PostTypeUtils.isRecording(postType)) {
                         return false;
                     }
-                    else if(state.openAudioRecorder) {
+                    else if(state.recorderMenu.status) {
                         return true;
                     }
                     else{
@@ -608,9 +560,6 @@
                 insertPostEmoji: (emojiSymbol) => {
                     postData.value.content = insertSymbolAtCaret(postTextInputField.value, emojiSymbol);
                     postTextInputField.value.focus();
-                },
-                toggleMainDropdown: () => {
-                    state.isDropdownOpen = !state.isDropdownOpen;
                 },
                 handleFileDrop: (event) => {
                     state.isDragging = false;
@@ -654,8 +603,12 @@
             MediaCreateButton: MediaCreateButton,
             DropdownButton: DropdownButton,
             DropdownMenu: DropdownMenu,
+            AvatarSmall: AvatarSmall,
             DropdownMenuItem: DropdownMenuItem,
             MentionsPicker: MentionsPicker,
+            RichMenu: RichMenu,
+            RichMenuItem: RichMenuItem,
+            EmojisPickerButton: EmojisPickerButton,
             MediaDeleteButton: defineAsyncComponent(() => {
                 return import('@D/components/timeline/editor/buttons/MediaDeleteButton.vue');
             }),

@@ -4,8 +4,8 @@
 		v-bind="$attrs" 
 		v-bind:loading="isLoading"
 		v-bind:buttonText="$t(buttonText)"
-		v-bind:buttonRole="relationship.following ? 'marginal' : 'default'"
-	buttonSize="md"></PrimaryPillButton>
+		v-bind:buttonRole="relationship.following ? 'stroked' : 'default'"
+		v-bind:buttonSize="buttonSize"></PrimaryPillButton>
 </template>
 
 <script>
@@ -27,6 +27,10 @@
 			relationship: {
 				type: Object,
 				default: {}
+			},
+			buttonSize: {
+				type: String,
+				default: 'md'
 			}
         },
         setup: function(props) {

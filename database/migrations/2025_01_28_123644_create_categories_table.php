@@ -1,6 +1,7 @@
 <?php
 
 use App\Database\Configs\Table;
+use App\Enums\Category\CategoryType;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -14,12 +15,10 @@ return new class extends Migration
     {
         Schema::create(Table::CATEGORIES, function (Blueprint $table) {
             $table->id();
-            $table->string('name');
-            $table->string('slug')->nullable();
             $table->json('localization');
             $table->unsignedBigInteger('parent_id')->nullable();
             $table->foreign('parent_id')->references('id')->on(Table::CATEGORIES)->onDelete('cascade');
-            $table->string('categorizable_type');
+            $table->string('categorizable_type')->default(CategoryType::UNCATEGORIZED);
             $table->integer('depth')->default(1);
         });
     }

@@ -2,7 +2,7 @@
     <div class="overflow-hidden rounded-2xl border border-fill-pr">
         <div class="p-4">
             <div class="mb-4">
-                <h4 class="text-lab-pr2 text-par-s mb-1.5 tracking-tight">
+                <h4 class="text-lab-pr2 text-par-s mb-1.5">
                     {{ $t('labels.answer_options') }}
                 </h4>
             </div>

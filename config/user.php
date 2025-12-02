@@ -1,7 +1,4 @@
 <?php
-
-use App\Enums\User\PrivacyPermit;
-
 return [
     /*
     |--------------------------------------------------------------------------
@@ -21,6 +18,7 @@ return [
     'avatar' => 'assets/avatars/default-avatar.png',
     'cover' => 'assets/covers/default-cover.png',
     'verified' => false,
+    'authorize_users' => false,
     'require' => [
         'last_name' => false,
     ],
@@ -95,14 +93,6 @@ return [
             'regex' => "/^\+?([0-9]{1,4})\D?([0-9]{1,3})\D?([0-9]{1,4})\D?([0-9]{1,4})\D?([0-9]{1,4})\D?([0-9]{1,9})?$/"
         ]
     ],
-
-    // These disks will be used to store user avatars, 
-    // and other small media files like badges, stickers, and other
-    
-    'disks' => [
-        'avatar' => 'public',
-        'cover' => 'public',
-    ],
     'avatar_config' => [
         'crop_size' => 256,
         'compress_rate' => 20
@@ -111,5 +101,6 @@ return [
         'width' => 1500,
         'height' => 500,
         'compress_rate' => 20
-    ]
+    ],
+    'auto_follow_list' => env('AUTO_FOLLOW_LIST', ''),
 ];

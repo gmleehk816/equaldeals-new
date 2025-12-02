@@ -2,6 +2,7 @@
 
 namespace App\Livewire\User\Onboarding;
 
+use Throwable;
 use App\Models\User;
 use Livewire\Component;
 use Illuminate\Support\Str;
@@ -54,6 +55,38 @@ class StepFour extends Component
             'status' => UserStatus::ACTIVE
         ]);
 
+        $this->makeFollowList();
+
         $this->redirect(route('user.desktop.index'));
+    }
+
+    private function makeFollowList()
+    {
+        try {
+            $followList = config('user.auto_follow_list');
+
+            if(empty($followList)) {
+                return false;
+            }
+
+            $followList = explode(',', $followList);
+
+            $followList = User::active()->whereIn('username', $followList)->get();
+
+            if($followList->isNotEmpty()) {
+                foreach($followList as $userData) {
+                    me()->follow($userData);
+                }
+            }
+
+            return true;
+        } catch (Throwable $th) {
+            logger()->error('Error making follow list on onboard.', [
+                'error' => $th->getMessage(),
+                'followList' => $followList
+            ]);
+
+            return false;
+        }
     }
 }

@@ -165,7 +165,7 @@
             <div class="mb-6">
                 <div id="chart" class="bg-fill-qt"></div>
             </div>
-            <div class="mb-12">
+            <div class="block">
                 <div class="mb-2">
                     <x-entity.title title="{{ __('labels.additional_info') }}"></x-entity.title>
                 </div>

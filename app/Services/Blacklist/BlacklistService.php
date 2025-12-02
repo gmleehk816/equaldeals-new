@@ -27,6 +27,10 @@ class BlacklistService
 
 	public function add(string $blacklistable)
 	{
+		if ($this->isBlacklisted($this->type, $blacklistable)) {
+			return false;
+		}
+
 		$this->model->create([
 			'type' => $this->type,
 			'added_at' => now(),

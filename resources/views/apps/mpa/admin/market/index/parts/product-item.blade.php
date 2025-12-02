@@ -3,8 +3,8 @@
 		<x-table.avatar :avatarSrc="$productData->user->avatar_url" :name="$productData->user->name" :link="route('admin.users.show', $productData->user->id)" />
 	</x-table.td>
 	<x-table.td variant="strong" weight="medium">
-		<a href="{{ route('admin.market.show', $productData->id) }}" class="hover:underline">
-			{{ truncate_text($productData->title, 22) }}
+		<a href="{{ route('admin.market.show', $productData->id) }}" class="hover:underline whitespace-nowrap">
+			{!! truncate_text($productData->title, 22) !!}
 		</a>
 	</x-table.td>
 	<x-table.td variant="muted">
@@ -26,8 +26,10 @@
 		{{ $productData->id }}
 	</x-table.td>
 	<x-table.td>
-		<a href="{{ route('admin.market.show', $productData->id) }}">
-			<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
-		</a>
+		<div class="flex justify-end">
+			<a href="{{ route('admin.market.show', $productData->id) }}">
+				<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
+			</a>
+		</div>
 	</x-table.td>
 </x-table.tr>

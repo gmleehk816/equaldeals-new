@@ -91,7 +91,9 @@
             });
 
             const closeStories = () => {
-                router.push({ name: 'home_page' });
+                router.push({
+                    name: 'home_index'
+                });
             }
 
             return {
@@ -111,7 +113,7 @@
                     activeSlideIndex.value = event.target.swiper.activeIndex;
 
                     router.replace({
-                        name: 'stories_index_page', 
+                        name: 'stories_index', 
                         params: {
                             story_uuid: currentStory.value.story_uuid
                         }

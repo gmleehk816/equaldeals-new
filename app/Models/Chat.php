@@ -21,7 +21,19 @@ class Chat extends Model
 
     public function scopeChatsHistory($query)
     {
-        return $query->participatedChats()->whereNotNull('last_activity');
+        return $query->participatedChats()->whereNotNull('last_activity')->excludeArchived();
+    }
+
+    public function scopeChatsArchive($query)
+    {
+        return $query->participatedChats()->whereNotNull('last_activity')->archivedChats();
+    }
+
+    public function scopeArchivedChats($query)
+    {
+        return $query->whereIn('id', function ($subQuery) {
+            $subQuery->select('chat_id')->from(Table::ARCHIVED_CHATS)->where('user_id', me()->id);
+        });
     }
 
     public function scopeParticipatedChats($query)
@@ -29,6 +41,13 @@ class Chat extends Model
         return $query->whereHas('participants', function ($q) {
             $q->whereIn('user_id', [me()->id]);
         })->excludeDeleted();
+    }
+
+    public function scopeExcludeArchived($query)
+    {
+        return $query->whereNotIn('id', function ($subQuery) {
+            $subQuery->select('chat_id')->from(Table::ARCHIVED_CHATS)->where('user_id', me()->id);
+        });
     }
 
     public function scopeExcludeDeleted($query)
@@ -43,12 +62,25 @@ class Chat extends Model
         return $this->hasMany(ChatParticipant::class, 'chat_id', 'id');
     }
 
+    public function group()
+    {
+        return $this->hasOne(Group::class, 'chat_id', 'id');
+    }
+
+    public function invites()
+    {
+        return $this->hasMany(ChatInvite::class, 'chat_id', 'id');
+    }
+
+    public function archived()
+    {
+        return $this->hasMany(ArchivedChat::class, 'chat_id', 'id');
+    }
+
     public function interlocutor()
     {
         return $this->hasOne(ChatParticipant::class, 'chat_id', 'id')
-            ->whereNot('user_id', me()->id)->with(['user' => function($query) {
-                $query->withTrashed()->select(['first_name', 'last_name', 'id', 'avatar', 'username', 'verified']);
-            }]);
+            ->whereNot('user_id', me()->id)->with(['user']);
     }
 
     public function lastMessage()
@@ -71,5 +103,51 @@ class Chat extends Model
     public function messages()
     {
         return $this->hasMany(Message::class, 'chat_id', 'id');
+    }
+
+    public function isParticipant(int $userId)
+    {
+        return $this->participants()->where('user_id', $userId)->exists();
+    }
+
+    public function isInvited(int $userId)
+    {
+        return $this->invites()->pending()->where('receiver_id', $userId)->exists();
+    }
+
+    public function addParticipant(int $userId)
+    {
+        $chatColors = config('chat.colors');
+
+        $this->participants()->create([
+            'user_id' => $userId, 
+            'joined_at' => now(),
+            'metadata' => [
+                'color' => $chatColors[array_rand($chatColors)]
+            ]
+        ]);
+    }
+
+    public function removeParticipant(int $userId)
+    {
+        $this->participants()->where('user_id', $userId)->delete();
+    }
+
+    public function isArchived(int $userId)
+    {
+        return $this->archived()->where('user_id', $userId)->exists();
+    }
+
+    public function unarchiveChat(int $userId)
+    {
+        $this->archived()->where('user_id', $userId)->delete();
+    }
+
+    public function archiveChat(int $userId)
+    {
+        $this->archived()->create([
+            'user_id' => $userId,
+            'type' => $this->type
+        ]);
     }
 }

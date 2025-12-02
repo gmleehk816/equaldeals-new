@@ -111,10 +111,6 @@ class StoryMediaController extends Controller
             }
         }
 
-        $this->draftStoryFrame->update([
-            'media' => []
-        ]);
-
         return $this->responseSuccess([
             'data' => null
         ]);

@@ -1,7 +1,7 @@
 @extends('businessLayout::index')
 
 @section('pageContent')
-    <div class="mb-6">
+    <div class="mb-4">
         <x-page-title titleText=" {{ __('business/ads.show_title') }}"></x-page-title>
         <x-page-desc>
             {{ __('business/ads.show_desc') }}
@@ -55,6 +55,7 @@
                                     <x-ui-icon type="line" name="edit-03"></x-ui-icon>
                                 </x-slot:itemIcon>
                             </x-ui.dropdown.item>
+                            <x-div></x-div>
 
                             <x-ui.dropdown.item x-on:click="deleteAd" :danger="true" itemText="{{ __('business/dd.ad.delete_ad') }}">
                                 <x-slot:itemIcon>
@@ -155,7 +156,7 @@
             <div class="mb-6">
                 <div id="chart" class="bg-input-pr"></div>
             </div>
-            <div class="mb-12">
+            <div class="block">
                 <div class="mb-2">
                     <x-entity.title title="{{ __('labels.additional_info') }}"></x-entity.title>
                 </div>

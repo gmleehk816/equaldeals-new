@@ -1,7 +1,7 @@
 <template>
-    <button type="button"
-        v-bind:class="[hoverBg, buttonColor, hoverText, `size-${iconAreaSize}`]"
-    class="outline-hidden cursor-pointer inline-flex items-center justify-center rounded-full leading-none disabled:opacity-70 disabled:cursor-default">
+    <button v-bind:type="buttonType"
+        v-bind:class="[disabled ? 'opacity-70 cursor-default' : 'cursor-pointer', hoverBg, buttonColor, hoverText, `size-${iconAreaSize}`]"
+    class="outline-hidden transition-transform duration-300 inline-flex items-center justify-center rounded-full leading-none disabled:opacity-70 disabled:cursor-default">
         <SvgIcon 
             v-bind:name="iconName"
             v-bind:type="iconType"
@@ -14,9 +14,17 @@
 
     export default defineComponent({
         props: {
+            disabled: {
+                type: Boolean,
+                default: false
+            },
             iconName: {
                 type: String,
                 default: 'x' 
+            },
+            buttonType: {
+                type: String,
+                default: 'button'
             },
             iconAreaSize: {
                 type: String,
@@ -32,7 +40,7 @@
             },
             buttonColor: {
                 type: String,
-                default: 'text-lab-sc' 
+                default: 'text-lab-pr' 
             },
             hoverBg: {
                 type: [String, Boolean],

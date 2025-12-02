@@ -11,12 +11,30 @@ use App\Actions\Product\DeleteProductAction;
 
 class MarketController extends Controller
 {
+    private $filters = [];
+
     public function index(Request $request)
     {
-        $products = Product::active()->with(['user', 'category'])->paginate(10);
+        $approval = $request->string('approval')->value;
+        $approval = in_array($approval, array_column(ProductApproval::cases(), 'value')) ? $approval : 'all';
+
+        $this->filters = [
+            'search' => $request->string('search')->value,
+            'approval' => $approval,
+        ];
+
+        $products = Product::active()->when(($this->filters['approval'] != 'all'), function($query) {
+            $query->where('approval', ProductApproval::tryFrom($this->filters['approval']));
+        })->when((! empty($this->filters['search'])), function ($query) {
+            $query->where(function($query) {
+                $query->where('title', 'like', "%{$this->filters['search']}%")
+                    ->orWhere('description', 'like', "%{$this->filters['search']}%");
+            });
+        })->with(['user', 'category'])->latest('id')->paginate(10);
 
         return view('admin::market.index.index', [
-            'products' => $products
+            'products' => $products,
+            'filters' => $this->filters
         ]);
     }
 

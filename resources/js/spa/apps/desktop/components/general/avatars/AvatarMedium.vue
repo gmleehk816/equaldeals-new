@@ -1,6 +1,6 @@
 <template>
     <div class="size-medium-avatar relative">
-        <div class="size-full bg-bg-pr rounded-full overflow-hidden" v-bind:class="[hasBorder ? 'border border-edge-sc' : '']">
+        <div class="size-full bg-bg-pr rounded-full overflow-hidden" v-bind:class="[hasBorder ? 'border border-bord-pr' : '']">
             <img v-show="isFallback" v-bind:src="$config('user.default_avatar')" alt="Avatar">
             <img v-show="! isFallback" class="w-full" v-on:error="onError" v-bind:src="avatarSrc" alt="Avatar">
         </div>

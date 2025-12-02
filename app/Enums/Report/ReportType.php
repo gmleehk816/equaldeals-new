@@ -8,10 +8,16 @@ enum ReportType: string
     case COMMENT = 'comment';
     case USER = 'user';
     case STORY = 'story';
+    case GROUP = 'group';
 
 	public function isPost(): bool
 	{
 		return $this === self::POST;
+	}
+
+	public function isGroup(): bool
+	{
+		return $this === self::GROUP;
 	}
 
 	public function isComment(): bool
@@ -36,6 +42,7 @@ enum ReportType: string
             self::COMMENT->value,
             self::USER->value,
             self::STORY->value,
+            self::GROUP->value,
         ];
     }
 
@@ -46,6 +53,7 @@ enum ReportType: string
 			self::COMMENT => __('labels.report_type_labels.comment'),
 			self::USER => __('labels.report_type_labels.user'),
 			self::STORY => __('labels.report_type_labels.story'),
+			self::GROUP => __('labels.report_type_labels.group'),
 		};
 	}
 
@@ -56,6 +64,7 @@ enum ReportType: string
 			self::COMMENT => '💬',
 			self::USER => '👤',
 			self::STORY => '🎥',
+			self::GROUP => '👥',
 		};
 	}
 }

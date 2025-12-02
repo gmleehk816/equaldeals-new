@@ -1,5 +1,5 @@
 <template>
-	<div class="flex items-start opacity-80 gap-2 px-3 py-4 border-b border-bord-pr last:border-none">
+	<div class="flex items-start opacity-80 gap-2 px-4 py-4 border-b border-bord-pr last:border-none">
 		<div class="size-small-avatar skeleton-circle"></div>
 		<div class="flex-1">
 			<div class="mb-4">

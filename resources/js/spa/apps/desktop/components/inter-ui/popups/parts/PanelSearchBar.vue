@@ -2,7 +2,7 @@
     <input
         v-on:input.trim.lazy="inputHandler"
         type="text" 
-        class="px-3 h-8 w-full bg-fill-tr border-none hover:ring-1 ring-fill-pr outline-hidden rounded-md text-lab-pr placeholder:font-light placeholder:text-par-s placeholder:text-lab-sc"
+        class="px-3 placeholder:text-center leading-normal py-1.5 w-full bg-fill-tr border border-transparent smoothing hover:ring-1 ring-fill-pr outline-hidden rounded-lg text-lab-pr placeholder:text-par-n placeholder:text-lab-sc"
     v-bind:placeholder="placeholder">
 </template>
 

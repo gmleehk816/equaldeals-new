@@ -1,7 +1,7 @@
 <template>
-    <ContentModal>
+    <ContentModal v-on:close="$emit('close')">
         <div class="block">
-            <ModalHeader v-on:close="$emit('close')" v-bind:modalTitle="$t('market.write_message')"></ModalHeader>
+            <ModalHeader v-bind:modalTitle="$t('market.write_message')"></ModalHeader>
 
             <template v-if="state.isLoading">
                 <div class="flex py-20 justify-center">
@@ -22,7 +22,7 @@
                                 v-on:input="textInputHandler"
                                 v-model="messageData.content"
                                 class="resize-none w-full pl-4 pr-12 leading-5 pt-3.5 pb-6 bg-transparent text-par-n text-lab-pr2 max-h-96 overflow-y-auto min-h-28 outline-hidden placeholder:font-light placeholder:text-par-s" 
-                            v-bind:placeholder="$t('editor.post_ai_generated_placeholder')"></textarea>
+                            v-bind:placeholder="$t('chat.write_message')"></textarea>
                             
                             <div class="absolute right-2.5 bottom-1.5 ">
                                 <div class="relative">
@@ -35,7 +35,7 @@
                                     <template v-if="state.isEmojisPickerOpen">
                                         <div class="block absolute top-6 right-0 w-80 z-50">
                                             <EmojisPicker 
-                                                v-on:pickemoji="insertStoryEmoji"
+                                                v-on:pick="insertStoryEmoji"
                                             v-on:close="state.isEmojisPickerOpen = false"></EmojisPicker>
                                         </div>
                                     </template>
@@ -55,7 +55,7 @@
 
 <script>
     import { defineComponent, ref, onMounted, reactive, computed, defineAsyncComponent } from 'vue';
-    import { useInputHandlers } from '@D/core/composables/input/index.js';
+    import { useInputHandlers } from '@/kernel/vue/composables/input/index.js';
 	import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
     import { useRouter } from 'vue-router';
 
@@ -144,7 +144,7 @@
                         context.emit('close');
                         
                         router.push({
-                            name: 'messenger_chat_page',
+                            name: 'messenger_chat',
                             params: {
                                 chat_id: chatId.value
                             }

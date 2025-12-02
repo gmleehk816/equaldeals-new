@@ -1,18 +1,18 @@
 <template>
 	<div class="flex gap-4">
-		<span v-on:click="state.isFollowersModalOpen = true" class="cursor-pointer text-lab-sc text-par-n tracking-tighter">
+		<span v-on:click="state.isFollowersModalOpen = true" class="cursor-pointer text-lab-sc text-par-n">
 			<span class="text-lab-pr2 font-mono">
 				{{ profileData.followers_count.formatted }}
 			</span>
 			{{ $t('labels.followers_count', profileData.followers_count.raw) }}
 		</span>
-		<span v-on:click="state.isFollowingsModalOpen = true" class="cursor-pointer text-lab-sc text-par-n tracking-tighter">
+		<span v-on:click="state.isFollowingsModalOpen = true" class="cursor-pointer text-lab-sc text-par-n">
 			<span class="text-lab-pr2 font-mono">
 				{{ profileData.following_count.formatted }}
 			</span> 
 			{{ $t('labels.following_count', profileData.following_count.raw) }}
 		</span>
-		<span class="text-lab-sc text-par-n tracking-tighter">
+		<span class="text-lab-sc text-par-n">
 			<span class="text-lab-pr2 font-mono">
 				{{ profileData.publications_count.formatted }}
 			</span> 

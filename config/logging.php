@@ -64,9 +64,27 @@ return [
             'level' => 'info'
         ],
 
+        'timeline' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/timeline.log'),
+            'level' => 'info'
+        ],
+
         'story' => [
             'driver' => 'daily',
             'path' => storage_path('logs/story.log'),
+            'level' => 'info'
+        ],
+
+        'chat' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/chat.log'),
+            'level' => 'info'
+        ],
+
+        'requests' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/requests.log'),
             'level' => 'info'
         ],
 
@@ -143,6 +161,6 @@ return [
     'debugging' => [
         'video_process_logging' => env('VIDEO_PROCESS_LOGGING', false),
         'audio_process_logging' => env('AUDIO_PROCESS_LOGGING', false),
-    ] 
-
+    ],
+    'log_requests' => env('LOG_REQUESTS', false),
 ];

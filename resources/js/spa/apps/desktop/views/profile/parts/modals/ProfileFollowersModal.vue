@@ -1,7 +1,7 @@
 <template>
 	<Teleport to="body">
-		<ContentModal>
-			<ModalHeader v-on:close="$emit('close')" v-bind:modalTitle="$t('labels.followers_count', profileData.followers_count.raw) + ' ' + profileData.followers_count.formatted"></ModalHeader>
+		<ContentModal v-on:close="$emit('close')">
+			<ModalHeader v-bind:modalTitle="$t('labels.followers_count', profileData.followers_count.raw) + ' ' + profileData.followers_count.formatted"></ModalHeader>
 			<div class="max-h-[500px] overflow-y-auto">
 				<template v-if="state.isLoading">
 					<PeopleListItemSkeleton v-for="i in 3" v-bind:key="i"></PeopleListItemSkeleton>

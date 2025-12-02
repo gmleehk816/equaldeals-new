@@ -1,14 +1,18 @@
 <?php
 
 return [
+	'home' => 'Home',
     'dashboard' => 'Dashboard',
+	'chats_groups' => 'Chats & Groups',
 	'users' => 'All users',
 	'general_settings' => 'General settings',
 	'marketplace' => 'Marketplace',
+	'categories' => 'Categories',
 	'jobs' => 'Jobs',
 	'ads_manager' => 'Ads manager',
 	'publications' => 'Publications',
 	'stories' => 'Stories',
+	'static_pages' => 'Static pages',
 	'logout' => 'Logout',
 	'payments' => 'Payments',
 	'db_backup' => 'DB Backups',
@@ -24,8 +28,8 @@ return [
 	'verification' => 'Verification',
 	'withdrawals' => 'Withdrawals',
 	'banned' => 'Banning',
-	'add_user' => 'Add user',
 	'logging' => 'Logging',
 	'lab_tools' => 'Lab Tools',
 	'documentation' => 'Documentation',
+	'authorship' => 'Authorship requests',
 ];

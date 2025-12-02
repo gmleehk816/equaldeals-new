@@ -20,7 +20,7 @@
 
 	--color-bord-pr: rgba(76, 76, 80, 0.3);
 	--color-bord-sc: rgba(76, 76, 80, 0.2);
-	--color-bord-tr: rgba(76, 76, 80, 0.1);
+	--color-bord-tr: rgba(76, 76, 80, 0.2);
 	--color-bord-dark: black;
 	--color-bord-card: rgba(76, 76, 80, 0.5);
 
@@ -39,6 +39,6 @@
 
 	--color-icon-pr: #468EF9;
 
-	--color-shadow-vertical-tr: 0 0px 20px 0px rgba(0, 0, 0, 0.1);
-	--color-shadow-vertical-qt: 0 0px 20px 0px rgba(0, 0, 0, 0.06);
+	--shadow-vertical-tr: 0 0px 20px 0px rgba(0, 0, 0, 0.1);
+	--shadow-vertical-qt: 0 0px 20px 0px rgba(0, 0, 0, 0.06);
 }

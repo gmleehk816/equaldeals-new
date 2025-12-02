@@ -30,7 +30,7 @@
 				{{ $postData->created_at->getCalendar() }}
 			</p>
 			<a href="{{ $postData->url }}" class="block mt-4" target="_blank">
-				<x-ui.buttons.pill type="button" width="w-full" btnText="{{ __('admin/dd.post.view_publication') }}"></x-ui.buttons.pill>
+				<x-ui.buttons.pill size="sm" type="button" width="w-full" btnText="{{ __('admin/dd.post.view_publication') }}"></x-ui.buttons.pill>
 			</a>
 		</div>
 	</div>

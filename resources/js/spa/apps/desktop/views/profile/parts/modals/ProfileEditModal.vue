@@ -1,12 +1,12 @@
 <template>
 	<Teleport to="body">
-		<ContentModal>
-			<ModalHeader v-on:close="$emit('close')" v-bind:modalTitle="$t('labels.edit_profile')"></ModalHeader>
+		<ContentModal v-on:close="$emit('close')">
+			<ModalHeader v-bind:modalTitle="$t('labels.edit_profile')"></ModalHeader>
 			<div class="overflow-hidden rounded-b-md">
 				<div class="block mb-4">
 					<div class="bg-black overflow-hidden relative min-h-[180px]">
 						<img class="w-full" v-bind:src="userData.cover_url" alt="Cover">
-						<button v-on:click="$refs.coverInput.click()" class="absolute top-2 right-2 bg-black/50 hover:bg-black/30 smoothing size-10 inline-flex-center rounded-full">
+						<button v-on:click="$refs.coverInput.click()" class="cursor-pointer absolute top-2 right-2 bg-black/50 hover:bg-black/30 smoothing size-10 inline-flex-center rounded-full">
 							<SvgIcon name="pencil-02" type="line" classes="size-icon-small text-white/90"></SvgIcon>
 						</button>
 					</div>
@@ -38,7 +38,7 @@
 					<div class="h-full bg-green-900" v-bind:style="{ width: state.uploadProgress + '%' }"></div>
 				</div>
 				<Border v-else height="h-3" bg="bg-fill-qt" opacity="opacity-70"></Border>
-				<RouterLink v-bind:to="{ name: 'account_settings_page' }">
+				<RouterLink v-bind:to="{ name: 'settings_account' }">
 					<ModalRowButton 
 						v-bind:hasArrow="true"
 						v-bind:buttonText="$t('labels.account_settings')"

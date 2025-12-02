@@ -31,7 +31,7 @@
 			</div>
 
 			<a href="{{ $userData->profile_url }}" target="_blank">
-				<x-ui.buttons.pill type="button" width="w-full" btnText="{{ __('admin/users.view_profile') }}"></x-ui.buttons.pill>
+				<x-ui.buttons.pill size="sm" type="button" width="w-full" btnText="{{ __('admin/users.view_profile') }}"></x-ui.buttons.pill>
 			</a>
 		</div>
 	</div>

@@ -1,5 +1,5 @@
 <template>
-    <div class="flex gap-2 items-center px-4 border-b border-bord-pr py-3">
+    <div class="flex gap-2 items-center px-4 py-3">
         <div class="shrink-0">
             <div class="size-small-avatar skeleton-circle"></div>
         </div>
