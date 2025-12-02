@@ -9,7 +9,7 @@
         </div>
     @endif
 
-    <h1 class="text-title-1 text-lab-pr2 font-semibold tracking-tighter">
+    <h1 class="text-title-2 text-lab-pr2 font-semibold tracking-tighter">
         {!! $title !!}
     </h1>
 

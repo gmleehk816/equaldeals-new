@@ -2,7 +2,7 @@
 
 @section('pageContent')
 <div x-data="alpineComponent">
-	<div class="mb-8">
+	<div class="mb-4">
 		<x-page-title titleText=" {{ __('admin/ads.show_title') }}"></x-page-title>
 		<x-page-desc>
 			{{ __('admin/ads.show_desc') }}
@@ -14,7 +14,7 @@
 			<x-entity.previews.ad :adData="$adData"></x-entity.previews.ad>
 		</x-slot:sideContent>
 	
-		<div class="mb-4">
+		<div class="mb-8">
 			<x-entity.header 
 				avatarUrl="{{ $adData->user->avatar_url }}" 
 				name="{{ $adData->user->name }}"
@@ -32,6 +32,7 @@
 								<x-ui-icon type="line" name="user-02"></x-ui-icon>
 							</x-slot:itemIcon>
 						</x-ui.dropdown.item>
+						<x-div></x-div>
 						@if($adData->approval->isPending())
 							<x-ui.dropdown.item x-on:click="approveAd" itemText="{{ __('admin/dd.ad.approve') }}">
 								<x-slot:itemIcon>
@@ -44,6 +45,7 @@
 								</x-slot:itemIcon>
 							</x-ui.dropdown.item>
 						@endif
+						<x-div></x-div>
 						<x-ui.dropdown.item :danger="true" x-on:click="deleteAd" itemText="{{ __('admin/dd.ad.delete') }}">
 							<x-slot:itemIcon>
 								<x-ui-icon type="line" name="trash-04"></x-ui-icon>

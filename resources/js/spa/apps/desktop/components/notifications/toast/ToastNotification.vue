@@ -15,6 +15,7 @@
     export default defineComponent({
         setup: function() {
             const toastStore = useToastNotificationStore();
+            
             const toastNotifications = computed(() => {
                 return toastStore.notificationsList;
             });

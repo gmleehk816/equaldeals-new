@@ -46,7 +46,7 @@ class SignupForm extends Component
         
         $emailToken = Str::uuid();
 
-        EmailConfirmation::create([
+        $emailConfirmation = EmailConfirmation::create([
             'email' => $this->emailAddress,
             'token' => $emailToken
         ]);
@@ -56,7 +56,7 @@ class SignupForm extends Component
             'link' => route('user.auth.confirm-signup', ['token' => $emailToken])
         ]));
 
-        $this->redirect(route('user.auth.signup-success', ['token' => $emailToken]));
+        $this->redirect(route('user.auth.signup-success', ['hashId' => $emailConfirmation->hash_id]));
     }
 
     private function checkIfEmailBlacklisted()

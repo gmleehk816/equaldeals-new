@@ -1,17 +1,17 @@
 <template>
-    <div class="relative base-publication border-b border-b-bord-pr last:border-none">
+    <div class="relative border-b border-b-bord-tr last:border-none">
         <div class="absolute overflow-hidden top-4 left-4">
             <AvatarSmall v-bind:avatarSrc="postData.relations.user.avatar_url" ></AvatarSmall>
         </div>
-        <div class="ml-4 pr-4 pt-4 max-w-full">
+        <div class="px-4 pt-4 max-w-full">
             <div class="ml-small-avatar pl-2">
                 <div class="overflow-hidden mb-1">
                     <div class="flex items-center overflow-hidden">
                         <div class="leading-4 flex-1 overflow-hidden">
-                            <RouterLink v-bind:to="{ name: 'profile_page', params: { id: postData.relations.user.username } }" class="flex cursor-pointer gap-1">
-                                <h3 class="text-par-n font-medium text-lab-pr2 truncate tracking-tighter">
+                            <RouterLink v-bind:to="{ name: 'profile_index', params: { id: postData.relations.user.username } }" class="flex cursor-pointer gap-1">
+                                <h3 class="text-par-m text-lab-pr2 truncate">
                                     <span class="flex items-center gap-1">
-                                        <span class="shrink-0">
+                                        <span class="shrink-0 font-semibold">
                                             {{ postData.relations.user.name }}
                                         </span>
                                         <VerificationBadge v-if="postData.relations.user.verified"></VerificationBadge>
@@ -20,9 +20,9 @@
                                         </span>
                                     </span>
                                 </h3>
-                                <p class="text-par-s text-lab-sc truncate">
-                                    {{ postUserCaption }}
-                                </p>
+                                <span class="text-par-n text-lab-sc truncate">
+                                    {{ postUserCaption }} · {{ postData.date.time_ago }}
+                                </span>
                             </RouterLink>
                         </div>
                     </div>
@@ -74,7 +74,7 @@
                         <PublicationQuote v-if="quotedPost" v-bind:quotedPost="quotedPost" v-bind:key="postData.id"></PublicationQuote>
                         <PublicationQuotePlaceholder v-else></PublicationQuotePlaceholder>
                     </div>
-                    <div v-else-if="postHasLinkSnapshot" class="overflow-hidden mb-2">
+                    <div v-else-if="postLinkSnapshot" class="overflow-hidden mb-2">
                         <a v-bind:href="postLinkSnapshot.url" target="_blank">
                             <LinkSnapshot v-bind:linkSnapshot="postLinkSnapshot"></LinkSnapshot>
                         </a>
@@ -103,14 +103,18 @@
 									</div>
 								</PrimaryTransition>
 							</div>
-                            <div v-if="! postData.relations.comments.length" class="shrink-0">
-                                <RouterLink v-bind:to="{ name: 'publication_page', params: { hash_id: postData.hash_id }}">
+                            <div v-if="! postData.relations.comments.length && ! isOnPostPage" class="shrink-0">
+                                <RouterLink v-bind:to="{ name: 'publication_index', params: { hash_id: postData.hash_id }}">
                                     <PrimaryIconButton iconSize="icon-normal" iconName="message-circle-02" iconType="line"></PrimaryIconButton>
                                 </RouterLink>
                             </div>
+
+                            <template v-if="isOnPostPage">
+                                <PrimaryIconButton v-bind:disabled="true" iconSize="icon-normal" iconName="message-circle-02" iconType="line"></PrimaryIconButton>
+                            </template>
                             
                             <div class="flex-1 overflow-hidden">
-                                <div class="flex items-center h-x-small-avatar">
+                                <div v-if="! isOnPostPage" class="flex items-center h-x-small-avatar">
                                     <div v-if="postData.relations.comments.length" class="flex ml-1">
                                         <div v-for="comment in postData.relations.comments" v-bind:key="comment.id" class="-ml-2 first:ml-0 border rounded-full border-fill-pr">
                                             <AvatarExtraSmall v-bind:avatarSrc="comment.user.avatar_url"></AvatarExtraSmall>
@@ -118,7 +122,7 @@
                                     </div>
                                     
                                     <div class="flex-1 overflow-hidden ml-2">
-                                        <RouterLink v-bind:to="{ name: 'publication_page', params: { hash_id: postData.hash_id }}" class="text-par-s text-lab-sc truncate block hover:text-brand-900">
+                                        <RouterLink v-bind:to="{ name: 'publication_index', params: { hash_id: postData.hash_id }}" class="text-par-s text-lab-sc truncate block hover:text-brand-900">
                                             <template v-if="postData.relations.comments.length">
                                                 {{ $t('labels.show_all_comments') }} ({{ postData.comments_count.formatted }})
                                             </template>
@@ -140,12 +144,13 @@
 
         <div class="absolute top-2 right-2.5">
             <div class="relative leading-none">
-                <div class="opacity-80 hover:opacity-100">
+                <div class="opacity-30 hover:opacity-100">
                     <DropdownButton v-on:click.stop="toggleMenu"></DropdownButton>
                 </div>
                 
                 <div class="absolute top-full right-0 z-50" v-if="state.isMenuOpen">
                     <DropdownMenu v-outside-click="toggleMenu" v-on:click="toggleMenu">
+                        <DropdownReactions v-on:add="addReaction"></DropdownReactions>
                         <DropdownMenuItem v-on:click="openReactionsPicker" iconName="heart-rounded" v-bind:textLabel="$t('dd.add_reaction')"></DropdownMenuItem>
                         
                         <template v-if="postHasContent && isTranslatable">
@@ -161,23 +166,25 @@
                                 iconName="translate-01"
                             v-bind:textLabel="$t('dd.translate')"></DropdownMenuItem>
                         </template>
-
-                        <RouterLink v-bind:to="{ name: 'publication_page', params: { hash_id: postData.hash_id }}" class="block border-b border-b-bord-pr">
-                            <DropdownMenuItem v-bind:notLast="false" iconName="arrow-up-right" v-bind:textLabel="$t('dd.post.open_post')"></DropdownMenuItem>
-                        </RouterLink>
+                        <Border/>
+                        <template v-if="! isOnPostPage">
+                            <RouterLink v-bind:to="{ name: 'publication_index', params: { hash_id: postData.hash_id }}">
+                                <DropdownMenuItem iconName="arrow-up-right" v-bind:textLabel="$t('dd.post.open_post')"></DropdownMenuItem>
+                            </RouterLink>
+                        </template>
 
                         <DropdownMenuItem v-on:click="quotePost" iconName="pencil-line" v-bind:textLabel="$t('dd.post.quote_post')"></DropdownMenuItem>
                         <DropdownMenuItem v-on:click="mentionAuthor" iconName="at-sign" v-bind:textLabel="$t('dd.post.mention_author', { name: `@${postData.relations.user.name}`})"></DropdownMenuItem>
-                        
+                        <Border/>
                         <DropdownMenuItem
                             v-on:click="bookmarkPost"
                             v-bind:iconName="postData.meta.activity.bookmarked ? 'bookmark-minus' : 'bookmark'"
                         v-bind:textLabel="postData.meta.activity.bookmarked ? $t('dd.post.unbookmark') : $t('dd.post.bookmark')"></DropdownMenuItem>
 
-
                         <DropdownMenuItem v-on:click="sharePost" iconName="share-06" v-bind:textLabel="$t('dd.post.share')"></DropdownMenuItem>
                         <DropdownMenuItem v-on:click="copyLink" iconName="copy-06" v-bind:textLabel="$t('dd.post.copy_link')"></DropdownMenuItem>
                         <DropdownMenuItem v-if="postHasContent" v-on:click="copyContent" iconName="type-01" v-bind:textLabel="$t('dd.copy_text')"></DropdownMenuItem>
+                        <Border/>
                         <DropdownMenuItem v-if="canReportPost" v-on:click="reportPost" itemColor="text-red-900" iconName="annotation-alert" v-bind:textLabel="$t('dd.post.report_post')"></DropdownMenuItem>
                         <template v-if="canDeletePost">
                             <DropdownMenuItem v-on:click="$emit('delete', postData)" itemColor="text-red-900" iconName="trash-04" v-bind:textLabel="$t('dd.post.delete_post')"></DropdownMenuItem>
@@ -191,11 +198,10 @@
 
 <script>
     import { defineComponent, defineAsyncComponent, reactive, computed, ref } from 'vue';
+    import { useRoute } from 'vue-router';
     import { PostTypeUtils } from '@/kernel/enums/post/post.type.js';
     import { colibriEventBus } from '@/kernel/events/bus/index.js';
     import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
-    import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
-    import { useI18n } from 'vue-i18n';
     import { useLightboxStore } from '@D/store/lightbox/lightbox.store.js';
     import { colibriTranslator } from '@/kernel/services/translator/index.js';
 
@@ -203,7 +209,8 @@
     import DropdownButton from '@D/components/general/dropdowns/parts/DropdownButton.vue';
     import DropdownMenu from '@D/components/general/dropdowns/parts/DropdownMenu.vue';
     import DropdownMenuItem from '@D/components/general/dropdowns/parts/DropdownMenuItem.vue';
-    import ViewsCounter from '@D/components/general/counters/ViewsCounter.vue';
+    import DropdownReactions from '@D/components/general/dropdowns/parts/DropdownReactions.vue';
+    import ViewsCounter from '@/kernel/vue/components/general/counters/ViewsCounter.vue';
     import PrimaryIconButton from '@D/components/inter-ui/buttons/PrimaryIconButton.vue';
     import TextTranslateButton from '@D/components/inter-ui/buttons/TextTranslateButton.vue';
     import TranslationService from '@D/components/general/TranslationService.vue';
@@ -221,6 +228,7 @@
             }
         },
         setup: function(props) {
+            const route = useRoute();
             const state = reactive({
                 isMenuOpen: false,
                 isReactionPickerOpen: false,
@@ -229,8 +237,6 @@
                 isSharePostOpen: false
             });
             
-            const { t } = useI18n();
-            const toastNotifier = new ToastNotifier();
             const postTranslatedContent = ref('');
             const postData = computed(() => {
                 return props.postData;
@@ -280,27 +286,24 @@
                         postData.value.relations.reactions = response.data.data;
                     }).catch((error) => {
                         if (error.response) {
-                            toastNotifier.notifyShort(error.response.data.message);
+                            toastError(error.response.data.message);
                         }
                     });
                 },
                 postHasMedia: computed(() => {
-                    return postData.value?.relations?.media?.length;
+                    return postData.value.relations.media?.length;
                 }),
                 postHasPoll: computed(() => {
-                    return postData.value?.relations?.poll;
+                    return postData.value.relations.poll;
                 }),
                 postHasContent: computed(() => {
-                    return postData.value?.content?.length;
-                }),
-                postHasLinkSnapshot: computed(() => {
-                    return postData.value?.relations?.link_snapshot;
+                    return postData.value.content.length;
                 }),
                 postLinkSnapshot: computed(() => {
                     return postData.value.relations.link_snapshot;
                 }),
                 quotedPost: computed(() => {
-                    return postData.value?.relations?.quoted_post;
+                    return postData.value.relations.quoted_post;
                 }),
                 isTranslatable: computed(() => {
                     return postData.value.meta.is_translatable;
@@ -325,7 +328,7 @@
                     });
                 },
                 postUserCaption: computed(() => {
-                    return `${postData.value.relations.user.caption} · ${postData.value.date.time_ago}`;
+                    return postData.value.relations.user.caption;
                 }),
                 canDeletePost: computed(() => {
                     return postData.value.meta.permissions.can_delete;
@@ -345,14 +348,14 @@
                         postData.value.meta.activity.bookmarked = response.data.data.bookmarked;
 
                         if(response.data.data.bookmarked) {
-                            toastNotifier.notifyShort(t('toast.post.bookmarked'));
+                            toastSuccess(__t('toast.post.bookmarked'));
                         }
                         else {
-                            toastNotifier.notifyShort(t('toast.post.unbookmarked'));
+                            toastSuccess(__t('toast.post.unbookmarked'));
                         }
                     }).catch((error) => {
                         if (error.response) {
-                            toastNotifier.notifyShort(error.response.data.message);
+                            toastError(error.response.data.message);
                         }
                     });
                 },
@@ -377,12 +380,12 @@
                 },
                 copyContent: () => {
                     navigator.clipboard.writeText(postContent.value).then(() => {
-                        toastNotifier.notifyShort(t('toast.post.content_copied'), 1000);
+                        toastSuccess(__t('toast.post.content_copied'), 1000);
                     });
                 },
                 copyLink: () => {
                     navigator.clipboard.writeText(postLink.value).then(() => {
-                        toastNotifier.notifyShort(t('toast.post.link_copied'), 1000);
+                        toastSuccess(__t('toast.post.link_copied'), 1000);
                     });
                 },
                 reportPost: () => {
@@ -403,7 +406,10 @@
                 },
 				cancelSharePost: () => {
 					state.isSharePostOpen = false;
-				}
+				},
+                isOnPostPage: computed(() => {
+                    return route.name === 'publication_index';
+                })
             }
         },
         components: {
@@ -411,11 +417,12 @@
             DropdownButton: DropdownButton,
             DropdownMenu: DropdownMenu,
             DropdownMenuItem: DropdownMenuItem,
+            DropdownReactions: DropdownReactions,
             PrimaryIconButton: PrimaryIconButton,
             TextTranslateButton: TextTranslateButton,
             PublicationQuote: PublicationQuote,
             ReactionsViewer: defineAsyncComponent(() => {
-                return import('@D/components/reactions/ReactionsViewer.vue');
+                return import('@/kernel/vue/components/reactions/ReactionsViewer.vue');
             }),
             ViewsCounter: ViewsCounter,
             TranslationService: TranslationService,

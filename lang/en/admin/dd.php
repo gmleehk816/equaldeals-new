@@ -4,6 +4,11 @@ return [
 	'user' => [
 		'view_profile' => 'View profile',
 		'delete' => 'Delete user',
+		'authorize' => 'Authorize user',
+		'unauthorize' => 'Unauthorize user',
+		'reject' => 'Reject',
+		'verify_user' => 'Verify user',
+		'unverify_user' => 'Unverify user',
 	],
 	'post' => [
 		'delete' => 'Delete post',
@@ -40,5 +45,14 @@ return [
 		'enable' => 'Enable language',
 		'make_default' => 'Make default language',
 		'delete' => 'Delete language'
+	],
+	'category' => [
+		'edit_category' => 'Edit category',
+		'delete_category' => 'Delete category',
+	],
+	'chat' => [
+		'delete_chat' => 'Delete chat',
+		'delete_group' => 'Delete group',
+		'view_group' => 'View group',
 	],
 ];

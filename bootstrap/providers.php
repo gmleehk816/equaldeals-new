@@ -7,5 +7,5 @@ return [
     App\Providers\FileStorageDisksProvider::class,
     App\Providers\HorizonServiceProvider::class,
     App\Providers\ViewServiceProvider::class,
-    App\Providers\FileStorageDisksProvider::class,
+    App\Providers\FileStorageDisksProvider::class
 ];

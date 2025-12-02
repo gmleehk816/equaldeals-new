@@ -2,9 +2,8 @@
 
 return [
 	'group' => [
-		'validation' => [
-			'name' => []
-		]
+		'avatar' => 'assets/avatars/default-avatar.png',
+		'invite_expire_days' => 7
 	],
 	'message' => [
 		'validation' => [

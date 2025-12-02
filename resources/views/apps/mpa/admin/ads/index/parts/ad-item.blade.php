@@ -13,18 +13,20 @@
 	<x-table.td variant="muted">
 		{{ $adData->approval->label() }} {{ $adData->approval->emoji() }}
 	</x-table.td>
-	<x-table.td variant="muted">
+	<x-table.td variant="strong" weight="medium">
 		{{ $adData->formatted_total_budget }}
 	</x-table.td>
-	<x-table.td variant="muted">
+	<x-table.td variant="strong" weight="medium">
 		{{ $adData->formatted_spent_budget }}
 	</x-table.td>
 	<x-table.td variant="muted" :numeric="true">
 		{{ $adData->id }}
 	</x-table.td>
 	<x-table.td>
-		<a href="{{ route('admin.ads.show', $adData->id) }}">
-			<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
-		</a>
+		<div class="flex justify-end">
+			<a href="{{ route('admin.ads.show', $adData->id) }}">
+				<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
+			</a>
+		</div>
 	</x-table.td>
 </x-table.tr>

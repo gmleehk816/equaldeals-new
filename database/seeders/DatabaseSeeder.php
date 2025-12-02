@@ -14,7 +14,5 @@ class DatabaseSeeder extends Seeder
         (new CategorySeeder())->run();
         (new CurrencySeeder())->run();
         (new LocaleSeeder())->run();
-        (new UserSeeder())->run();
-        (new PostSeeder())->run();
     }
 }

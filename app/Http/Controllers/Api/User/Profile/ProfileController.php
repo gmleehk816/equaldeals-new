@@ -109,9 +109,8 @@ class ProfileController extends Controller
             }
 
             if(empty($profileData->privacySettings->birthdate_privacy)) {
-                $profileData->birth_month = __('labels.months.' . $profileData->birth_month);
                 $profileDetails['info']['birthdate'] = "{$profileData->birth_day} {$profileData->birth_month}, {$profileData->birth_year}";
-            
+                
                 $profileDetails['info']['age'] = Carbon::parse("{$profileData->birth_day}-{$profileData->birth_month}-{$profileData->birth_year}")->age;
             }
 
@@ -136,14 +135,14 @@ class ProfileController extends Controller
     }
 
     public function getProfilePosts(Request $request)
-    {
+    {   
         $validator = Validator::make([
             'id' => $request->integer('id', 0),
             'filter' => $request->get('filter', []),
         ], [
             'id' => ['required', 'integer', 'min:1'],
             'filter' => ['required', 'array'],
-            'filter.cursor' => ['nullable', 'integer', 'min:1'],
+            'filter.cursor' => ['nullable', 'integer', 'min:0'],
             'filter.type' => ['required', 'string', 'in:posts,media,activity']
         ]);
 
@@ -155,7 +154,7 @@ class ProfileController extends Controller
         $filter = $request->get('filter');
 
         $contentType = $filter['type'];
-        $cursorId = (isset($filter['cursor'])) ? $filter['cursor'] : false;
+        $cursorId = (empty($filter['cursor'])) ? 0 : $filter['cursor'];
 
         $profileData = User::activeById($profileId)->first();
 
@@ -199,7 +198,6 @@ class ProfileController extends Controller
         $profileData = User::activeById($profileId)->first();
 
         if($profileData) {
-
             $connectionQB = $profileData->followers();
 
             if($type == 'following') {

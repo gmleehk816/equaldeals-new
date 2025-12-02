@@ -1,25 +1,39 @@
 <template>
-    <div class="flex max-w-full gap-2 mb-10">
-        <div v-on:click="createStory" class="size-medium-avatar cursor-pointer">
-            <div class="rounded-full overflow-hidden mb-1 inline-flex-center size-medium-avatar bg-fill-tr">
-                <SvgIcon name="plus" classes="size-6 text-brand-900"></SvgIcon>
-            </div>
-            <div class="text-cap-l text-lab-pr text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                {{ $t('labels.new_story') }}
-            </div>
-        </div>
-        <template v-if="storiesFeed.length">
-            <RouterLink v-for="storyData in storiesFeed" v-bind:to="{ name: 'stories_index_page', params: { story_uuid: storyData.story_uuid } }">
-                <div class="size-medium-avatar">
-                    <div class="rounded-full story-avatar overflow-hidden mb-1 ring-2" v-bind:class="[(storyData.is_owner || storyData.is_seen) ? 'ring-edge-sc' : 'ring-red-900']">
-                        <img class="size-medium-avatar inline-block bg-fill-pr" v-bind:src="storyData.relations.user.avatar_url" alt="Image">
+    <div class="max-w-full">
+        <swiper-container slides-per-view="auto" space-between="12" speed="200" mousewheel="true" grab-cursor="true" class="w-full">
+            <swiper-slide class="w-[74px] shrink-0">
+                <div v-on:click="createStory" class="w-[74px] cursor-pointer">
+                    <div class="size-[74px] relative p-1">
+                        <div class="size-full rounded-full overflow-hidden">
+                            <img class="size-full inline-block bg-fill-pr" v-bind:src="userData.avatar_url" alt="Image">
+                        </div>
+                        <div class="border-3 border-bg-pr rounded-full inline-flex-center text-bg-pr size-icon-normal bg-lab-pr2 absolute bottom-0.5 right-0.5 z-10">
+                            <SvgIcon name="plus"></SvgIcon>
+                        </div>
                     </div>
-                    <div class="text-cap-l text-lab-pr text-center whitespace-nowrap overflow-hidden text-ellipsis">
-                        {{ storyData.relations.user.name }}
+                    <div class="text-par-s font-medium text-lab-pr text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                        {{ $t('labels.new_story') }}
                     </div>
                 </div>
-            </RouterLink>
-        </template>
+            </swiper-slide>
+            <template v-if="storiesFeed.length">
+                <swiper-slide  v-for="storyData in storiesFeed" v-bind:key="storyData.story_uuid" class="w-[74px] shrink-0">
+                    <RouterLink v-bind:to="{ name: 'stories_index', params: { story_uuid: storyData.story_uuid } }">
+                        <div class="size-[74px] rounded-full border-2 p-[3px]" v-bind:class="[(storyData.is_owner || storyData.is_seen) ? 'border-bord-card' : '']">
+                            <div v-if="! storyData.is_seen && ! storyData.is_owner" class="absolute inset-0">
+                                <img v-bind:src="$asset('assets/avatars/story-avatar-ring.png')" alt="Image">
+                            </div>
+                            <div class="rounded-full size-full overflow-hidden">
+                                <img class="size-full inline-block bg-fill-pr" v-bind:src="storyData.relations.user.avatar_url" alt="Image">
+                            </div>
+                        </div>
+                        <div class="text-par-s font-medium text-lab-pr text-center whitespace-nowrap overflow-hidden text-ellipsis">
+                            {{ storyData.relations.user.name }}
+                        </div>
+                    </RouterLink>
+                </swiper-slide>
+            </template>
+        </swiper-container>
     </div>
 </template>
 
@@ -27,6 +41,10 @@
     import { computed, defineComponent, onMounted } from 'vue';
     import { useStoriesEditorStore } from '@D/store/stories/editor.store.js';
     import { useStoriesStore } from '@D/store/stories/stories.store.js';
+    import { useAuthStore } from '@D/store/auth/auth.store.js';
+    import { register  } from 'swiper/element/bundle';
+
+    register();
 
     import AvatarMedium from '@D/components/general/avatars/AvatarMedium.vue';
 
@@ -34,6 +52,11 @@
         setup: function() {
             const storiesEditorStore = useStoriesEditorStore();
             const storiesStore = useStoriesStore();
+            const authStore = useAuthStore();
+
+            const userData = computed(() => {
+                return authStore.userData;
+            });
 
             onMounted(async () => {
                 try {
@@ -49,6 +72,7 @@
 
             return {
                 storiesFeed: storiesFeed,
+                userData: userData,
                 createStory: () => {
                     storiesEditorStore.openEditor();
                 }

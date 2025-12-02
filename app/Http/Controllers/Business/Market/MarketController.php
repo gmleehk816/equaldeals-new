@@ -33,14 +33,14 @@ class MarketController extends Controller
         $productsList = me()->products()->with([
             'category',
             'media'
-        ])->whereNot('status', ProductStatus::DRAFT)->when($type, function($query) use ($type) {
+        ])->active()->when($type, function($query) use ($type) {
             if($type == 'active') {
                 $query->where('status', ProductStatus::ACTIVE);
             }
             else if($type == 'archived') {
                 $query->where('status', ProductStatus::INACTIVE);
             }
-        })->paginate(10);
+        })->latest('id')->paginate(10);
 
         return view('business::market.index.index', [
             'type' => $type,

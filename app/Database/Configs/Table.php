@@ -62,4 +62,8 @@ class Table
     public const USER_PERMIT_SETTINGS = 'user_permit_settings';
     public const USER_NOTIFICATION_SETTINGS = 'user_notification_settings';
     public const USER_SECURITY_SETTINGS = 'user_security_settings';
+    public const GROUPS = 'groups';
+    public const CHAT_INVITES = 'chat_invites';
+    public const ARCHIVED_CHATS = 'archived_chats';
+    public const AUTHORSHIP_REQUESTS = 'authorship_requests';
 }

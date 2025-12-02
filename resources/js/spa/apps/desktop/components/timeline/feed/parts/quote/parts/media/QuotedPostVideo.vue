@@ -1,5 +1,5 @@
 <template>
-	<div class="block rounded-lg overflow-hidden border border-bord-card">
+	<div class="overflow-hidden border-t border-bord-card">
 		<div class="bg-black flex justify-center rounded-xs overflow-hidden relative aspect-video" v-for="videoItem in postMedia" v-bind:key="videoItem.id">
 			<div class="h-full">
 				<img v-bind:src="videoItem.thumbnail_url" class="block h-full" alt="Image">
@@ -13,7 +13,7 @@
 
 <script>
 	import { defineComponent } from 'vue';
-	import VideoDurationTime from '@D/components/media/video/VideoDurationTime.vue';
+	import VideoDurationTime from '@/kernel/vue/components/media/video/VideoDurationTime.vue';
 
 	export default defineComponent({
 		props: {

@@ -29,4 +29,20 @@ enum ChatType: string
     {
         return $this == self::DIRECT;
     }
+
+	public function label(): string
+	{
+		return match ($this) {
+			self::DIRECT => __('labels.chat_type_labels.direct'),
+			self::GROUP => __('labels.chat_type_labels.group'),
+		};
+	}
+	
+	public function emoji(): string
+	{
+		return match ($this) {
+			self::DIRECT => '💬',
+			self::GROUP => '👥',
+		};
+	}
 }

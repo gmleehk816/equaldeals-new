@@ -1,15 +1,14 @@
 <template>
-	<div class="block border-b border-b-bord-pr px-4">
+	<div class="px-4 ">
 		<div class="block py-3">
-			<div class="mb-0 flex justify-between items-center">
+			<div class="mb-0 flex justify-between items-center cursor-pointer" v-on:click="toggle">
 				<div class="flex-1">
-					<h5 class="text-par-n font-medium text-lab-pr2 tracking-tighter">
+					<h5 class="text-par-n font-medium text-lab-pr2">
 						{{ title }}
 					</h5>
 				</div>
 				<div class="shrink-0">
-					<button 
-						v-on:click="toggle"
+					<button
 						class="size-icon-normal text-lab-tr outline-hidden leading-zero hover:text-brand-900 smoothing"
 						aria-expanded="false"
 						v-bind:class="[state.isExpanded ? '' : 'rotate-180']"
@@ -23,7 +22,7 @@
 
 				<template v-if="caption">
 					<div class="mt-2">
-						<p class="text-cap-s text-lab-sc font-light" v-html="caption"></p>
+						<p class="text-par-s text-lab-sc" v-html="caption"></p>
 					</div>
 				</template>
 			</div>
@@ -43,11 +42,15 @@
 			caption: {
 				type: String,
 				default: ''
+			},
+			isExpanded: {
+				type: Boolean,
+				default: false
 			}
 		},
-		setup() {
+		setup: function(props) {
 			const state = reactive({
-				isExpanded: true
+				isExpanded: props.isExpanded
 			});
 
 			return {

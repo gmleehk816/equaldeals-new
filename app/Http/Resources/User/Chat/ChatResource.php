@@ -29,6 +29,7 @@ class ChatResource extends JsonResource
 
         $chatItem = [
             'chat_id' => $this->chat_id,
+            'is_group' => $this->type->isGroup(),
             'type' => $this->type->value,
             'unread_messages_count' => [
                 'raw' => $unreadMessagesCount,
@@ -36,22 +37,40 @@ class ChatResource extends JsonResource
             ],
             'last_activity' => [
                 'time_ago' => $this->last_activity->getTimeAgo(),
-                'raw' => $this->last_activity->getTimestamp()
+                'raw' => $this->last_activity->getTimestamp(),
+                'formatted' => $this->last_activity->getCalendar()
             ],
             'last_message' => null,
             'is_deleted' => false
         ];
 
         if ($this->type->isDirect()) {
-
             $interlocutor = $this->interlocutor;
 
             if(isset($interlocutor->user) && $interlocutor->user) {
-                $chatItem['chat_info'] = UserPreviewResource::make($this->interlocutor->user);
+                $chatItem['chat_info'] = [
+                    'id' => $interlocutor->user->id,
+                    'name' => $interlocutor->user->name,
+                    'avatar_url' => $interlocutor->user->avatar_url,
+                    'verified' => $interlocutor->user->isVerified(),
+                ];
             }
             else {
-                $chatItem['chat_info'] = UserDeletedResource::make();
+                $chatItem['chat_info'] = [
+                    'id' => 0,
+                    'name' => 'Deleted Account',
+                    'verified' => false,
+                    'avatar_url' => asset(config('user.avatar'))
+                ];
             }
+        }
+        else if ($this->type->isGroup()) {
+            $chatItem['chat_info'] = [
+                'id' => $this->group->id,
+                'name' => $this->group->name,
+                'avatar_url' => $this->group->avatar_url,
+                'verified' => $this->group->isVerified(),
+            ];
         }
 
         if (! empty($this->lastMessage)) {

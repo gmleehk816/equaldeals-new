@@ -26,7 +26,7 @@
 			},
 			iconType: {
 				type: String,
-				default: 'line'
+				default: 'solid'
 			},
 			text: {
 				type: String,

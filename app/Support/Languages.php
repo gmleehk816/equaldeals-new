@@ -26,7 +26,6 @@ class Languages
 
     public function refreshCache()
     {
-
         Cache::forget('locales');
     }
 

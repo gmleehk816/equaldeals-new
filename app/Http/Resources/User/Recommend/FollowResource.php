@@ -27,6 +27,7 @@ class FollowResource extends JsonResource
             'id' => $this->id,
             'name' => $this->name,
             'avatar_url' => $this->avatar_url,
+            'bio' => $this->bio,
             'username' => $this->username,
             'caption' => $this->getCaption(),
             'verified' => $this->isVerified(),

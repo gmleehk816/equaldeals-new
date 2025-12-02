@@ -22,6 +22,11 @@ enum PrivacyPermit: string
 	case NOBODY = 'nobody';
 	case APPROVED = 'approved';
 
+	public function nobody(): bool
+	{
+		return $this === self::NOBODY;
+	}
+
 	public static function followPermits(): array
 	{
 		return [

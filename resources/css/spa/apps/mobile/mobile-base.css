@@ -1,24 +1,47 @@
 /* Desktop specific styles */
 
-.font-smoothing{
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+html {
+    touch-action: manipulation;
+    overscroll-behavior: contain;
+    -webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+    font-kerning: normal;
+}
+
+.svg-icon{
+    stroke-width: 1.8;
+}
+
+.svg-icon path{
+    stroke-width: 1.8;
+}
+
+.popup-background-pr {
+    @apply backdrop-blur-xs bg-bg-pr/80;
+}
+
+.popup-background-sc {
+    @apply backdrop-blur-xs bg-bg-pr/90;
+}
+
+.popup-background-tr {
+    @apply backdrop-blur-xs bg-bg-pr/95;
 }
 
 .skeleton{
-    @apply relative overflow-hidden block bg-fill-tr rounded-md leading-none;
+    @apply relative overflow-hidden block bg-fill-qt rounded-md leading-none;
 }
 
 .skeleton-rounded{
-    @apply relative overflow-hidden block bg-fill-tr rounded-2xl leading-none;
+    @apply relative overflow-hidden block bg-fill-qt rounded-2xl leading-none;
 }
 
 .skeleton-square{
-    @apply relative overflow-hidden block bg-fill-tr leading-none;
+    @apply relative overflow-hidden block bg-fill-qt leading-none;
 }
 
 .skeleton-circle{
-    @apply relative overflow-hidden block bg-fill-tr rounded-full leading-none;
+    @apply relative overflow-hidden block bg-fill-qt rounded-full leading-none;
 }
 
 .skeleton::after, .skeleton-circle::after, .skeleton-square::after{
@@ -32,6 +55,16 @@
     transform: translateX(-100%);
     z-index: 1;
     background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255, 255, 255, 0.4), rgba(255,255,255,0));
+}
+
+.hidden-scroll{
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hidden-scroll::-webkit-scrollbar{
+    display: none;
 }
 
 .colibri-primary-animation{
@@ -79,4 +112,16 @@
     50% {
       transform: translateY(-10px);
     }
+}
+
+.active-tab-link{
+    @apply relative after:content-[''] after:absolute after:-bottom-px after:left-0 after:w-full after:right-0 after:h-[3px] after:bg-brand-900;
+}
+
+.markdown-text a {
+    @apply text-brand-900 hover:opacity-80 font-medium;
+}
+
+.markdown-text code {
+    @apply border text-lab-pr px-2 py-2 border-l-5 border-bord-pr rounded-r-2xl text-par-n overflow-hidden break-words rounded-md block;
 }

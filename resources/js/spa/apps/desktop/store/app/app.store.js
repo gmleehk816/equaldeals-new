@@ -34,7 +34,7 @@ const useAppStore = defineStore('app', {
                 setupAuthTokenHandler();
             }).catch(function(error) {
                 if(error.response) {
-                    router.push({ name: 'server_error_bootstrap' });
+                    router.push({ name: 'bootstrap_error' });
                 }
             });
         }

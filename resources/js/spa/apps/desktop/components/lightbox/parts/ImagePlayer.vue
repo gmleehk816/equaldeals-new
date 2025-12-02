@@ -1,10 +1,10 @@
 <template>
-    <button v-if="hasPrev" v-on:click="slidePrev" class="size-12 inline-flex-center rounded-full bg-fill-pr hover:bg-fill-tr fixed top-half left-6 -translate-y-1/2">
+    <button v-if="hasPrev" v-on:click.stop="slidePrev" class="outline-0 cursor-pointer size-12 inline-flex-center rounded-full bg-fill-pr hover:bg-fill-tr fixed top-half left-6 -translate-y-1/2">
         <div class="size-6 text-bg-sc opacity-40 -translate-x-px">
             <SvgIcon name="chevron-left"></SvgIcon>
         </div>
     </button>
-    <div class="flex px-30 py-0 items-center justify-center h-full">
+    <div v-on:click="$emit('close')" class="select-none flex px-30 py-0 items-center justify-center h-full">
         <div class="h-full flex items-center" v-if="currentImageSource">
             <div class="block select-none max-w-lightbox-content bg-bg-pr" v-bind:class="currentImageGrow">
                 <template v-if="TS.imageLoadFailed">
@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <button v-if="hasNext" v-on:click="slideNext" class="size-12 inline-flex-center rounded-full bg-fill-pr hover:bg-fill-tr fixed top-half right-6 -translate-y-1/2">
+    <button v-if="hasNext" v-on:click.stop="slideNext" class="outline-0 cursor-pointer size-12 inline-flex-center rounded-full bg-fill-pr hover:bg-fill-tr fixed top-half right-6 -translate-y-1/2">
         <div class="size-6 text-bg-sc opacity-40 translate-x-px">
             <SvgIcon name="chevron-right"></SvgIcon>
         </div>
@@ -45,6 +45,7 @@
                 default: []
             }
         },
+        emits: ['close'],
         setup: function(props) {
             const currentImageGrow = ref('w-full min-w-content');
             const currentImageRef = ref(null);

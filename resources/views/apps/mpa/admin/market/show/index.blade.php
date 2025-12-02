@@ -1,7 +1,7 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-<div class="mb-8">
+<div class="mb-4">
 	<x-page-title titleText=" {{ __('admin/market.show_title') }}"></x-page-title>
 	<x-page-desc>
 		{{ __('admin/market.show_desc') }}
@@ -13,7 +13,7 @@
 		<x-slot:sideContent>
 			<x-entity.previews.product :productData="$productData"></x-entity.previews.product>
 		</x-slot:sideContent>
-		<div class="mb-4">
+		<div class="mb-8">
 			<x-entity.header 
 				avatarUrl="{{ $productData->user->avatar_url }}" 
 				name="{{ $productData->user->name }}"
@@ -50,7 +50,7 @@
 								</x-slot:itemIcon>
 							</x-ui.dropdown.item>
 						@endif
-
+						<x-div></x-div>
 						<x-ui.dropdown.item tag="a" :danger="true" x-on:click="deleteProduct" itemText="{{ __('admin/dd.product.delete') }}">
 							<x-slot:itemIcon>
 								<x-ui-icon type="line" name="trash-04"></x-ui-icon>

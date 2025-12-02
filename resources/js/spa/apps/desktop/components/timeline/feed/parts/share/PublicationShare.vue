@@ -1,10 +1,12 @@
 <template>
-	<PopupPanel>
-		<div class="block w-80 leading-normal">
-			<PanelHeader v-bind:title="$t('labels.share_post')"></PanelHeader>
-			<ShareContent v-bind:mediaOptions="mediaOptions" v-bind:link="postLink"></ShareContent>
-		</div>
-	</PopupPanel>
+	<div class="popup-card">
+		<PopupPanel>
+			<div class="block w-80 leading-normal">
+				<PanelHeader v-bind:title="$t('labels.share_post')"></PanelHeader>
+				<ShareContent v-bind:mediaOptions="mediaOptions" v-bind:link="postLink"></ShareContent>
+			</div>
+		</PopupPanel>
+	</div>
 </template>
 
 <script>

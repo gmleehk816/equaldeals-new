@@ -4,7 +4,7 @@
 	<div class="mb-6">
 		<x-page-title titleText="{{ __('business/settings.index_title') }}"></x-page-title>
 	</div>
-	<div class="block bg-input-pr rounded-2xl p-6">
+	<div class="block bg-bg-pr rounded-2xl p-6">
 		<div class="mb-3">
 			<div class="mb-24">
 				<h5 class="text-par-l font-semibold text-lab-pr2 mb-1">

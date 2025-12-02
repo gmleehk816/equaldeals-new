@@ -29,7 +29,9 @@ class ViewResource extends JsonResource
                 'user' => UserPreviewResource::make($this->user)
             ],
             'date' => [
-                'time_ago' => $this->viewed_at->getTimeAgo()
+                'time_ago' => $this->viewed_at->getTimeAgo(),
+                'time' => $this->viewed_at->getTime(),
+                'is_today' => $this->viewed_at->isToday()
             ]
         ];
     }

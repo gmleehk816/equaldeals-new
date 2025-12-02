@@ -39,6 +39,11 @@ class DateFormatter
 		return $this->carbon->format('d M, Y');
 	}
 
+	public function getGeneric()
+	{
+		return $this->carbon->format('Y-m-d');
+	}
+
 	public function getTimestamp()
 	{
 		return $this->timestamp;
@@ -57,5 +62,30 @@ class DateFormatter
 	public function getRemainingHours()
 	{
 		return floor(max(1, now()->diffInHours(Carbon::parse($this->getTimestamp()))));
+	}
+
+	public function getTime()
+	{
+		return $this->carbon->format('H:i');
+	}
+
+	public function isToday()
+	{
+		return $this->carbon->isToday();
+	}
+
+	public function isYesterday()
+	{
+		return $this->carbon->isYesterday();
+	}
+
+	public function isThisWeek()
+	{
+		return $this->carbon->isCurrentWeek();
+	}
+
+	public function isThisMonth()
+	{
+		return $this->carbon->isCurrentMonth();
 	}
 }

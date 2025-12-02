@@ -1,7 +1,4 @@
 <div>
-    <div class="mb-6">
-        <x-page-title titleText="{{ __('business/market.create_title') }}"></x-page-title>
-    </div>
     <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
         @csrf
         <x-accordion.form title="{{ __('business/market.form.base_info') }}">
@@ -134,7 +131,7 @@
             <div class="mb-2">
                 <div class="grid grid-cols-4 gap-2">
                     <div class="aspect-square" x-data>
-                        <button x-on:click="$refs.input.click()" type="button" class="border-2 border-fill-pr border-dashed size-full rounded-md px-4 text-brand-900 transition-all ease-linear hover:border-brand-900">
+                        <button x-on:click="$refs.input.click()" type="button" class="border-2 cursor-pointer border-fill-pr border-dashed size-full rounded-md px-4 text-brand-900 transition-all ease-linear hover:border-brand-900">
                             <span class="flex flex-col items-center justify-center size-full">
                                 <span class="size-6 mb-2">
                                     <x-ui-icon name="plus" type="solid"></x-ui-icon>
@@ -184,7 +181,7 @@
                     </x-slot:feedbackInfo>
                 </x-form.text-input>
             </div>
-            <div class="mb-10">
+            <div class="block">
                 <div class="flex mb-6 gap-2">
                     <x-ui.buttons.pill wire:attr.loading="disabled" type="submit" btnText="{{ route_is('business.market.create') ? __('business/market.form.create_button') : __('business/market.form.save_button') }}"></x-ui.buttons.pill>
 

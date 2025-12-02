@@ -17,6 +17,7 @@ namespace App\Actions\Post;
 
 use App\Models\Post;
 use App\Actions\Media\DeleteMediaAction;
+use App\Actions\Comment\DeleteCommentAction;
 
 class DeletePostAction
 {
@@ -43,7 +44,16 @@ class DeletePostAction
 
 		// TODO: Delete all quotes of the post, and polls and other related data.
 
-		$this->postData->user->decrementValue('publications_count', 1);
+		$this->postData->linkSnapshot()->delete();
+		$this->postData->reports()->delete();
+		$this->postData->poll()->delete();
+		$this->postData->reactions()->delete();
+
+		$this->postData->comments()->chunk(500, function ($comments) {
+			foreach ($comments as $comment) {
+				(new DeleteCommentAction($comment))->execute();
+			}
+		});
 
 		$this->postData->delete();
 	}

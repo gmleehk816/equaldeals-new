@@ -69,7 +69,7 @@ class ProcessStoryVideo implements ShouldQueue
                 $frameMedia->status = MediaStatus::PROCESSED;
                 $frameMedia->save();
                 
-                $this->frameData->duration_seconds = ($this->frameData->duration_seconds > config('story.video_clip_size')) ? config('story.video_clip_size') : $this->frameData->duration_seconds;
+                $this->frameData->duration_seconds = (intval($this->frameData->duration_seconds) > config('story.video_clip_size')) ? config('story.video_clip_size') : intval($this->frameData->duration_seconds);
                 $this->frameData->status = StoryStatus::ACTIVE;
 
                 $this->frameData->save();

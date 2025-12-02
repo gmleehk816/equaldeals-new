@@ -29,9 +29,9 @@
 
 <script>
 	import { defineComponent, ref, reactive, onMounted, inject } from 'vue';
-	import { useInfiniteScroll } from '@D/core/composables/infinite-scroll/index.js';
+	import { useInfiniteScroll } from '@/kernel/vue/composables/infinite-scroll/index.js';
 	import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
-	import { useDeletePost } from '@D/core/composables/delete-post/index.js';
+	import { useDeletePost } from '@/kernel/vue/composables/delete-post/index.js';
 
 	import TimelinePublicationSkeleton from '@D/components/timeline/feed/TimelinePublicationSkeleton.vue';
 	import TimelinePublication from '@D/components/timeline/feed/TimelinePublication.vue';
@@ -57,10 +57,14 @@
 
 			const fetchPosts = async () => {
 				try {
-					if(! state.isLoadingContent && ! state.noMoreContent && profilePosts.value.length) {
+					if(! state.isLoadingContent && ! state.noMoreContent) {
 						state.isLoadingContent = true;
 
-						const cursorId = profilePosts.value[profilePosts.value.length - 1].id;
+						let cursorId = 0;
+
+						if(profilePosts.value.length) {
+							cursorId = profilePosts.value.at(-1).id;
+						}
 
 						await colibriAPI().userProfile().params({
 							id: profileData.value.id,
@@ -95,14 +99,7 @@
 			});
 
 			onMounted(async () => {
-				await colibriAPI().userProfile().params({
-					id: profileData.value.id,
-					filter: {
-						type: props.contentType
-					}
-				}).getFrom('profile/posts').then(function(response) {
-					profilePosts.value = response.data.data;
-				});
+				await fetchPosts();
 
 				state.isLoading = false;
 			});

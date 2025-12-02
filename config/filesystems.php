@@ -27,7 +27,10 @@ return [
     | Supported Drivers: "local", "ftp", "sftp", "s3"
     |
     */
-    
+
+    // This is the main static storage disk.
+    'static_storage_disk' => env('STATIC_STORAGE_DISK', 'public'),
+
     'system_disks' => [
         // Never remove this disk (local). It is used for the internal storage.
         'local' => [

@@ -11,7 +11,7 @@
 				<div class="flex justify-center group-hover:-translate-y-2 smoothing">
 					<img class="size-24" v-bind:src="$asset('assets/icons/upload.png')" alt="Image">
 				</div>
-				<h5 class="text-par-n text-lab-pr2 tracking-tighter">
+				<h5 class="text-par-n text-lab-pr2">
 					{{ $t('story.story_drop_zone.title') }}
 				</h5>
 			</div>

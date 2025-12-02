@@ -1,42 +1,43 @@
 <template>
-    <PopupPanel v-outside-click="close">
-        <div class="p-2">
-            <PanelSearchBar v-on:input="searchGifs" v-bind:placeholder="$t('labels.search_gifs')"></PanelSearchBar>
-        </div>
-
-        <template v-if="initialLoading">
-            <div class="w-full h-16 flex items-center justify-center border-t border-fill-pr">
-                <span class="colibri-primary-animation"></span>
+    <div class="popup-card">
+        <PopupPanel>
+            <div class="p-2">
+                <PanelSearchBar v-on:input="searchGifs" v-bind:placeholder="$t('labels.search_gifs')"></PanelSearchBar>
             </div>
-        </template>
-        <template v-else>
-            <div class="max-h-96 overflow-y-auto">
-                <div class="grid grid-cols-3 gap-0.5">
-                    <div v-on:click="selectGif(gifItem)" v-for="gifItem in postGifs" v-bind:key="gifItem.id" class="relative overflow-hidden cursor-pointer group">
-                        <template v-if="gifItem.is_loading">
-                            <div class="absolute inset-0 w-full aspect-square h-full object-cover overflow-hidden">
-                                <div class="skeleton-square size-full"></div>
-                            </div>
-                        </template>
-                        <img v-on:load="gifItem.is_loading = false" v-bind:src="gifItem.url" loading="lazy" class="w-full aspect-square h-full object-cover smoothing bg-fill-tr hover:scale-105" alt="Image">
+    
+            <template v-if="initialLoading">
+                <div class="w-full h-16 flex items-center justify-center border-t border-fill-pr">
+                    <span class="colibri-primary-animation"></span>
+                </div>
+            </template>
+            <template v-else>
+                <div class="max-h-96 overflow-y-auto">
+                    <div class="grid grid-cols-3 gap-0.5">
+                        <div v-on:click="selectGif(gifItem)" v-for="gifItem in gifs" v-bind:key="gifItem.id" class="relative overflow-hidden cursor-pointer group">
+                            <template v-if="gifItem.is_loading">
+                                <div class="absolute inset-0 w-full aspect-square h-full object-cover overflow-hidden">
+                                    <div class="skeleton-square size-full"></div>
+                                </div>
+                            </template>
+                            <img v-on:load="gifItem.is_loading = false" v-bind:src="gifItem.url" loading="lazy" class="w-full aspect-square h-full object-cover smoothing bg-fill-tr hover:scale-105" alt="Image">
+                        </div>
                     </div>
                 </div>
-            </div>
-        </template>
-    </PopupPanel>
+            </template>
+        </PopupPanel>
+    </div>
 </template>
 
 <script>
-    import { defineComponent, computed, ref, onMounted } from 'vue';
+    import { defineComponent, ref, onMounted } from 'vue';
     import { giphyAPI } from '@/kernel/services/api-client/giphy/index.js';
+
     import PrimaryTextButton from '@D/components/inter-ui/buttons/PrimaryTextButton.vue';
     import PanelSearchBar from '@D/components/inter-ui/popups/parts/PanelSearchBar.vue';
     import PopupPanel from '@D/components/inter-ui/popups/PopupPanel.vue';
 
     export default defineComponent({
-        props: {
-        },
-        emits: ['close', 'selectgif'],
+        emits: ['select'],
         setup: function(props, context) {
 
             const gifs = ref([]);
@@ -74,9 +75,7 @@
 
             return {
                 initialLoading: initialLoading,
-                postGifs: computed(() => {
-                    return gifs.value;
-                }),
+                gifs: gifs,
                 searchGifs: async (searchText) => {
                     try {
                         let response = await giphyAPI().limit(12).search(searchText);
@@ -86,11 +85,8 @@
                         // Pass
                     }
                 },
-                close: () => {
-                    context.emit('close');
-                },
                 selectGif: (gifItem) => {
-                    context.emit('selectgif', gifItem);
+                    context.emit('select', gifItem);
                 }
             };
         },

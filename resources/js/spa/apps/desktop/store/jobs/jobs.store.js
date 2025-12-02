@@ -9,8 +9,7 @@ const useJobsStore = defineStore('jobs', {
 			filter: {},
 			job: null,
 			metadata: {},
-			bookmarkedJobs: [],
-			bookmarksCount: 0
+			bookmarkedJobs: []
 		};
 	},
 	getters: {
@@ -67,12 +66,6 @@ const useJobsStore = defineStore('jobs', {
 				filter: this.filter
 			}).sendTo('jobs');
 		},
-		incrementBookmarksCount: function() {
-			this.bookmarksCount += 1;
-		},
-		decrementBookmarksCount: function() {
-			this.bookmarksCount -= 1;
-		},
 		fetchJobs: async function() {
 			await this.makeLoadRequest().then((response) => {
 				this.jobs = response.data.data;
@@ -103,13 +96,6 @@ const useJobsStore = defineStore('jobs', {
 			return await colibriAPI().jobs().with({
 				id: id
 			}).sendTo('bookmarks/add');
-		},
-		fetchBookmarkedJobsCount: async function() {
-			await colibriAPI().jobs().getFrom('bookmarks/count').then((response) => {
-				this.bookmarksCount = response.data.data.count;
-			}).catch((error) => {
-				this.bookmarksCount = 0;
-			});
 		},
 		resetFilter: function() {
 			this.filter = {};

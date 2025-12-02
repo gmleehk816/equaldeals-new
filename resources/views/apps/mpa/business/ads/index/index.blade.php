@@ -15,32 +15,29 @@
         </x-tabs.tabs>
     </div>
 
-    <x-content>
-        @if($adsList->isNotEmpty())
-            <x-timeline-container>
-                @foreach ($adsList as $adData)
-                    @include('business::ads.parts.index.ad-card', [
-                        'adData' => $adData
-                    ])
-                @endforeach
-            </x-timeline-container>
+    @if($adsList->isNotEmpty())
+        <div class="grid grid-cols-3 gap-4">
+            @foreach ($adsList as $adData)
+                @include('business::ads.parts.index.ad-card', [
+                    'adData' => $adData
+                ])
+            @endforeach
+        </div>
+    @else
+        @if($type == 'all')
+            <x-page-states.empty
+                title="{{ __('business/ads.empty_state.index_all.title') }}"
+            desc="{{ __('business/ads.empty_state.index_all.desc') }}"></x-page-states.empty>
+        @elseif($type == 'active')
+            <x-page-states.empty
+                title="{{ __('business/ads.empty_state.index_active.title') }}"
+            desc="{{ __('business/ads.empty_state.index_active.desc') }}"></x-page-states.empty>
         @else
-            @if($type == 'all')
-                <x-page-states.empty
-                    title="{{ __('business/ads.empty_state.index_all.title') }}"
-                desc="{{ __('business/ads.empty_state.index_all.desc') }}"></x-page-states.empty>
-            @elseif($type == 'active')
-                <x-page-states.empty
-                    title="{{ __('business/ads.empty_state.index_active.title') }}"
-                desc="{{ __('business/ads.empty_state.index_active.desc') }}"></x-page-states.empty>
-            @else
-                <x-page-states.empty
-                    title="{{ __('business/ads.empty_state.index_archived.title') }}"
-                desc="{{ __('business/ads.empty_state.index_archived.desc') }}"></x-page-states.empty>
-            @endif
+            <x-page-states.empty
+                title="{{ __('business/ads.empty_state.index_archived.title') }}"
+            desc="{{ __('business/ads.empty_state.index_archived.desc') }}"></x-page-states.empty>
         @endif
-    </x-content>
-
+    @endif
     @unless($adsList->isEmpty())
         <div class="mt-4">
             {{ $adsList->onEachSide(1)->withQueryString()->links('pagination.index') }}

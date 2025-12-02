@@ -1,4 +1,4 @@
-<header class="border-b border-fill-pr fixed top-0 left-0 right-0 bg-bg-pr/80 backdrop-blur-xs" style="min-width: 320px;">
+<header class="fixed top-0 left-0 right-0 bg-bg-pr/80 backdrop-blur-xs" style="min-width: 320px;">
     <div class="h-14 flex justify-between px-4 md:px-8 items-center relative">
         <div class="text-lab-pr text-par-m font-medium hidden md:block">
             @guest

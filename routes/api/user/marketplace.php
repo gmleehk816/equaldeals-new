@@ -20,5 +20,4 @@ Route::get('/products/{productId}', [App\Http\Controllers\Api\User\Market\Market
 Route::get('/categories', [App\Http\Controllers\Api\User\Market\MarketController::class, 'getCategories']);
 Route::get('/metadata', [App\Http\Controllers\Api\User\Market\MarketController::class, 'getMetadata']);
 Route::get('/bookmarks', [App\Http\Controllers\Api\User\Market\MarketController::class, 'getBookmarks']);
-Route::get('/bookmarks/count', [App\Http\Controllers\Api\User\Market\MarketController::class, 'getBookmarksCount']);
 Route::post('/bookmarks/add', [App\Http\Controllers\Api\User\Market\MarketController::class, 'bookmark']);

@@ -27,7 +27,7 @@ class FollowRecommendController extends Controller
 
     public function getFollowRecommendations(Request $request)
     {
-        $limit = $request->integer('limit', 5);
+        $limit = $request->integer('limit', config('recommend.follow_recommendation_limit'));
 
         $recommendations = (new FetchFollowRecommendation())->handle($limit);
 

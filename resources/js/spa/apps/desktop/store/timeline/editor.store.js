@@ -20,9 +20,6 @@ const usePostEditorStore = defineStore('post_editor_store', {
         pollChoices: (state) => {
             return state.draftPost.relations.poll.choices;
         },
-        initialPostType: (state) => {
-            return state.initialType;
-        },
         isSensitive: (state) => {
             return state.marks.isSensitive;
         },

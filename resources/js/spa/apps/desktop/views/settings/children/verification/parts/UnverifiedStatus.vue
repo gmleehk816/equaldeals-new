@@ -25,11 +25,11 @@
 
 		<div class="flex gap-4">
 			<a v-bind:href="$config('verification.service_url')" target="_blank">
-				<PrimaryPillButton buttonRole="accent" v-bind:buttonText="$t('settings.forms.verification_settings.apply_verification_button')" buttonSize="lm"></PrimaryPillButton>
+				<PrimaryPillButton v-bind:buttonText="$t('settings.forms.verification_settings.apply_verification_button')"></PrimaryPillButton>
 			</a>
 
-			<RouterLink v-bind:to="{ name: 'home_page' }">
-				<PrimaryPillButton v-bind:buttonText="$t('labels.cancel')" buttonSize="lm"></PrimaryPillButton>
+			<RouterLink v-bind:to="{ name: 'home_index' }">
+				<PrimaryPillButton buttonRole="danger" v-bind:buttonText="$t('labels.cancel')"></PrimaryPillButton>
 			</RouterLink>
 		</div>
 	</div>

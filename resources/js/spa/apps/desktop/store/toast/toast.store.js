@@ -1,6 +1,6 @@
 import { defineStore } from 'pinia';
 
-const useToastNotificationsStore = defineStore('toast_notifications_store', {
+const useToastNotificationsStore = defineStore('mobile_toast_notifications_store', {
     state: function() {
 		return {
 			toastNotifications: []
@@ -12,14 +12,14 @@ const useToastNotificationsStore = defineStore('toast_notifications_store', {
         }
     },
     actions: {
-        add: function(content, duration = 5000) {
+        add: function(content, duration = 5000, type = 'success') {
             const id = Date.now();
 
             this.toastNotifications.push({
                 id: id,
                 text: content,
                 duration: duration,
-                type: 'success'
+                type: type
             });
 
             setTimeout(() => {

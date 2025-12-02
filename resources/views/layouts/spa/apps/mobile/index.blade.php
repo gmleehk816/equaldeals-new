@@ -11,10 +11,17 @@
 
         @vite([
             'resources/js/spa/apps/mobile/bootstrap/application.js',
-            'resources/fonts/sf-pro/stylesheet.css'
+            config('assets.fonts.sans'),
+            config('assets.fonts.mono')
         ])
 
-		@vite('resources/css/spa/apps/mobile/main.css')
+        @if(theme_name() == 'dark')
+            <link rel="stylesheet" href="{{ asset('build/assets/mobile-main-dark.css') }}?v={{ $buildNumber }}">
+        @else
+            @vite('resources/css/spa/apps/mobile/main.css')
+        @endif
+
+        @include('layouts.spa.apps.parts.pwa')
     </head>
     <body>
         <x-device-switcher.mobile></x-device-switcher.mobile>

@@ -1,7 +1,7 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-	<div class="mb-8">
+	<div class="mb-4">
 		<x-page-title titleText=" {{ __('admin/storage.index_title') }}"></x-page-title>
 		<x-page-desc>
 			{{ __('admin/storage.index_desc') }}
@@ -15,6 +15,18 @@
 		
 		<div class="flex flex-col gap-4">
 			@foreach($roundRobinDisks as $diskData)
+				@include('admin::config.storage.index.parts.disk-item', [
+					'diskData' => $diskData
+				])
+				@include('admin::config.storage.index.parts.disk-item', [
+					'diskData' => $diskData
+				])
+				@include('admin::config.storage.index.parts.disk-item', [
+					'diskData' => $diskData
+				])
+				@include('admin::config.storage.index.parts.disk-item', [
+					'diskData' => $diskData
+				])
 				@include('admin::config.storage.index.parts.disk-item', [
 					'diskData' => $diskData
 				])

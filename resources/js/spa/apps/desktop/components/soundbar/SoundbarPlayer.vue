@@ -14,18 +14,14 @@
                             <div class="block">
                                 <div class="flex items-center h-14">
                                     <div class="shrink-0 inline-flex items-center gap-3">
-                                        <button class="size-icon-normal shrink-0 text-lab-pr3 outline-hidden">
-                                            <SvgIcon type="solid" name="skip-back" classes="size-full"></SvgIcon>
-                                        </button>
-                                        <button v-if="playerState.playing" v-on:click="pauseAudio" class="size-icon-small shrink-0 text-lab-pr3 outline-hidden">
+                                        <!-- Icon:skip-back -->
+                                        <button v-if="playerState.playing" v-on:click="pauseAudio" class="size-icon-small cursor-pointer shrink-0 text-lab-pr3 outline-hidden">
                                             <SvgIcon type="solid" name="pause" classes="size-full"></SvgIcon>
                                         </button>
-                                        <button v-else v-on:click="playAudio" class="size-icon-small shrink-0 text-lab-pr3 outline-hidden">
+                                        <button v-else v-on:click="playAudio" class="size-icon-small cursor-pointer shrink-0 text-lab-pr3 outline-hidden">
                                             <SvgIcon type="solid" name="play" classes="size-full"></SvgIcon>
                                         </button>
-                                        <button class="size-icon-normal shrink-0 text-lab-pr3 outline-hidden">
-                                            <SvgIcon type="solid" name="skip-forward" classes="size-full"></SvgIcon>
-                                        </button>
+                                        <!-- Icon:skip-forward -->
                                     </div>
                                     <div class="w-content px-1 ml-6">
                                         <div class="flex items-center w-full">
@@ -41,22 +37,19 @@
                                         </div>
                                     </div>
                                     <div class="shrink-0 inline-flex items-center ml-2">
-                                        <button v-on:click="muteAudio" v-if="playerState.isMuted" class="size-icon-normal shrink-0 text-lab-pr3 outline-hidden">
+                                        <button v-on:click="muteAudio" v-if="playerState.isMuted" class="size-icon-normal cursor-pointer shrink-0 text-lab-pr3 outline-hidden">
                                             <SvgIcon type="solid" name="volume-x" classes="size-full"></SvgIcon>
                                         </button>
-                                        <button v-on:click="muteAudio" v-else class="size-icon-normal shrink-0 text-lab-pr3 outline-hidden">
+                                        <button v-on:click="muteAudio" v-else class="size-icon-normal shrink-0 text-lab-pr3 outline-hidden cursor-pointer">
                                             <SvgIcon type="solid" name="volume-max" classes="size-full"></SvgIcon>
                                         </button>
                                     </div>
                                     <div class="shrink-0 inline-flex items-center ml-2 w-10 justify-center outline-hidden">
-                                        <button v-on:click="changeSpeedRate" class="shrink-0 uppercase w-full font-semibold text-par-s text-lab-pr3 opacity-90 smoothing hover:text-brand-900">
+                                        <button v-on:click="changeSpeedRate" class="shrink-0 cursor-pointer outline-hidden uppercase w-full font-semibold text-par-s text-lab-pr3 opacity-90 smoothing hover:text-brand-900">
                                             {{ playerState.rate }}x
                                         </button>
                                     </div>
                                     <div class="shrink-0 inline-flex items-center ml-4">
-                                        <div class="size-7 inline-flex-center rounded-full overflow-hidden bg-fill-pr">
-        
-                                        </div>
                                         <div class="ml-2 max-w-60 overflow-hidden">
                                             <h4 class="text-lab-pr2 text-par-s font-medium">
                                                 {{ audioData.metadata.file_name }}
@@ -109,8 +102,6 @@
                     src: [audioData.value.source_url],
                     rate: playerState.value.rate,
                     mute: playerState.value.isMuted,
-                    onload: () => {
-                    },
                     onplay: function() {
                         startProgressUpdater();
                         audioStore.updateStateValue('playing', true);
@@ -270,9 +261,6 @@
 
                     audioFile.value.rate(playerState.value.rate);
                 },
-                playerErrors: computed(() => {
-                    return playerState.value.errors;
-                }),
                 closeSoundbar: () => {
                     audioFile.value.stop();
                     audioFile.value.unload();

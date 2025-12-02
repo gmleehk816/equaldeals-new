@@ -2,7 +2,7 @@
 
 @section('pageContent')
 <div x-data="alpineComponent">
-	<div class="mb-8">
+	<div class="mb-4">
         <x-page-title titleText=" {{ __('admin/posts.show_title') }}"></x-page-title>
         <x-page-desc>
             {{ __('admin/posts.show_desc') }}
@@ -14,7 +14,7 @@
 			<x-entity.previews.publication :postData="$postData"></x-entity.previews.publication>
 		</x-slot:sideContent>
 
-		<div class="mb-4">
+		<div class="mb-8">
 			<x-entity.header 
 				avatarUrl="{{ $postData->user->avatar_url }}" 
 				name="{{ $postData->user->name }}"
@@ -167,11 +167,6 @@
 				</x-slot:labelValue>
 			</x-striped-table.row>
 		</x-striped-table.table>
-		<div class="mt-6">
-			<a href="{{ $postData->url }}" target="_blank">
-				<x-ui.buttons.pill btnText="{{ __('admin/dd.post.view_publication') }}"></x-ui.buttons.pill>
-			</a>
-		</div>
 	</x-sided-content>
 </div>
 

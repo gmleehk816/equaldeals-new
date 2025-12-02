@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-        <div ref="publicationTextHolder" v-bind:class="[!state.textExpanded ? 'line-clamp-[12]' : '']" class="leading-5 text-lab-pr2 text-par-m font-normal tracking-normal publication-text break-words" v-html="markdownRenderer()"></div>
+        <div ref="publicationTextHolder" v-bind:class="[!state.textExpanded ? 'line-clamp-[12]' : '']" class="leading-6 text-lab-pr2 text-par-l font-normal markdown-text break-words" v-html="markdownRenderer()"></div>
         <div v-if="state.textOverflow" class="block opacity-90">
             <button v-on:click="state.textExpanded = !state.textExpanded" class="text-par-s text-brand-900 underline outline-hidden font-light">
                 {{ state.textExpanded ? $t('labels.show_less') : $t('labels.show_more') }}

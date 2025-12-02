@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-        <label v-if="hasLabel" class="mb-1 font-normal tracking-normal block text-lab-pr3 text-par-s">
+        <label v-if="hasLabel" class="mb-1 font-normal block text-lab-pr3 text-par-s">
             {{ labelText }}
         </label>
         <div class="block relative bg-fill-qt overflow-hidden rounded-xl border border-bord-tr">
@@ -10,7 +10,7 @@
                 v-bind:value="modelValue"
 				v-bind:placeholder="placeholder"
                 v-bind:name="name"
-			class="w-full text-par-n h-12 bg-transparent tracking-normal outline-hidden pl-4 font-medium placeholder:text-lab-tr placeholder:text-par-n text-lab-pr2">
+			class="w-full text-par-n h-12 bg-transparent outline-hidden pl-4 font-medium placeholder:text-lab-tr placeholder:text-par-n text-lab-pr2">
 
             <div v-if="modelValue" class="absolute right-0 top-0 bottom-0 size-12 inline-flex-center">
                 <PrimaryIconButton

@@ -36,7 +36,7 @@ class ImageUploadService extends AbstractUploadService
         $this->manager = new ImageManager(new Driver());
 
         if (is_string($imagePath) && file_exists($imagePath)) {
-            $this->image = $this->manager->read($imagePath);
+            $this->image = $this->manager->read($imagePath)->orient();
         } else {
             throw new Exception("Invalid image source.");
         }

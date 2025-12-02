@@ -12,7 +12,6 @@
 		<x-table.thead>
 			<x-table.th>{{ __('table.labels.author') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.content') }}</x-table.th>
-			<x-table.th>{{ __('table.labels.media') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.type') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.comments') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.views') }}</x-table.th>

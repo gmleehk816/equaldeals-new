@@ -1,5 +1,5 @@
 <template>
-	<span v-bind:class="[color]" class="font-mono inline-block h-[17px] text-[10px] !text-white rounded-full px-1.5 leading-[17px] align-middle">
+	<span v-bind:class="[color]" class="font-mono inline-block h-[17px] text-[10px] rounded-full px-1.5 leading-[17px] align-middle">
 		{{ count }}
 	</span>
 </template>
@@ -15,7 +15,7 @@
 			},
 			color: {
 				type: String,
-				default: 'bg-red-900'
+				default: 'bg-red-900 !text-white'
 			}
 		}
 	});

@@ -6,14 +6,9 @@
 		@if(empty($postData->content))
 			<x-table.empty-cell />
 		@else
-			{{ truncate_text($postData->content, 22) }}
-		@endif
-	</x-table.td>
-	<x-table.td variant="muted">
-		@if($postData->type->isMedia())
-			{{ $postData->media_count }}
-		@else
-			<x-table.empty-cell />
+			<a class="hover:underline" href="{{ route('admin.posts.show', $postData->id) }}">
+				{{ truncate_text($postData->content, 22) }}
+			</a>
 		@endif
 	</x-table.td>
 	<x-table.td variant="muted">
@@ -32,8 +27,10 @@
 		{{ $postData->id }}
 	</x-table.td>
 	<x-table.td>
-		<a href="{{ route('admin.posts.show', $postData->id) }}">
-			<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
-		</a>
+		<div class="flex justify-end">
+			<a href="{{ route('admin.posts.show', $postData->id) }}">
+				<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
+			</a>
+		</div>
 	</x-table.td>
 </x-table.tr>

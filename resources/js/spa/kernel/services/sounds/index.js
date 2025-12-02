@@ -14,10 +14,13 @@ const colibriSounds = {
 	notificationReceived: function() {
 		colibriSounds.playSound(colibriSounds.sounds.notification.received);
 	},
+	uiFeedback: function() {
+		colibriSounds.playSound(colibriSounds.sounds.notification.ui_feedback);
+	},
 	playSound: function(soundSourceUrl) {
 		let sound = new Howl({
 			src: [soundSourceUrl],
-			volume: 0.3
+			volume: 0.5
 		});
 
 		sound.play();

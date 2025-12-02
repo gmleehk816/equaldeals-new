@@ -84,7 +84,7 @@
 <script>
     import { defineComponent, computed } from 'vue';
     import { Arr } from '@/kernel/helpers/javascript/index.js';
-    import ProgressiveImageLoader from '@D/components/media/image/ProgressiveImageLoader.vue';
+    import ProgressiveImageLoader from '@/kernel/vue/components/media/image/ProgressiveImageLoader.vue';
 
     export default defineComponent({
         props: {

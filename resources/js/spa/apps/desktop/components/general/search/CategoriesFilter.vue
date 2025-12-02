@@ -1,10 +1,10 @@
 <template>
     <nav class="flex gap-2 flex-wrap">
         <div v-for="categoryItem in categories"
-            class="  rounded-full px-4 py-3 leading-none cursor-pointer"
+            class="rounded-full px-3.5 py-2.5 leading-none cursor-pointer"
             v-on:click="selectCategory(categoryItem)"
-        v-bind:class="[(categoryItem.id == selected) ? 'bg-badge-pr text-lab-pr border border-transparent' : 'border border-bord-pr text-lab-pr2']">
-            <span class="text-par-n font-medium tracking-normal">{{ categoryItem.name }}</span>
+        v-bind:class="[(categoryItem.id == selected) ? 'bg-badge-pr text-lab-pr' : 'bg-fill-qt text-lab-pr2']">
+            <span class="text-par-n font-medium">{{ categoryItem.name }}</span>
         </div>
     </nav>
 </template>

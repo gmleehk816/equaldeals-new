@@ -2,7 +2,7 @@
 
 @section('pageContent')
 <div x-data="alpineComponent">
-	<div class="mb-8">
+	<div class="mb-4">
         <x-page-title titleText=" {{ __('admin/stories.show_title') }}"></x-page-title>
         <x-page-desc>
             {{ __('admin/stories.show_desc') }}
@@ -14,7 +14,7 @@
 			<x-entity.previews.story :storyData="$storyData"></x-entity.previews.story>
 		</x-slot:sideContent>
 
-		<div class="mb-4">
+		<div class="mb-8">
 			<x-entity.header 
 				avatarUrl="{{ $storyData->story->user->avatar_url }}" 
 				name="{{ $storyData->story->user->name }}"

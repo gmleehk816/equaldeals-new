@@ -6,7 +6,14 @@
 		{{ $userData->email }}
 	</x-table.td>
 	<x-table.td variant="muted">
-		{{ $userData->country_name }}
+		{{ $userData->type->label() }} {{ $userData->type->emoji() }}
+	</x-table.td>
+	<x-table.td variant="muted">
+		@if($userData->country_name)
+			{{ $userData->country_name }}
+		@else
+			<x-table.empty-cell></x-table.empty-cell>
+		@endif
 	</x-table.td>
 	<x-table.td variant="muted">
 		{{ $userData->ip_address }}

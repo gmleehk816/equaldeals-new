@@ -1,7 +1,7 @@
 <template>
 	<Teleport v-if="state.isOpen" to="body">
-		<ContentModal>
-			<ModalHeader v-on:close="closeReportModal" v-bind:modalTitle="$t('labels.report')"></ModalHeader>
+		<ContentModal v-on:close="closeReportModal">
+			<ModalHeader v-bind:modalTitle="$t('labels.report')"></ModalHeader>
 
 			<div v-if="state.isLoading" class="flex justify-center py-12">
 				<PrimaryDotsAnimation></PrimaryDotsAnimation>
@@ -13,7 +13,7 @@
 							<SvgIcon name="alert-hexagon"></SvgIcon>
 						</div>
 					</div>
-					<h3 class="text-title-3 font-bold tracking-tighter text-lab-pr2">
+					<h3 class="text-title-3 font-bold text-lab-pr2">
 						{{ reportInfo.title }}
 					</h3>
 					<p class="text-par-s text-lab-sc">
@@ -29,9 +29,7 @@
 					<PrimaryPillButton
 						v-bind:disabled="state.selectedReasonIndex === null"
 						v-bind:buttonText="$t('labels.send_report')"
-						buttonSize="lm"
 						buttonType="button"
-						buttonRole="accent"
 						v-on:click="sendReport"
 					v-bind:buttonFluid="true"></PrimaryPillButton>
 				</div>
@@ -42,10 +40,8 @@
 
 <script>
 	import { computed, defineComponent, onMounted, onUnmounted, reactive } from 'vue';
-	import { useI18n } from 'vue-i18n';
 	import { colibriEventBus } from '@/kernel/events/bus/index.js';
 	import { useReportStore } from '@/apps/desktop/store/report/report.store.js';
-	import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
 
 	import ContentModal from '@D/components/general/modals/ContentModal.vue';
 	import ModalHeader from '@D/components/general/modals/parts/ModalHeader.vue';
@@ -61,9 +57,7 @@
 				selectedReasonIndex: null
 			});
 
-			const { t } = useI18n();
 			const reportStore = useReportStore();
-			const toastNotifier = new ToastNotifier();
 
 			const openReportModal = async (data) => {
 				state.isOpen = true;
@@ -75,6 +69,8 @@
 				}
 				
 				state.isLoading = false;
+
+				document.body.style.overflow = 'hidden';
 			};
 
 			const closeReportModal = () => {
@@ -83,6 +79,8 @@
 				state.reportType = null;
 				state.reportableId = null;
 				state.selectedReasonIndex = null;
+
+				document.body.style.overflow = 'auto';
 			};
 
 			onMounted(() => {
@@ -115,7 +113,7 @@
 						reportable_id: state.reportableId
 					});
 
-					toastNotifier.notifyShort(t('toast.report_sent'));
+					toastSuccess(__t('toast.report_sent'));
 
 					closeReportModal();
 				}

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\User\Feedback;
 use Exception;
 use App\Models\Post;
 use App\Models\User;
+use App\Models\Group;
 use Illuminate\Http\Request;
 use Illuminate\Validation\Rule;
 use App\Enums\Report\ReportType;
@@ -61,6 +62,10 @@ class ReportController extends Controller
 
             $reportableData = $this->fetchReportableData($reportableId, $reportableType);
 
+            // Delete all prev report, in case if user repeats this actions.
+            
+            $reportableData->reports()->where('reporter_id', me()->id)->delete();
+
             $reportableData->reports()->create([
                 'reporter_id' => me()->id,
                 'reason_index' => $reportReasonIndex,
@@ -90,6 +95,8 @@ class ReportController extends Controller
                 break;
             case 'user':
                 $reportableData = User::activeById($reportableId)->excludeSelf()->first();
+            case 'group':
+                $reportableData = Group::active()->where('id', $reportableId)->first();
                 break;
         }
 

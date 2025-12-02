@@ -17,7 +17,7 @@ namespace App\Http\Controllers\Business\Ads;
 
 use App\Enums\Ad\AdStatus;
 use Illuminate\Http\Request;
-use App\Actions\Ad\AdDeleteAction;
+use App\Actions\Ad\DeleteAdAction;
 use App\Http\Controllers\Controller;
 
 class AdsController extends Controller
@@ -88,7 +88,7 @@ class AdsController extends Controller
     {
         $adData = me()->advertising()->findOrFail($adId);
 
-        (new AdDeleteAction($adData))->execute();
+        (new DeleteAdAction($adData))->execute();
 
         return redirect()->route('business.ads.index');
     }

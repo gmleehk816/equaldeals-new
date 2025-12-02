@@ -6,6 +6,7 @@
     import { defineComponent, computed } from 'vue';
     import { useAudioStore } from '@D/store/audio/audio.store.js';
     import { useUIStore } from '@D/store/global/ui.store.js';
+    
     import SoundbarPlayer from '@D/components/soundbar/SoundbarPlayer.vue';
 
     export default defineComponent({

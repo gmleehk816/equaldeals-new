@@ -3,8 +3,8 @@
     'iconType' => 'solid',
     'color' => 'default',
     'colors' => [
-        'default' => 'text-lab-sc',
-        'strong' => 'text-lab-pr',
+        'default' => 'text-lab-pr3',
+        'strong' => 'text-lab-pr2',
         'muted' => 'text-lab-tr',
         'success' => 'text-green-900',
         'danger' => 'text-red-900',

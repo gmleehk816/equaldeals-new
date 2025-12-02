@@ -16,6 +16,7 @@
 use Illuminate\Support\Facades\Route;
 
 Route::get('/feed', [App\Http\Controllers\Api\User\Timeline\FeedController::class, 'getFeed']);
+Route::get('/update', [App\Http\Controllers\Api\User\Timeline\FeedController::class, 'getFeedUpdate']);
 
 Route::get('/post/{hashId}', [App\Http\Controllers\Api\User\Timeline\FeedController::class, 'getPostData']);
 

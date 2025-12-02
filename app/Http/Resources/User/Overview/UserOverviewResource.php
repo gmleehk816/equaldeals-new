@@ -12,12 +12,14 @@ class UserOverviewResource extends JsonResource
     public function toArray(Request $request): array
     {
         return [
+            'id' => $this->id,
             'name' => $this->name,
             'username' => $this->username,
             'caption' => (empty($this->caption)) ? null : $this->caption,
             'avatar_url' => $this->avatar_url,
             'description' => $this->bio,
             'verified' => $this->isVerified(),
+            'is_me' => me()->id === $this->id,
             'followers_count' => [
                 'raw' => $this->followers_count,
                 'formatted' => Num::abbreviate($this->followers_count)
@@ -29,7 +31,18 @@ class UserOverviewResource extends JsonResource
             'meta' => [
                 'relationship' => [
                     Relationship::FOLLOW_GROUP => [
-                        Relationship::FOLLOWED_BY => $this->isFollowing(me())
+                        Relationship::FOLLOWED_BY => $this->isFollowing(me()),
+                        Relationship::FOLLOWING => me()->isFollowing($this->resource),
+                        Relationship::REQUESTED_BY => false,
+                        Relationship::REQUESTED => me()->followRequested($this->resource)
+                    ],
+                    Relationship::BLOCK_GROUP => [
+                        Relationship::BLOCKING => false,
+                        Relationship::BLOCKED_BY => false
+                    ],
+                    Relationship::MUTING_GROUP => [
+                        Relationship::MUTING => false,
+                        Relationship::MUTING_NOTIFICATIONS => false
                     ]
                 ]
             ]

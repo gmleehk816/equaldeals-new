@@ -4,7 +4,7 @@
 			<AvatarExtraSmall v-bind:avatarSrc="userData.avatar_url"></AvatarExtraSmall>
 		</div>
 		<div class="flex-1 ml-1">
-			<h4 class="text-par-n font-medium text-lab-pr2 truncate tracking-tighter">
+			<h4 class="text-par-n font-medium text-lab-pr2 truncate">
 				{{ userData.name }}
 				<VerificationBadge v-if="userData.verification.status" size="xs"></VerificationBadge>
 			</h4>

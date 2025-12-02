@@ -1,12 +1,15 @@
 /* Desktop specific styles */
 
-.font-smoothing{
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-}
-
 body.sticky-bar-open {
     @apply pb-14;
+}
+
+.svg-icon{
+    stroke-width: 2;
+}
+
+.svg-icon path{
+    stroke-width: 2;
 }
 
 body.sticky-bar-open .sticky-bar-bottom-offset{
@@ -18,19 +21,19 @@ body.sticky-bar-open .sticky-bar-bottom-fix{
 }
 
 .marginal-link{
-    @apply text-cap-l tracking-tight text-brand-900 hover:underline;
+    @apply text-cap-l text-brand-900 hover:underline;
 }
 
 .sidenav-active span{
-    @apply text-lab-pr2 font-medium;
+    @apply text-lab-pr font-medium;
 }
 
 .sidenav-inactive span{
     @apply first:text-lab-pr2 last:text-lab-pr2;
 }
 
-.active-settings-tab{
-    @apply relative after:content-[''] after:absolute after:top-0 after:h-12 after:right-0 after:w-1 after:bg-brand-900 after:rounded-tl-md after:rounded-tr-md;
+.active-settings-tab .link-item-container{
+    @apply bg-fill-qt rounded-xl;
 }
 
 .h-screen-with-scroll{
@@ -109,22 +112,12 @@ body.sticky-bar-open .sticky-bar-bottom-fix{
     @apply px-3 py-2 block text-par-n text-lab-pr2 truncate;
 }
 
-.base-publication div.publication-text a{
-    @apply text-brand-900 hover:opacity-80;
+.markdown-text code {
+    @apply border text-lab-pr px-2 py-2 border-l-5 border-bord-pr rounded-r-2xl text-par-n overflow-hidden break-words rounded-md block;
 }
 
-/* Replace all base-publication, base-comment to common context text class. */
-
-.base-publication div.publication-text code, .base-comment .comment-text code {
-    @apply bg-lab-pr2 text-bg-pr px-2 py-1 border-l-4 border-red-900 overflow-hidden break-words rounded-md block;
-}
-
-.base-comment .comment-text a{
-    @apply text-brand-900 hover:opacity-80;
-}   
-
-.content-text a{
-    @apply text-brand-900 hover:opacity-80;
+.markdown-text a {
+    @apply text-brand-900 hover:opacity-80 font-medium;
 }
 
 .bounce-up {
@@ -140,16 +133,20 @@ body.sticky-bar-open .sticky-bar-bottom-fix{
     }
 }
 
-.popup-background-pr{
+.popup-background-pr {
     @apply backdrop-blur-xs bg-bg-pr/80;
 }
 
-.popup-background-sc{
+.popup-background-sc {
     @apply backdrop-blur-xs bg-bg-pr/90;
 }
 
-.popup-background-tr{
+.popup-background-tr {
     @apply backdrop-blur-xs bg-bg-pr/95;
+}
+
+.popup-card {
+    @apply overflow-hidden rounded-2xl border border-fill-qt/50 shadow-2xl;
 }
 
 .active-tab{
@@ -161,9 +158,27 @@ body.sticky-bar-open .sticky-bar-bottom-fix{
 }
 
 .active-tab-link{
-    @apply relative after:content-[''] after:absolute after:-bottom-px after:left-0 after:w-full after:h-1 after:rounded-tl-sm after:rounded-tr-sm after:bg-brand-900;
+    @apply relative after:content-[''] after:absolute after:-bottom-px after:left-0 after:w-full after:h-0.5 after:bg-lab-pr;
 }
 
 .auth-content{
     width: 400px;
+}
+
+.backdrop-close-button-container-top-right{
+    @apply fixed top-4 right-6 2xl:top-8 2xl:right-8 inline-block;
+}
+
+.backdrop-close-button-container-top-left{
+    @apply fixed top-4 left-6 2xl:top-8 2xl:left-8 inline-block;
+}
+
+.hidden-scroll{
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+}
+
+.hidden-scroll::-webkit-scrollbar{
+    display: none;
 }

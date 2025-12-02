@@ -50,18 +50,18 @@ class AuthController extends Controller
         ]);
     }
 
-    public function forgotSuccess(string $token)
+    public function forgotSuccess(string $hash_id)
     {
-        $confirmationData = $this->getTokenData($token);
+        $confirmationData = $this->getTokenDataByHashId($hash_id);
 
         return view('auth::forgot-success', [
             'confirmationData' => $confirmationData
         ]);
     }
 
-    public function signupSuccess(string $token)
+    public function signupSuccess(string $hashId)
     {
-        $confirmationData = $this->getTokenData($token);
+        $confirmationData = $this->getTokenDataByHashId($hashId);
 
         return view('auth::signup-success', [
             'confirmationData' => $confirmationData
@@ -109,6 +109,11 @@ class AuthController extends Controller
         $confirmationData->delete();
 
         return redirect()->route('user.onboarding.index', 'one');
+    }
+
+    private function getTokenDataByHashId(string $hash_id)
+    {
+        return EmailConfirmation::whereHashId($hash_id)->firstOrFail();
     }
 
     private function getTokenData($token)

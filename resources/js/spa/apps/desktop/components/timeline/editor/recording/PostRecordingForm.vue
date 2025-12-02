@@ -1,40 +1,53 @@
 <template>
-    <PopupPanel>
-        <div class="flex justify-between px-3 pt-3 pb-1.5">
-            <p class="text-lab-sc text-par-s">{{ $t('editor.recording_audio') }}</p>
-        </div>
-        <div class="px-3">
-            <div class="border-b-2" v-bind:class="[recorderState.isRecording ? 'border-brand-900' : 'border-fill-pr']">
-                <canvas ref="waveformCanvas" id="waveform" class="w-full h-6"></canvas>
-            </div>
-        </div>
-        <div class="flex justify-between px-3 py-3 items-end">
-            <div class="shrink-0 mr-4">
-                <h4 class="text-lab-pr2 text-title-1 tracking-tighter">
-                    {{ $filters.formatTime(recorderState.recordingTime.seconds) }} <span class="text-lab-sc text-par-l">{{ recorderState.recordingTime.milliseconds.toString().toString().padStart(2, '0') }}</span>
-                </h4>
-            </div>
-            
-            <div class="shrink-0">
-                <div class="inline-flex-center size-7 bg-transparent ring-2 ring-fill-pr overflow-hidden outline-hidden rounded-full">
-                    <button v-if="recorderState.isRecording" v-on:click="stopRecording" type="button" class="inline-block size-4 rounded-xs bg-red-600"></button>
-                    <button v-else v-on:click="startRecording" type="button" class="inline-block size-full bg-red-600"></button>
+    <div class="popup-card">
+        <PopupPanel>
+            <div class="py-5">
+                <div class="px-4 pb-1.5">
+                    <h3 class="text-lab-pr2 text-par-m font-medium">{{ $t('editor.recording_audio') }}</h3>
+                </div>
+                <div class="px-4 py-6">
+                    <div class="border-b-2" v-bind:class="[recorderState.isRecording ? 'border-brand-900' : 'border-fill-pr']">
+                        <canvas ref="waveformCanvas" id="waveform" class="w-full h-6"></canvas>
+                    </div>
+                </div>
+                <div class="">
+                    <div class="mb-8">
+                        <h4 class="text-lab-pr2 text-title-1 text-center mb-2">
+                            {{ $filters.formatTime(recorderState.recordingTime.seconds) }} 
+                        </h4>
+                        <p class="text-center">
+                            <span class="text-lab-sc text-par-l">{{ recorderState.recordingTime.milliseconds.toString().toString().padStart(2, '0') }}</span>
+                        </p>
+                    </div>
+                    
+                    <div class="flex justify-center mb-8">
+                        <div class="inline-flex-center size-12 bg-transparent ring-2 ring-fill-pr overflow-hidden outline-hidden rounded-full">
+                            <button v-if="recorderState.isRecording" v-on:click="stopRecording" type="button" class="inline-block outline-none cursor-pointer size-4 rounded-xs bg-red-600"></button>
+                            <button v-else v-on:click="startRecording" type="button" class="inline-block outline-none size-full bg-red-600 cursor-pointer"></button>
+                        </div>
+                    </div>
+    
+                    <div v-if="! recorderState.isRecording" class="flex justify-center">
+                        <PrimaryTextButton buttonRole="marginal" v-on:click="$emit('close')" v-bind:buttonText="$t('labels.cancel')"></PrimaryTextButton>
+                    </div>
                 </div>
             </div>
-        </div>
-    </PopupPanel>
+        </PopupPanel>
+    </div>
 </template>
 
 <script>
     import { defineComponent, computed, reactive, ref, onMounted } from 'vue';
+    
+    import { audioVisualizer } from '@/kernel/services/audio-visualizer/index.js';
+    
     import RecordRTC from 'recordrtc';
     import PopupPanel from '@D/components/inter-ui/popups/PopupPanel.vue';
 
-    import { audioVisualizer } from '@/kernel/services/audio-visualizer/index.js';
-    import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
-
+    import PrimaryTextButton from '@D/components/inter-ui/buttons/PrimaryTextButton.vue';
+    
     export default defineComponent({
-        emits: ['uploadaudio'],
+        emits: ['uploaded', 'close'],
         setup: function(props, context) {
             const waveformCanvas = ref(null);
 
@@ -44,7 +57,6 @@
                 audioVisualizer: null
             };
 
-            const toastNotifier = new ToastNotifier();
             const recorderState = reactive({
                 recordingTime: {
                     seconds: 0,
@@ -88,7 +100,7 @@
                         audioRecorder.audioVisualizer.linesWaveStart();
                     });
                 } catch (error) {
-                    toastNotifier.notifyShort(error.message);
+                    toastError(error.message);
                 }
             }
 
@@ -108,7 +120,7 @@
 
                         let fileName = `AUDREC-${year}${month}${day}-${hours}${minutes}.webm`;
 
-                        context.emit('uploadaudio', new File([audioBlob], fileName, {
+                        context.emit('uploaded', new File([audioBlob], fileName, {
                             type: 'audio/webm'
                         }));
 
@@ -123,7 +135,7 @@
                         clearInterval(recorderState.recorderTimerInterval);
                     });
                 } catch (error) {
-                    toastNotifier.notifyShort(error.message);
+                    toastError(error.message);
                 }
             }
 
@@ -135,7 +147,8 @@
             };
         },
         components: {
-            PopupPanel: PopupPanel
+            PopupPanel: PopupPanel,
+            PrimaryTextButton: PrimaryTextButton
         }
     });
 </script>

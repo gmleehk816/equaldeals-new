@@ -7,6 +7,9 @@
 			},
 			logos: {
 				url: '{{ $logotypeUrl }}'
+			},
+			emojis: {
+				animated: @json(config('emojis.animated'))
 			}
 		},
 		translation_service: {
@@ -15,7 +18,7 @@
 			logo_url: '{{ config('services.translation.logo') }}'
 		},
 		routes: {
-			ads_home_index: "{{ route('business.dashboard.index') }}",
+			business_dashboard_index: "{{ route('business.dashboard.index') }}",
 			user_auth_index: "{{ route('user.auth.index') }}",
 			terms_of_use: "{{ route('document.terms.index') }}",
 			privacy_policy: "{{ route('document.privacy.index') }}",
@@ -23,7 +26,8 @@
 			api_developers: "{{ route('document.developers.index') }}",
 			help_center: "{{ route('document.help.index') }}",
 			user_linker_index: "{{ route('user.linker.index') }}",
-			verification_rules: "{{ route('document.verification.index') }}"
+			verification_rules: "{{ route('document.verification.index') }}",
+			become_author: "{{ route('document.author.index') }}"
 		},
 		sharing: {
 			stories: @json(config('content.sharing.stories'))
@@ -56,6 +60,11 @@
 					bio: @json(config('user.validation.bio'))
 				}
 			},
+			chat: {
+				group: {
+					invite_expire_days: {{ config('chat.group.invite_expire_days') }}
+				}
+			},
 			user: {
 				default_avatar: '{{ asset(config('user.avatar')) }}'
 			},
@@ -85,7 +94,8 @@
 					background_chat_message_received: '{{ asset(config('chat.sounds.background_chat_message_received')) }}'
 				},
 				notification: {
-					received: '{{ asset(config('notifications.sounds.notification_received')) }}'
+					received: '{{ asset(config('notifications.sounds.notification_received')) }}',
+					ui_feedback: '{{ asset(config('notifications.sounds.ui_feedback')) }}'
 				}
 			}
 		},

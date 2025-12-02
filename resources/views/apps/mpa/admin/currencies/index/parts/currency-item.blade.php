@@ -21,8 +21,10 @@
 		{{ $currencyData->id }}
 	</x-table.td>
 	<x-table.td>
-		<a href="{{ route('admin.currency.show', $currencyData->id) }}">
-			<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
-		</a>
+		<div class="flex justify-end">
+			<a href="{{ route('admin.currency.show', $currencyData->id) }}">
+				<x-ui.buttons.icon iconName="arrow-up-right" iconType="line"></x-ui.buttons.icon>
+			</a>
+		</div>
 	</x-table.td>
 </x-table.tr>

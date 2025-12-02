@@ -43,7 +43,9 @@ class MessageResource extends JsonResource
             ],
             'date' => [
                 'iso' => $this->created_at->getIso(),
-                'time_ago' => $this->created_at->getTimeAgo()
+                'time_ago' => $this->created_at->getTimeAgo(),
+                'generic' => $this->created_at->getGeneric(),
+                'date' => $this->created_at->getDate()
             ],
             'meta' => [
                 'is_deleted' => $this->is_deleted,

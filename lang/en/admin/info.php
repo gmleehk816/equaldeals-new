@@ -47,6 +47,20 @@ return [
 		'title' => 'Laravel Ecosystem 🚀',
 		'line_one' => 'ColibriPlus is built on top of Laravel :laravel_version. <a href="https://www.laravel.com" target="_blank" class="text-brand-900">Learn more</a>',
 		'line_two' => 'It means that you are free to use any Laravel ecosystem tools, packages and services you want.'
+	],
+	'category_notice' => [
+		'title' => 'Category',
+		'line_one' => 'Create entity categories (e.g., products or vacancies) to fit your needs. Add translations so category names match each user’s selected language.',
+	],
+	'page_edit_notice' => [
+		'title' => 'Static Page',
+		'line_one' => 'Static pages are used to display legal or informational content related to your project. For example: Cookies Policy, Privacy Policy, Terms of Service, About your company, and similar pages.',
+		'line_two' => 'You can add translations for each supported language so the information is shown to users in their preferred language.',
+	],
+	'chat_notice' => [
+		'title' => 'Direct Chat',
+		'line_one' => 'A chat is a private conversation between two or more users. In this version, message contents viewing is not supported from the admin panel.',
+		'line_two' => 'You may delete an entire chat if necessary.',
 	]
 ];
 

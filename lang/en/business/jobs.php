@@ -8,6 +8,11 @@ return [
 	'show_title' => 'Job overview',
 	'show_desc' => 'You can view job details, metrics and manage it here.',
 	'about_job' => 'About job',
+	'tabs' => [
+		'all' => 'All jobs',
+		'active' => 'Active jobs',
+		'archived' => 'Archived jobs',
+	],
 	'last_contact_date' => 'Last application date',
 	'income_is_from' => 'Income from',
 	'income_is_to' => 'Income to',
@@ -46,7 +51,7 @@ return [
 		'submit' => 'Create job',
 		'cancel' => 'Cancel',
 		'save' => 'Save changes',
-		'tos_agreement' => 'By posting a job, you agree that all job listings will be visible to all users of the platform. <br><br> It is strictly forbidden to post illegal job offers, including but not limited to: jobs involving illegal activities, discrimination, exploitation, or any other activities prohibited by law.',
+		'tos_agreement' => 'By posting a job, you agree that all job listings will be visible to all users of the platform. It is strictly forbidden to post illegal job offers, including but not limited to: jobs involving illegal activities, discrimination, exploitation, or any other activities prohibited by law.',
 		'tos_agreement_link' => 'For more details, please see our Job board rules.'
 	],
 	'applicants_count' => ':count applicants',

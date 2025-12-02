@@ -6,17 +6,34 @@ use App\Models\Ad;
 use App\Enums\Ad\AdApproval;
 use App\Support\Views\Flash;
 use Illuminate\Http\Request;
-use App\Actions\Ad\AdDeleteAction;
+use App\Actions\Ad\DeleteAdAction;
 use App\Http\Controllers\Controller;
 
 class AdController extends Controller
 {
+    private $filters = [];
+
     public function index(Request $request)
     {
-        $ads = Ad::excludeDraft()->with(['user', 'media'])->latest()->paginate(10);
+        $approval = $request->string('approval')->value;
+        $approval = in_array($approval, array_column(AdApproval::cases(), 'value')) ? $approval : 'all';
+        $this->filters = [
+            'search' => $request->string('search')->value,
+            'approval' => $approval,
+        ];
+
+        $ads = Ad::excludeDraft()->when(($this->filters['approval'] != 'all'), function($query) {
+            $query->where('approval', AdApproval::tryFrom($this->filters['approval']));
+        })->when((! empty($this->filters['search'])), function ($query) {
+            $query->where(function($query) {
+                $query->where('title', 'like', "%{$this->filters['search']}%")
+                    ->orWhere('content', 'like', "%{$this->filters['search']}%");
+            });
+        })->with(['user', 'media'])->latest('id')->paginate(10);
 
         return view('admin::ads.index.index', [
-            'ads' => $ads
+            'ads' => $ads,
+            'filters' => $this->filters
         ]);
     }
 
@@ -33,7 +50,7 @@ class AdController extends Controller
     {
         $adData = Ad::findOrFail($adId);
 
-        (new AdDeleteAction($adData))->execute();
+        (new DeleteAdAction($adData))->execute();
 
         // TODO: Consider refunding the budget to the user, if the ad is fully deleted.
         // Add checkbox to include refunding the budget to the user.

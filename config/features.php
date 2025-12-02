@@ -7,12 +7,6 @@ return [
 	'jobs' => [
 		'enabled' => true,
 	],
-	'services' => [
-		'enabled' => true,
-	],
-	'videos' => [
-		'enabled' => false,
-	],
 	'ads' => [
 		'enabled' => false,
 	],

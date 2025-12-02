@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-        <label v-if="hasLabel" class="mb-1 font-normal tracking-normal block text-lab-pr3 text-par-s px-1">
+        <label v-if="hasLabel" class="mb-2 font-medium block text-lab-pr2 text-par-m px-1">
             {{ labelText }}
             
             <span v-if="labelTextBrackets.length" class="text-lab-sc">
@@ -12,7 +12,7 @@
             <textarea
                 v-on:input="updateModelValue"
                 v-bind:value="modelValue"
-                class="block w-full bg-input-pr rounded-xl border placeholder:font-light placeholder:tracking-normal min-h-24 outline-hidden font-normal text-par-s text-lab-pr px-5 py-4"
+                class="block w-full bg-input-pr rounded-xl border min-h-24 outline-hidden font-normal text-par-m text-lab-pr px-5 py-4"
                 v-bind:classes="classes"
                 v-bind:class="[hasErrors ? 'bg-transparent border-red-900' : 'bg-edge-pr border-transparent']"
                 v-bind:placeholder="placeholder"
@@ -22,7 +22,7 @@
             <input
                 v-on:input="updateModelValue"
                 v-bind:value="modelValue"
-                class="block w-full bg-input-pr border rounded-xl outline-hidden placeholder:font-light placeholder:tracking-normal text-par-s font-normal text-lab-pr px-5 py-4 pr-14"
+                class="block w-full bg-input-pr border rounded-xl outline-hidden text-par-m font-normal text-lab-pr px-5 py-4 pr-14"
                 v-bind:classes="classes"
                 v-bind:class="[hasErrors ? 'bg-transparent border-red-900' : 'bg-edge-pr border-transparent']"
                 v-bind:placeholder="placeholder"
@@ -50,12 +50,12 @@
                 <span v-if="$slots.feedbackIcon" class="mr-2.5">
                     <slot name="feedbackIcon"></slot>
                 </span>
-                <span class="text-cap-l text-lab-sc break-words">
+                <span class="text-par-s text-lab-sc break-words">
                     <slot name="feedbackInfo"></slot>
                 </span>
             </span>
 
-            <span v-if="textLength" class="ml-auto font-mono tracking-tighter" v-bind:class="['ml-4 text-cap-l', (modelValue.length > textLength) ? 'text-red-900' : 'text-lab-sc']">
+            <span v-if="textLength" class="ml-auto font-mono" v-bind:class="['ml-4 text-par-s', (modelValue.length > textLength) ? 'text-red-900' : 'text-lab-sc']">
                 {{ modelValue.length }}/{{ textLength }}
             </span>
         </div>

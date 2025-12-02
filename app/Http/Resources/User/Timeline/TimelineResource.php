@@ -15,7 +15,6 @@
 
 namespace App\Http\Resources\User\Timeline;
 
-use Carbon\Carbon;
 use App\Support\Num;
 use Illuminate\Http\Request;
 use App\Http\Resources\User\Media\MediaResource;
@@ -45,7 +44,7 @@ class TimelineResource extends JsonResource
             ],
             'views_count' => [
                 'raw' => $this->views_count,
-                'formatted' => $this->views_count
+                'formatted' => Num::abbreviate($this->views_count)
             ],
             'comments_count' => [
                 'raw' => $this->comments_count,
@@ -53,7 +52,8 @@ class TimelineResource extends JsonResource
             ],
             'date' => [
                 'iso' => $this->created_at->getIso(),
-                'time_ago' => $this->created_at->getTimeAgo()
+                'time_ago' => $this->created_at->getTimeAgo(),
+                'timestamp' => $this->created_at->getTimestamp()
             ],
             'meta' => [
                 'permissions' => [
@@ -68,7 +68,7 @@ class TimelineResource extends JsonResource
                     'bookmarked' => auth_check() ? $this->isBookmarkedBy(me()->id) : false
                 ],
                 'is_translatable' => $this->isContentTranslatable(),
-                'is_quoting' => empty($this->quote_post_id) ? false : true,
+                'is_quoting' => $this->is_quoting,
                 'is_sensitive' => $this->is_sensitive,
                 'is_ai_generated' => $this->is_ai_generated
             ],

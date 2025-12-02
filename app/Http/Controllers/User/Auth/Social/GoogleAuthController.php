@@ -79,7 +79,7 @@ class GoogleAuthController extends Controller
 
                     $filepath = 'uploads/users/avatars/' . $filename;
 
-                    $fileUploaded = Storage::disk(config('user.disks.avatar'))->put($filepath, file_get_contents($socialiteUser->user['picture']));
+                    $fileUploaded = Storage::disk(static_storage_disk())->put($filepath, file_get_contents($socialiteUser->user['picture']));
                     
                     if($fileUploaded) {
                         $userAvatarFilePath = $filepath;

@@ -13,7 +13,7 @@ export const NativeEmojisMap = [
         }
     },
     {
-        title: 'emojis.people-and-body',
+        title: 'emojis.people_and_body',
         category: 'people_and_body',
         emojis: {
             smile: "😄",
@@ -198,7 +198,7 @@ export const NativeEmojisMap = [
         } 
     },
     {
-        title: 'emojis.nature-and-animals',
+        title: 'emojis.nature_and_animals',
         category: 'nature_and_animals',
         emojis: {
             dog: "🐶",
@@ -491,7 +491,7 @@ export const NativeEmojisMap = [
         } 
     },
     {
-        title: 'emojis.travel-and-places',
+        title: 'emojis.travel_and_places',
         category: 'travel_and_places',
         emojis: {
             house: "🏠",

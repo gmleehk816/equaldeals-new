@@ -49,6 +49,7 @@
 						<x-ui-icon type="line" name="edit-03"></x-ui-icon>
 					</x-slot:itemIcon>
 				</x-ui.dropdown.item>
+				<x-div></x-div>
 				<x-ui.dropdown.item tag="a" itemText="{{ __('business/dd.product.open_product') }}" href="{{ $productData->url }}">
 					<x-slot:itemIcon>
 						<x-ui-icon type="line" name="arrow-up-right"></x-ui-icon>

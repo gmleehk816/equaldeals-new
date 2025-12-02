@@ -36,13 +36,13 @@
             ctaPrimary: {
                 type: Object,
                 default: { 
-                    name: 'home_page'
+                    name: 'home_index'
                 }
             },
             ctaSecondary: {
                 type: Object,
                 default: { 
-                    name: 'home_page'
+                    name: 'home_index'
                 }
             },
             ctaPrimaryLabel: {

@@ -10,7 +10,7 @@
 
 <script>
     import { defineComponent, computed } from 'vue';
-    import GiphyAttribution from '@D/components/attributions/GiphyAttribution.vue';
+    import GiphyAttribution from '@/kernel/vue/components/attributes/GiphyAttribution.vue';
 
     export default defineComponent({
         props: {

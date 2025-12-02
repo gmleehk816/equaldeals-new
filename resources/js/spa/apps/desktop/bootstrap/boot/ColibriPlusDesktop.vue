@@ -11,13 +11,13 @@
     <template v-else>
         <ApplicationMainLayout v-if="isMainLayout"></ApplicationMainLayout>
 
-        <ApplicationCatalogLayout v-else-if="isCatalogLayout"></ApplicationCatalogLayout>
+        <ApplicationMessengerLayout v-else-if="isMessengerLayout"></ApplicationMessengerLayout>
 
         <ApplicationFlatLayout v-else-if="isFlatLayout"></ApplicationFlatLayout>
 
         <ApplicationStoriesLayout v-else-if="isStoriesLayout"></ApplicationStoriesLayout>
 
-        <ApplicationInfoLayout v-else-if="isInfoLayout"></ApplicationInfoLayout>
+        <ApplicationInfoLayout v-else-if="isInfoLayout"></ApplicationInfoLayout> 
     </template>
 
     <NetworkStatusBar></NetworkStatusBar>
@@ -92,8 +92,8 @@
                 isFlatLayout: computed(() => {
                     return layoutType.value == Layouts.FLAT;
                 }),
-                isCatalogLayout: computed(() => {
-                    return layoutType.value == Layouts.CATALOG;
+                isMessengerLayout: computed(() => {
+                    return layoutType.value == Layouts.MESSENGER;
                 })
             }
         },
@@ -109,8 +109,8 @@
             ApplicationFlatLayout: defineAsyncComponent(() => {
                 return import('@D/layouts/ApplicationFlatLayout.vue');
             }),
-            ApplicationCatalogLayout: defineAsyncComponent(() => {
-                return import('@D/layouts/ApplicationCatalogLayout.vue');
+            ApplicationMessengerLayout: defineAsyncComponent(() => {
+                return import('@D/layouts/ApplicationMessengerLayout.vue');
             })
         }
     });

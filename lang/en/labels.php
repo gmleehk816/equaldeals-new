@@ -7,7 +7,10 @@ return [
     'close' => 'Close',
     'city' => 'City',
     'male' => 'Male',
+    'reader' => 'Reader',
+    'author' => 'Author',
     'username' => 'Username',
+    'participants' => 'Participants',
     'back_to_home' => 'Back to homepage',
     'choose_username' => 'Choose a username',
     'choose_username_helper' => 'Username can contain only Latin letters, numbers, dots, and underscores',
@@ -91,6 +94,10 @@ return [
         'ignored' => 'Ignored',
         'processed' => 'Processed'
     ],
+    'chat_type_labels' => [
+        'direct' => 'Direct',
+        'group' => 'Group'
+    ],
     'approval_labels' => [
         'approved' => 'Approved',
         'pending' => 'Pending approval',
@@ -114,7 +121,8 @@ return [
         'post' => 'Publication',
         'comment' => 'Comment',
         'user' => 'Profile',
-        'story' => 'Story'
+        'story' => 'Story',
+        'group' => 'Group'
     ],
     'media_type_labels' => [
         'text' => 'Text',
@@ -137,6 +145,11 @@ return [
         'refunded' => 'Refunded',
         'chargeback' => 'Chargeback',
         'chargeback_reversed' => 'Chargeback reversed'
+    ],
+    'category_type_labels' => [
+        'product' => 'Product',
+        'job' => 'Job',
+        'uncategorized' => 'Uncategorized',
     ],
     'uncategorized' => 'Uncategorized',
     'learn_more' => 'Learn more',

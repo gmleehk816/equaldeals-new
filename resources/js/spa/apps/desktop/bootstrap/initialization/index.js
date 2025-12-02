@@ -17,6 +17,11 @@ import '@/kernel/helpers/embeds/index.js';
 import '@/kernel/websockets/index.js';
 import '@D/core/global/global.js';
 
+import { toastSuccess, toastError } from '@D/core/services/toasts/index.js';
+
+window.toastSuccess = toastSuccess;
+window.toastError = toastError;
+
 window.HIDE_AUTHOR_ATTRIBUTION = import.meta.env.VITE_HIDE_AUTHOR_ATTRIBUTION;
 
 axios.defaults.withCredentials = true;

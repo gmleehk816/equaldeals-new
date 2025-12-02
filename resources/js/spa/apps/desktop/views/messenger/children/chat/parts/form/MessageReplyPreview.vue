@@ -36,14 +36,14 @@
 				required: true
 			}
 		},
-		emits: ['cancelreply'],
+		emits: ['cancel'],
 		setup: function(props, context) {
 			const messageData = ref(props.messageData);
 
 			return {
 				messageData: messageData,
 				cancelMessageReply: () => {
-					context.emit('cancelreply');
+					context.emit('cancel');
 				},
 				messageColor: computed(() => {
 					return messageData.value.relations.participant.color;

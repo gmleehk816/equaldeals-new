@@ -1,7 +1,7 @@
 <template>
 	<div class="block">
 		<div class="block">
-			<h1 class="text-title-2 font-bold tracking-tighter leading-none text-lab-pr">
+			<h1 class="text-title-2 font-bold leading-none text-lab-pr">
 				{{ profileData.name }} <VerificationBadge size="md" v-if="profileData.verified"></VerificationBadge>
 			</h1>
 			<p class="text-par-s text-lab-sc">
@@ -10,8 +10,8 @@
 				</span>
 			</p>
 		</div>
-		<div v-if="profileData.bio" class="mt-4">
-			<p class="text-par-n text-lab-pr2 tracking-tight" v-html="markdownRenderer(profileData.bio)"></p>
+		<div v-if="profileData.bio" class="mt-4 max-w-8/12">
+			<p class="text-par-m text-lab-pr2" v-html="markdownRenderer(profileData.bio)"></p>
 		</div>
 		<div v-if="profileData.website" class="mb-6">
 			<a v-bind:href="profileData.website" target="_blank" class="text-brand-900 text-par-n font-medium hover:underline">

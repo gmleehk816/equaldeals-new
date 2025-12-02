@@ -1,42 +1,46 @@
 <template>
 	<RouterLink v-bind:to="postRoute" target="_blank">
-		<div class="block border smoothing border-bord-card rounded-2xl px-4 py-3.5 hover:border-brand-900">
+		<div class="overflow-hidden border smoothing border-bord-card rounded-2xl">
 			<template v-if="isLoading">
 				<div class="flex justify-center py-8">
 					<PrimarySpinAnimation></PrimarySpinAnimation>
 				</div>
 			</template>
 			<template v-else>
-				<div class="flex gap-2 items-center mb-1">
-					<div class="shrink-0">
-						<AvatarExtraSmall v-bind:avatarSrc="postData.relations.user.avatar_url"></AvatarExtraSmall>
-					</div>
-					<div class="flex-1 overflow-hidden">
-						<div class="flex items-center gap-2">
-							<h3 class="text-par-n font-semibold text-lab-pr2 truncate tracking-tighter">
-								<span class="flex items-center gap-1">
-									<span class="shrink-0">
-										{{ postData.relations.user.name }}
-									</span>
+				<div class="px-4 pt-4">
+					<div class="flex gap-2 items-center">
+						<div class="shrink-0">
+							<AvatarExtraSmall v-bind:avatarSrc="postData.relations.user.avatar_url"></AvatarExtraSmall>
+						</div>
+						<div class="flex-1 overflow-hidden">
+							<div class="flex items-center gap-2">
+								<h3 class="text-par-n font-semibold text-lab-pr2 truncate">
+									<span class="flex items-center gap-1">
+										<span class="shrink-0">
+											{{ postData.relations.user.name }}
+										</span>
 
-									<span class="size-icon-x-small inline-block text-brand-900">
-										<SvgIcon name="check-verified-02"></SvgIcon>
+										<span class="size-icon-x-small inline-block text-brand-900">
+											<SvgIcon name="check-verified-02"></SvgIcon>
+										</span>
 									</span>
-								</span>
-							</h3>
-							<p class="text-par-s text-lab-sc truncate">
-								{{ postUserCaption }}
-							</p>
+								</h3>
+								<p class="text-par-s text-lab-sc truncate">
+									{{ postUserCaption }}
+								</p>
+							</div>
 						</div>
 					</div>
+					
+					<template v-if="postHasContent">
+						<div class="mt-3">
+							<QuotedPostText v-bind:postContent="postContent"></QuotedPostText>
+						</div>
+					</template>
 				</div>
-				
-				<template v-if="postHasContent">
-					<QuotedPostText v-bind:postContent="postContent"></QuotedPostText>
-				</template>
 
 				<template v-if="postHasMedia || postHasPoll">
-					<div class="mt-2">
+					<div class="mt-3">
 						<template v-if="PostTypeUtils.isImage(postData.type) || PostTypeUtils.isGif(postData.type)">
 							<QuotedPostImage v-bind:postMedia="postMedia"></QuotedPostImage>
 						</template>
@@ -110,7 +114,7 @@
                 }),
 				postRoute: computed(() => {
 					return {
-						name: 'publication_page',
+						name: 'publication_index',
 						params: {
 							hash_id: postData.value.hash_id
 						}

@@ -1,7 +1,7 @@
 <template>
 	<div class="w-sided-content">
 		<form v-on:submit.prevent="submitForm">
-			<div class="flex items-stretch overflow-hidden popup-background-tr border border-bord-pr rounded-md">
+			<div class="flex items-stretch overflow-hidden popup-background-tr border border-bord-pr rounded-sm">
 				<div class="min-w-content w-content h-[762px] border-r border-r-bord-pr overflow-hidden relative">
 					<div class="p-2 h-full bg-fill-fv">
 						<template v-if="storyMedia">
@@ -26,7 +26,7 @@
 									<div class="flex justify-center bounce-up">
 										<img class="size-24" v-bind:src="$asset('assets/icons/upload.png')" alt="Image">
 									</div>
-									<h5 class="text-par-n text-brand-900 tracking-tighter text-center">
+									<h5 class="text-par-n text-brand-900 text-center">
 										{{ $t('labels.uploading') }} {{ uploadProgress }}%
 									</h5>
 								</div>
@@ -64,7 +64,7 @@
 											<template v-if="state.isEmojisPickerOpen">
 												<div class="block absolute top-6 right-0 w-80 z-50">
 													<EmojisPicker 
-														v-on:pickemoji="insertStoryEmoji"
+														v-on:pick="insertStoryEmoji"
 													v-on:close="state.isEmojisPickerOpen = false"></EmojisPicker>
 												</div>
 											</template>
@@ -92,11 +92,9 @@
 
 <script>
 	import { defineComponent, reactive, ref, computed, defineAsyncComponent } from 'vue';
-	import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
 	
-	import { useInputHandlers } from '@D/core/composables/input/index.js';
+	import { useInputHandlers } from '@/kernel/vue/composables/input/index.js';
 	import { useStoriesEditorStore } from '@D/store/stories/editor.store.js';
-	import { useI18n } from 'vue-i18n';
 	import { colibriEventBus } from '@/kernel/events/bus/index.js';
 
 	import PrimaryTextButton from '@D/components/inter-ui/buttons/PrimaryTextButton.vue';
@@ -109,10 +107,8 @@
 	export default defineComponent({
 		setup: function() {
 			const storiesEditorStore = useStoriesEditorStore();
-			const toastNotifier = new ToastNotifier();
 			const stroyMediaFileInput = ref(null);
 			const storyTextInputField = ref(null);
-			const { t } = useI18n();
 			const state = reactive({
 				isEmojisPickerOpen: false,
 				isSubmitting: false,
@@ -130,7 +126,7 @@
 				} catch (e) {
 					state.isUploading = false;
 
-					toastNotifier.notifyShort(e.message);
+					toastError(e.message);
 				}
 			}
 
@@ -161,20 +157,20 @@
 						await storiesEditorStore.publishStory();
 						state.isSubmitting = false;
 
-						toastNotifier.notifyShort(t('toast.story.story_published'));
+						toastSuccess(__t('toast.story.story_published'));
 
 						storiesEditorStore.resetEditor();
 						storiesEditorStore.closeEditor();
 					} catch (e) {
 						state.isSubmitting = false;
-						toastNotifier.notifyShort(e.message);
+						toastError(e.message);
 					}
 				},
 				deleteStoryMedia: async () => {
 					try {
 						await storiesEditorStore.deleteMedia();
 					} catch (e) {
-						toastNotifier.notifyShort(e.message);
+						toastError(e.message);
 					}
 				},
 				selectStoryMedia: () => {
@@ -218,7 +214,7 @@
 			StoryEditorHeader: StoryEditorHeader,
 			StoryDropper: StoryDropper,
 			VideoDurationTime: defineAsyncComponent(() => {
-                return import('@D/components/media/video/VideoDurationTime.vue');
+                return import('@/kernel/vue/components/media/video/VideoDurationTime.vue');
             }),
 			MentionsPicker: MentionsPicker
 		}

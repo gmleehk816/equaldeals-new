@@ -1,6 +1,6 @@
 @props(['productData'])
 <x-card>
-	<div class="p-4 overflow-hidden">
+	<div class="p-4">
 		<div class="rounded-lg overflow-hidden mb-3">
 			<img class="w-full" src="{{ $productData->preview_image_url }}" alt="Image">
 		</div>
@@ -27,7 +27,7 @@
 			</div>
 		</div>
 		<a href="{{ $productData->url }}" target="_blank">
-			<x-ui.buttons.pill type="button" btnText="{{ __('business/dd.product.open_product') }}"></x-ui.buttons.pill>
+			<x-ui.buttons.pill size="sm" width="w-full" type="button" btnText="{{ __('business/dd.product.open_product') }}"></x-ui.buttons.pill>
 		</a>
 	</div>
 </x-card>

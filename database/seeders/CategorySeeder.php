@@ -28,9 +28,9 @@ class CategorySeeder extends Seeder
 
         foreach ($categories as $categoryName) {
             Category::create([
-                'name' => $categoryName,
-                'slug' => Str::slug($categoryName),
-                'localization' => [],
+                'localization' => [
+                    'en' => $categoryName,
+                ],
                 'categorizable_type' => CategoryType::PRODUCT,
                 'parent_id' => null,
                 'depth' => 1
@@ -44,9 +44,9 @@ class CategorySeeder extends Seeder
         
         foreach ($categories as $categoryName) {
             Category::create([
-                'name' => $categoryName,
-                'slug' => Str::slug($categoryName),
-                'localization' => [],
+                'localization' => [
+                    'en' => $categoryName,
+                ],
                 'categorizable_type' => CategoryType::JOB,
                 'parent_id' => null,
                 'depth' => 1

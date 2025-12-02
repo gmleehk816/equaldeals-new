@@ -73,8 +73,6 @@ const useStoriesStore = defineStore('stories_store', {
             });
         },
         fetchAndReturnStoryViews: async function(frameId) {
-            const state = this;
-
             return await colibriAPI().stories().getFrom(`views/${frameId}`).then((response) => {
                 return response.data.data;
             }).catch((error) => {

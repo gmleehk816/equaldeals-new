@@ -2,7 +2,7 @@
 	<div class="block px-4 smoothing hover:bg-fill-qt py-3 cursor-pointer border-b border-b-bord-pr last:border-b-0">
 		<div class="flex items-center gap-x-4">
 			<div class="flex-1">
-				<h4 class="text-par-n font-medium tracking-tighter text-lab-pr2">
+				<h4 class="text-par-n font-medium text-lab-pr2">
 					{{ reasonData.title }}
 				</h4>
 				<p class="text-cap-l text-lab-sc">

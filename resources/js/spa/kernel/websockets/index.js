@@ -18,7 +18,7 @@ try {
             wssPort: import.meta.env.VITE_REVERB_PORT ?? 443,
             forceTLS: (import.meta.env.VITE_REVERB_SCHEME ?? 'https') === 'https',
             enabledTransports: ['ws', 'wss'],
-            cluster: false,
+            cluster: false
         });
 
         window.ColibriBRD.connector.pusher.connection.bind('connected', function() {

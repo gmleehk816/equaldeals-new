@@ -58,6 +58,7 @@ class BootstrapController extends Controller
                 'has_tips' => $me->has_tips,
                 'tips' => $me->tips,
                 'is_master_account' => $me->isMasterAccount(),
+                'is_author' => $me->isAuthor(),
                 'verification' => [
                     'status' => $me->verified,
                     'date' => $me->verified_at ? $me->verified_at->getIso() : null

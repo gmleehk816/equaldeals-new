@@ -19,13 +19,13 @@ return new class extends Migration
         Schema::create(Table::PRODUCTS, function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('category_id')->nullable();
-            $table->foreign('category_id')->references('id')->on(Table::CATEGORIES)->onDelete('cascade');
+            $table->foreign('category_id')->references('id')->on(Table::CATEGORIES)->onDelete('no action');
 
             $table->unsignedBigInteger('store_id')->nullable();
-            $table->foreign('store_id')->references('id')->on(Table::STORES)->onDelete('cascade');
+            $table->foreign('store_id')->references('id')->on(Table::STORES)->onDelete('no action');
 
             $table->unsignedBigInteger('user_id');
-            $table->foreign('user_id')->references('id')->on(Table::USERS)->onDelete('cascade');
+            $table->foreign('user_id')->references('id')->on(Table::USERS)->onDelete('no action');
 
             $table->string('title')->default('');
             $table->text('description')->nullable();

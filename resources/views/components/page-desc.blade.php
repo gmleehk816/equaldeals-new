@@ -1,3 +1,3 @@
-<p class="text-par-s text-lab-sc">
+<p class="text-par-m text-lab-sc">
 	{{ $slot }}
 </p>

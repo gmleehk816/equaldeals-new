@@ -35,3 +35,11 @@ Route::prefix('currency')->group(base_path('routes/admin/currency/web.php'));
 Route::prefix('banning')->group(base_path('routes/admin/banning/web.php'));
 
 Route::prefix('storage')->group(base_path('routes/admin/storage/web.php'));
+
+Route::prefix('authorship')->group(base_path('routes/admin/authorship/web.php'));
+
+Route::prefix('categories')->group(base_path('routes/admin/categories/web.php'));
+
+Route::prefix('pages')->group(base_path('routes/admin/pages/web.php'));
+
+Route::prefix('chats')->group(base_path('routes/admin/chats/web.php'));

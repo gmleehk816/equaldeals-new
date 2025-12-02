@@ -62,7 +62,7 @@
                                 </x-slot:itemIcon>
                             </x-ui.dropdown.item>
 
-                            
+                            <x-div></x-div>
                             <x-ui.dropdown.item x-on:click="deleteProduct" :danger="true" itemText="{{ __('business/dd.product.delete_product') }}">
                                 <x-slot:itemIcon>
                                     <x-ui-icon type="line" name="trash-04"></x-ui-icon>
@@ -159,7 +159,7 @@
             <div class="mb-6">
                 <div id="chart" class="bg-fill-qt"></div>
             </div>
-            <div class="mb-12">
+            <div class="block">
                 <div class="mb-2">
                     <x-entity.title title="{{ __('labels.additional_info') }}"></x-entity.title>
                 </div>

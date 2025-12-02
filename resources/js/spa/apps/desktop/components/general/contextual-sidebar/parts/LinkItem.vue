@@ -1,10 +1,10 @@
 <template>
-    <RouterLink v-bind:to="routeData" exactActiveClass="active-settings-tab">
-        <div class="flex items-center pr-4 leading-none h-12">
+    <RouterLink v-bind:to="routeData" class="px-4 block" exactActiveClass="active-settings-tab">
+        <div class="flex items-center px-3 leading-none h-12 link-item-container">
             <span class="shrink-0">
-                <SvgIcon v-bind:type="iconType" v-bind:name="iconName" v-bind:classes="['size-icon-normal', ...linkColor].join(' ')"></SvgIcon>
+                <SvgIcon v-bind:type="iconType" v-bind:name="iconName" v-bind:classes="['size-icon-medium', ...linkColor].join(' ')"></SvgIcon>
             </span>
-            <span v-bind:class="['ml-2', 'text-par-m', ...linkColor]">
+            <span v-bind:class="['ml-2.5', 'text-par-m font-medium', ...linkColor]">
                 {{ textLabel }}
             </span>
             <span class="shrink-0 ml-auto">
@@ -21,7 +21,7 @@
         props: {
             linkColor: {
                 type: Array,
-                default: ['text-lab-pr']
+                default: ['text-lab-pr2']
             },
             routeData: {
                 type: Object,

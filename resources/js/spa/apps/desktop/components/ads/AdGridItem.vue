@@ -9,7 +9,7 @@
 					</span>
 				</div>
 				<div class="p-4">
-					<h4 class="font-semibold text-par-l text-lab-pr mb-1 tracking-tighter">
+					<h4 class="font-semibold text-par-l text-lab-pr mb-1">
 						{{ adData.title }}
 					</h4>
 					<p class="text-lab-sc text-par-s mb-2">

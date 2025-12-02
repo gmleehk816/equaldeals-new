@@ -9,6 +9,7 @@
     'placeholder' => '',
     'classes' => '',
     'name' => '',
+    'errorKey' => null,
     'value' => ''
 ])
 
@@ -68,8 +69,8 @@
         </div>
     @endif
 
-    @if($errors->has($name))
-        @error($name)
+    @if($errors->has($errorKey ?? $name))
+        @error($errorKey ?? $name)
             <x-form.valerr>  
                 {{ $message }}
             </x-form.valerr>

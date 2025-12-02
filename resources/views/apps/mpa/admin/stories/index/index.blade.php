@@ -1,7 +1,7 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-	<div class="mb-12">
+	<div class="mb-8">
         <x-page-title titleText=" {{ __('admin/stories.index_title') }}"></x-page-title>
         <x-page-desc>
             {{ __('admin/stories.index_desc') }}
@@ -12,7 +12,6 @@
 		<x-table.thead>
 			<x-table.th>{{ __('table.labels.author') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.media') }}</x-table.th>
-			<x-table.th>{{ __('table.labels.type') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.views') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.created_at') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.expires_at') }}</x-table.th>

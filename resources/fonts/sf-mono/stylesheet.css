@@ -1,3 +1,6 @@
+:root {
+    --font-mono: 'SF Mono', 'monospace';
+}
 
 @font-face {
     font-family: 'SF Mono';

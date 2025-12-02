@@ -10,6 +10,13 @@ const PostType = Object.freeze({
 });
 
 const PostTypeUtils = {
+    isMedia: (type) => {
+        return type === PostType.IMAGE ||
+        type === PostType.AUDIO ||
+        type === PostType.VIDEO ||
+        type === PostType.GIF ||
+        type === PostType.DOCUMENT;
+    },
     isText: (type) => {
         return !type || type === PostType.TEXT;
     },
@@ -27,9 +34,6 @@ const PostTypeUtils = {
     },
     isGif: (type) => {
         return type === PostType.GIF;
-    },
-    isMedia: (type) => {
-        return type === PostType.IMAGE || type === PostType.VIDEO || type === PostType.GIF;
     },
     isPoll: (type) => {
         return type === PostType.POLL;

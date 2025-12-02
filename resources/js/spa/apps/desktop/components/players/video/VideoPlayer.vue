@@ -29,11 +29,11 @@
 
 <script>
 	import { defineComponent, watch, reactive, onMounted, onUnmounted } from 'vue';
-	import { useIntersectionObserver } from '@D/core/composables/inter-obs/index.js';
+	import { useIntersectionObserver } from '@/kernel/vue/composables/inter-obs/index.js';
 	
 	import PrimaryIconButton from '@D/components/inter-ui/buttons/PrimaryIconButton.vue';
-	import VideoDurationTime from '@D/components/media/video/VideoDurationTime.vue';
-	import SpinnerIcon from '@D/components/icons/SpinnerIcon.vue';
+	import VideoDurationTime from '@/kernel/vue/components/media/video/VideoDurationTime.vue';
+	import SpinnerIcon from '@/kernel/vue/components/icons/SpinnerIcon.vue';
 
 	export default defineComponent({
 		props: {

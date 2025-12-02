@@ -23,14 +23,14 @@ class ParticipantResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
-        return [
+        $apiData = [
             'participant_id' => $this->id,
             'joined_at' => [
                 'time_ago' => $this->joined_at->getTimeAgo(),
                 'raw' => $this->joined_at->getTimestamp(),
             ],
             'meta' => [
-                'color' => $this->metadata['color'],
+                'color' => $this->metadata['color']
             ],
             'relations' => [
                 'user' => UserPreviewResource::make($this->user, [
@@ -42,5 +42,11 @@ class ParticipantResource extends JsonResource
                 ])
             ]
         ];
+
+        if(isset($this->is_group_admin)) {
+            $apiData['meta']['is_admin'] = true;
+        }
+
+        return $apiData;
     }
 }

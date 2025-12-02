@@ -1,5 +1,5 @@
 <template>
-	<div class="fixed inset-0 z-50 bg-black/20 backdrop-blur-xs overflow-y-auto" v-bind:class="[hide ? 'invisible' : '']">
+	<div class="fixed inset-0 z-50 bg-black/50 overflow-y-auto" v-bind:class="[hide ? 'invisible' : '']">
 		<slot></slot>
 	</div>
 </template>

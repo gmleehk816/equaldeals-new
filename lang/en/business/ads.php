@@ -41,7 +41,7 @@ return [
 		'create_button' => 'Create Ad',
 		'save_button' => 'Save Ad',
 		'cancel_button' => 'Cancel',
-		'tos_agreement' => 'By publishing an Ad, you agree that all Ads on the platform are visible to all users. <br><br> Also, the advertising of prohibited goods (animals, drugs, weapons, counterfeit goods, and other goods that violate intellectual property rights) is strictly prohibited.',
+		'tos_agreement' => 'By publishing an Ad, you agree that all Ads on the platform are visible to all users. Also, the advertising of prohibited goods (animals, drugs, weapons, counterfeit goods, and other goods that violate intellectual property rights) is strictly prohibited.',
 		'tos_agreement_link' => 'For more details, please see our Advertising Guide.',
 		'media_info' => 'Media Info',
 		'creative' => 'Creative',

@@ -12,7 +12,8 @@
 
         @vite([
             'resources/js/business/main.js',
-            'resources/fonts/sf-pro/stylesheet.css'
+            config('assets.fonts.sans'),
+            config('assets.fonts.mono')
         ])
 
         @if(theme_name() == 'dark')
@@ -28,14 +29,17 @@
         @livewireStyles
     </head>
 
-    <body @class(['bg-bg-pr pt-16'])>
+    <body @class(['pt-24', (theme_name() == 'dark' ? 'bg-black' : 'bg-fill-fv')])>
+        @if(theme_name() == 'light')
+            <img src="{{ asset('assets/backgrounds/modal-bg.png') }}" alt="Background" class="fixed opacity-50 w-full inset-0 -z-10">
+        @endif
         <x-main>
             @include('businessLayout::parts.sidebar')
     
             @include('businessLayout::parts.header')
             
             <x-container>
-                <div class="app-min-vh">
+                <div class="app-min-vh px-8">
                     @yield('pageContent')
                 </div>
             </x-container>

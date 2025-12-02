@@ -11,8 +11,8 @@
 
         @vite([
             'resources/js/spa/apps/desktop/bootstrap/application.js',
-            'resources/fonts/sf-pro/stylesheet.css',
-            'resources/fonts/sf-mono/stylesheet.css'
+            config('assets.fonts.sans'),
+            config('assets.fonts.mono')
         ])
 
         @if(theme_name() == 'dark')
@@ -20,9 +20,10 @@
         @else
             @vite('resources/css/spa/apps/desktop/main.css')
         @endif
+
+        @include('layouts.spa.apps.parts.pwa')
     </head>
     <body class="font-sans antialiased bg-bg-pr min-w-[1200px]">
-
         <x-device-switcher.desktop></x-device-switcher.desktop>
 
         @yield('pageContent')

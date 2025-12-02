@@ -10,7 +10,6 @@ const useMarketStore = defineStore('marketplace', {
 			product: null,
 			metadata: {},
 			bookmarkedProducts: [],
-			bookmarksCount: 0,
         };
     },
 	getters: {
@@ -98,19 +97,6 @@ const useMarketStore = defineStore('marketplace', {
 			}).catch((error) => {
 				this.bookmarkedProducts = [];
 			});
-		},
-		fetchBookmarkedProductsCount: async function() {
-			await colibriAPI().marketplace().getFrom('bookmarks/count').then((response) => {
-				this.bookmarksCount = response.data.data.count;
-			}).catch((error) => {
-				this.bookmarksCount = 0;
-			});
-		},
-		incrementBookmarksCount: function() {
-			this.bookmarksCount += 1;
-		},
-		decrementBookmarksCount: function() {
-			this.bookmarksCount -= 1;
 		},
 		loadMoreProducts: async function() {
 			return await this.makeLoadRequest().then((response) => {

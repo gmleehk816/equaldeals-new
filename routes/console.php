@@ -28,6 +28,8 @@ use Illuminate\Support\Facades\Schedule;
 
 Schedule::command('story:clear')->dailyAt('00:00');
 
+Schedule::command('chat:invite-clear')->weekly();
+
 Artisan::command('app:version', function () {
     $this->info(ColibriPlus::VERSION);
 });

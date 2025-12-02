@@ -1,23 +1,35 @@
 <template>
-    <RouterLink v-bind:to="link" v-slot="{ isActive }" class="py-4 flex-1 px-3 text-center overflow-hidden truncate leading-4 tracking-tighter" activeClass="active-tab-link">
-        <span v-bind:class="['text-par-m font-medium tracking-tighter', (isActive ? 'text-lab-pr2' : 'text-lab-pr3')]">
+    <div class="cursor-pointer w-full flex-1 text-center overflow-hidden truncate leading-4" v-bind:class="[sizeClass, isActive ? 'active-tab-link' : '']">
+        <span v-bind:class="['font-semibold', (isActive ? 'text-lab-pr2' : 'text-lab-sc')]">
             <slot></slot>
         </span>
-    </RouterLink>
+    </div>
 </template>
 
 <script>
     import { defineComponent } from 'vue';
+
     export default defineComponent({
         props: {
-            link: {
-                type: Object,
-                default: { name: 'home_page' }
-            },
-            active: {
+            isActive: {
                 type: Boolean,
                 default: false
+            },
+            size: {
+                type: String,
+                default: 'md'
             }
+        },
+        setup: function(props) {
+            const sizemap = {
+                md: 'text-par-m px-3 py-5',
+                sm: 'text-par-s px-3 py-4',
+                lg: 'text-par-l px-3 py-5'
+            };
+
+            return {
+                sizeClass: sizemap[props.size]
+            };
         }
     });
 </script>

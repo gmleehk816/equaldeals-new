@@ -1,7 +1,7 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-	<div class="mb-8">
+	<div class="mb-4">
 		<x-page-title titleText=" {{ __('admin/config.notifications_settings') }}"></x-page-title>
 		<x-page-desc>
 			{{ __('admin/config.notifications_settings_desc') }}

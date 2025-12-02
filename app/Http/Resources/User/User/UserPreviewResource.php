@@ -17,10 +17,13 @@ class UserPreviewResource extends JsonResource
 
     public function toArray(Request $request): array
     {
+        $isMe = (auth_check()) ? $this->id === me()->id : false;
+
         return [
             'id' => $this->id,
             'name' => $this->name,
             'avatar_url' => $this->avatar_url,
+            'is_auth_user' => $isMe,
             'username' => $this->username,
             'caption' => $this->getCaption(),
             'verified' => $this->isVerified(),

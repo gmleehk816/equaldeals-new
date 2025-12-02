@@ -31,8 +31,10 @@ class PostController extends Controller
     public function destroy(int $postId)
     {
         $postData = Post::active()->findOrFail($postId);
-        
+
         (new DeletePostAction($postData))->execute();
+        
+        $postData->user->decrementValue('publications_count', 1);
 
         return redirect()->route('admin.posts.index')->with('flashMessage', (new Flash(content: __('admin/flash.post.delete_success')))->get());
     }

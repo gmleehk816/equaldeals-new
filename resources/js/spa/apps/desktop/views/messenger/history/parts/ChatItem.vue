@@ -1,32 +1,49 @@
 <template>
-	<RouterLink v-on:click="markAsRead" v-bind:to="{ name: 'messenger_chat_page', params: {chat_id: chatData.chat_id } }" class="flex gap-3 items-center pl-4" v-bind:class="[isSelectedChat ? 'bg-fill-qt' : '']">
+	<RouterLink v-on:click="markAsRead" v-bind:to="{ name: 'messenger_chat', params: {chat_id: chatData.chat_id } }" class="flex gap-3 items-center pl-4 h-20" v-bind:class="[isSelectedChat ? 'bg-brand-900/5' : '']">
 		<div class="shrink-0">
 			<AvatarNormal v-bind:avatarSrc="chatData.chat_info.avatar_url"></AvatarNormal>
 		</div>
 
-		<div class="flex-1 overflow-hidden border-b pr-4 py-3" v-bind:class="[isSelectedChat ? 'border-b-transparent' : 'border-b-bord-pr']">
+		<div class="flex-1 overflow-hidden pr-4" v-bind:class="[isSelectedChat ? 'border-b-transparent' : '']">
 			<div class="flex justify-between items-center gap-4">
-				<strong class="font-semibold text-par-n whitespace-nowrap truncate text-lab-pr2">
-					{{ chatData.chat_info.name }}
-					<VerificationBadge v-if="chatData.chat_info.verified"></VerificationBadge>
+				<strong class="font-semibold text-par-m whitespace-nowrap truncate text-lab-pr2">
+					<span v-html="chatData.chat_info.name"></span>
+					<VerificationBadge v-if="chatData.chat_info.verified" size="xs"></VerificationBadge>
 				</strong>
-				<time class="text-par-s text-lab-sc whitespace-nowrap">{{ chatData.last_activity.time_ago }}.</time>
 			</div>
-			<div class="flex items-center justify-between">
-				<template v-if="isTyping">
-					<span class="truncate max-w-full text-green-900 text-par-s font-medium">
-						{{ $t('chat.typing') }}
-					</span>
-				</template>
-				<template v-else>
-					<span class="truncate max-w-full text-lab-pr2 text-par-s min-h-4">
-						{{ chatData.is_deleted ? $t('chat.message_is_deleted') : chatData.last_message }}
-					</span>
-					<BadgeCounter
-						color="bg-green-600"
-						v-if="!isSelectedChat && chatData.unread_messages_count.raw"
-					v-bind:count="chatData.unread_messages_count.formatted"></BadgeCounter>
-				</template>
+			<div class="flex items-center justify-between gap-4">
+				<div class="flex-1 overflow-hidden">
+					<p class="text-lab-sc text-par-n">
+						<template v-if="isTyping">
+							<span class="text-green-900 font-medium">
+								<template v-if="chatData.is_group">
+									{{ $t('chat.user_is_typing', { name: state.typing.user.name }) }}
+								</template>
+								<template v-else>
+									{{ $t('chat.typing') }}
+								</template>
+							</span>
+						</template>
+						<template v-else-if="chatData.is_deleted">
+							{{ $t('chat.message_is_deleted') }}
+						</template>
+						<template v-else-if="chatData.last_message">
+							<span class="flex items-end gap-2.5 overflow-hidden max-w-full">
+								<span class="line-clamp-2" v-html="chatData.last_message"></span>
+								<span class="text-par-s text-lab-sc whitespace-nowrap">
+									{{ chatData.last_activity.time_ago }}
+								</span>
+							</span>
+						</template>
+						<template v-else>
+							<time class="text-par-s text-lab-sc whitespace-nowrap">
+								{{ $t('labels.was_online_at', { time: chatData.last_activity.formatted }) }}
+							</time>
+						</template>
+					</p>
+				</div>
+				<BadgeCounter color="bg-green-600" v-if="!isSelectedChat && chatData.unread_messages_count.raw"
+				v-bind:count="chatData.unread_messages_count.formatted"></BadgeCounter>
 			</div>
 		</div>
 	</RouterLink>
