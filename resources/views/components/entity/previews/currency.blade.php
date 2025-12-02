@@ -1,5 +1,5 @@
 <x-card>
-	<div class="p-4 overflow-hidden">
+	<div class="p-4">
 		<div class="mb-4">
 			<x-entity.format format="currency"></x-entity.format>
 		</div>

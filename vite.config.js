@@ -43,7 +43,9 @@ export default defineConfig({
                 'resources/css/admin/main.css',
                 'resources/js/admin/main.js',
                 
-                'resources/js/mpa/apexcharts.js'
+                'resources/js/mpa/apexcharts.js',
+                'resources/js/mpa/rich.editor.js',
+                'resources/css/mpa/rich.editor.css'
             ],
             refresh: true
         }),
@@ -69,7 +71,7 @@ export default defineConfig({
         strictPort: true,
         host: '0.0.0.0',
         hmr: {
-            host: 'localhost',
+            host: '192.168.1.200',
             port: 5173,
             overlay: false,
         }

@@ -38,6 +38,12 @@ const useExplorePeopleStore = defineStore('explore_people_store', {
 		},
 		getLastPersonId: function() {
 			return this.people.at(-1).id;
+		},
+		resetFilter: function() {
+			this.filter = {
+				query: '',
+				page: 1
+			};
 		}
     }
 });

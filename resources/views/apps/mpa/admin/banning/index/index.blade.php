@@ -1,7 +1,11 @@
 @extends('adminLayout::index')
 
+@section('headerButtons')
+    <x-header-btn link="{{ route('admin.cache.reset') }}" btnText="{{ __('admin/labels.reset_cache') }}" iconName="data" iconType="solid"></x-header-btn>
+@endsection
+
 @section('pageContent')
-	<div class="mb-8">
+	<div class="mb-4">
         <x-page-title titleText=" {{ __('admin/ban.index_title') }}"></x-page-title>
         <x-page-desc>
             {{ __('admin/ban.index_desc') }}

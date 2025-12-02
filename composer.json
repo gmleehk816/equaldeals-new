@@ -75,6 +75,8 @@
     "minimum-stability": "stable",
     "prefer-stable": true,
     "require-dev": {
+        "barryvdh/laravel-debugbar": "^3.16",
+        "laravel/boost": "^1.0",
         "laravel/sail": "^1.41"
     }
 }

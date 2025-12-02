@@ -104,7 +104,7 @@ class StoryController extends Controller
                 'content' => e($request->string('content')),
                 'status' => $isVideo ? StoryStatus::PROCESSING : StoryStatus::ACTIVE,
                 'expires_at' => now()->addHours(24),
-                'duration_seconds' => $isVideo ? config('story.video_clip_size') : config('story.image_clip_size')
+                'duration_seconds' => $isVideo ? 1 : config('story.image_clip_size')
             ]);
 
             event(new StoryCreatedEvent($this->draftStoryFrame));

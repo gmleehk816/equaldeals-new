@@ -5,6 +5,8 @@ return [
 	'translate' => 'Translate',
 	'show_untranslated' => 'Show untranslated',
 	'copy_text' => 'Copy text',
+	'edit' => 'Edit',
+	'done' => 'Done',
 	'job' => [
 		'report_job' => 'Report job',
 		'bookmark_job' => 'Bookmark job',
@@ -40,6 +42,12 @@ return [
 	'message' => [
 		'delete_message' => 'Delete message',
 		'reply' => 'Reply {name}',
+	],
+	'chat_participant' => [
+		'delete_participants' => 'Delete participants',
+		'send_invitation' => 'Send invitation',
+		'accept_invitation' => 'Accept & Join Group',
+		'decline_invitation' => 'Decline invitation',
 	],
 	'story' => [
 		'delete_story' => 'Delete story',

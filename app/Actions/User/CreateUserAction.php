@@ -19,6 +19,7 @@ use App\Models\User;
 use App\Enums\F2AType;
 use App\Models\Wallet;
 use Illuminate\Support\Str;
+use App\Enums\User\UserType;
 use App\Enums\NotificationType;
 use App\Models\UserNotificationSettings;
 
@@ -46,7 +47,8 @@ class CreateUserAction
             'tips' => config('user.tips'),
             'theme' => theme_name(),
             'last_active' => now(),
-            'ip_address' => request()->ip()
+            'ip_address' => request()->ip(),
+            'type' => config('user.authorize_users') ? UserType::AUTHOR : UserType::READER
         ], $this->userData));
 
         $userData->wallet()->create([

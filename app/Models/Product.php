@@ -42,7 +42,7 @@ class Product extends Model
 
 	public function scopeActive($query)
 	{
-		return $query->where('status', ProductStatus::ACTIVE);
+		return $query->whereNot('status', ProductStatus::DRAFT);
 	}
 
 	public function scopeApproved($query)
@@ -163,7 +163,7 @@ class Product extends Model
 			return __('labels.uncategorized');
 		}
 
-		return $this->category->name;
+		return $this->category->category_name;
 	}
 
 	public function getPreviewImageUrlAttribute()
@@ -179,7 +179,7 @@ class Product extends Model
 
 	public function getUrlAttribute()
 	{
-		return url("marketplace/product/{$this->id}");
+		return url("marketplace/product/{$this->hash_id}");
 	}
 
 	public function getHasStoreAttribute()

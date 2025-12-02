@@ -6,7 +6,7 @@
             </span>
         </div>
         <div class="flex-1">
-            <h1 class="text-title-3 2xl:text-title-1 font-medium text-lab-pr2 tracking-tighter leading-tight">
+            <h1 class="text-title-3 2xl:text-title-2 font-bold text-lab-pr2 leading-tight">
                 {{ titleText }}
             </h1>
         </div>
@@ -18,6 +18,7 @@
     import { useRouter } from 'vue-router';
 
     export default defineComponent({
+        emits: ['back'],
         props: {
             hasBack: {
                 type: Boolean,
@@ -27,34 +28,34 @@
                 type: String,
                 default: ''
             },
-            backLink: {
-                type: String,
-                default: ''
-            },
             backStep: {
                 type: Number,
                 default: 1
+            },
+            navigateBack: {
+                type: Boolean,
+                default: true
             },
             backHome: {
                 type: Boolean,
                 default: false
             }
         },
-        setup: function(props) {
-            const backLink = ref();
+        setup: function(props, context) {
             const router = useRouter();
-
-            if(props.backLink) {
-                backLink.value = props.backLink;
-            }
 
             return {
                 goBack: () => {
-                    if(props.backHome) {
-                        router.push({ name: 'home_page' });
+                    if(props.navigateBack) {
+                        if(props.backHome) {
+                            router.push({ name: 'home_index' });
+                        }
+                        else {
+                            router.go(-props.backStep);
+                        }
                     }
                     else {
-                        router.go(-props.backStep);
+                        context.emit('back');
                     }
                 }
             }

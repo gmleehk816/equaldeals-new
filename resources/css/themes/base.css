@@ -1,15 +1,21 @@
 @theme {
-    --font-sans: 'SF Pro Display', 'sans-serif';
-    --font-mono: 'SF Mono', 'monospace';
+    --font-sans: var(--font-sans);
+    --font-mono: var(--font-mono);
+}
+
+body {
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    --webkit-text-size-adjust: 100%;
+    text-rendering: optimizeLegibility;
+}
+
+body{
+    @apply bg-bg-pr;
 }
 
 .z-100 {
     z-index: 100;
-}
-
-.font-smoothing{
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
 }
 
 .flex-center{
@@ -44,9 +50,9 @@ input[type="number"] {
 }
 
 .callout-success{
-    @apply border-green-900 border bg-[#EFFDF4] text-[#00a63e];
+    @apply bg-bg-pr text-[#00a63e];
 }
 
 .callout-error{
-    @apply bg-[#FEE4E2] text-[#FF6367] border border-[#FF6367];
+    @apply bg-bg-pr text-[#FF6367];
 }

@@ -3,5 +3,5 @@ export const Layouts = {
     STORIES: 'stories',
     INFO: 'info',
     FLAT: 'flat',
-    CATALOG: 'catalog'
+    MESSENGER: 'messenger'
 };

@@ -34,7 +34,7 @@
 			},
 			buttonColor: {
                 type: String,
-                default: 'text-lab-pr3' 
+                default: 'text-lab-pr' 
             },
 			hasBg: {
 				type: Boolean,

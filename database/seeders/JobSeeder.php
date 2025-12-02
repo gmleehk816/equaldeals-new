@@ -9,6 +9,6 @@ class JobSeeder extends Seeder
 {
     public function run(): void
     {
-        JobListing::factory()->count(100)->create();
+        JobListing::factory()->count(4)->create();
     }
 }

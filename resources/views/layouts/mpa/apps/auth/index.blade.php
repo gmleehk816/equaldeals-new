@@ -10,7 +10,8 @@
         @include('layouts.parts.favicons')
 
         @vite([
-            'resources/fonts/sf-pro/stylesheet.css'
+            config('assets.fonts.sans'),
+            config('assets.fonts.mono')
         ])
 
         @if(theme_name() == 'dark')

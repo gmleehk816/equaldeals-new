@@ -5,7 +5,7 @@
 				<AvatarSmall v-bind:avatarSrc="storyAuthor.avatar_url"></AvatarSmall>
 			</div>
 			<div class="flex-1 overflow-hidden leading-none truncate">
-				<span class="text-par-n font-medium text-white tracking-tighter mb-0.5">
+				<span class="text-par-n font-medium text-white mb-0.5">
 					{{ storyAuthor.name }} <VerificationBadge v-if="storyAuthor.verified" size="xs"></VerificationBadge>
 				</span>
 				<span class="text-cap-l text-white ml-1 opacity-80">

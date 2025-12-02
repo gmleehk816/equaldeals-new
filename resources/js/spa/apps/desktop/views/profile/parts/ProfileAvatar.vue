@@ -1,5 +1,5 @@
 <template>
-	<div v-on:click="lightboxAvatar" class="cursor-pointer border-4 border-bg-pr rounded-full">
+	<div v-on:click="lightboxAvatar" class="cursor-pointer relative z-10 border-4 border-bg-pr rounded-full">
 		<AvatarLarge v-bind:avatarSrc="profileData.avatar_url"></AvatarLarge>
 	</div>
 </template>

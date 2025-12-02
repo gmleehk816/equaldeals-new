@@ -1,13 +1,11 @@
 <template>
-    <div v-if="albumData" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-xs">
-        <ImagePlayer v-bind:albumImages="albumData.images"></ImagePlayer>
+    <div v-if="albumData" class="fixed inset-0 z-50 bg-black">
+        <ImagePlayer v-bind:albumImages="albumData.images" v-on:close="closeLightbox"></ImagePlayer>
         
-        <div class="fixed top-4 right-4 2xl:top-8 2xl:right-8 inline-block">
-            <button v-on:click="closeLightbox" class="text-par-m text-white opacity-60 hover:opacity-100">
-                {{ $t('labels.close') }}
-            </button>
+        <div class="backdrop-close-button-container-top-right">
+            <BackdropCloseButton v-on:click="closeLightbox" ></BackdropCloseButton>
         </div>
-        <div class="fixed left-0 right-0 bottom-0">
+        <div class="fixed left-0 right-0 bottom-0 from-black to-black/0 bg-gradient-to-t">
             <div class="flex w-full items-center justify-between px-6 py-6">
                 <div class="mr-4">
                     <span v-if="albumData.albumName || albumData.date" class="text-par-s inline-flex leading-4 text-white gap-3 items-center opacity-60">
@@ -30,7 +28,7 @@
 
     import hotkeys from 'hotkeys-js';
 
-    import PrimaryIconButton from '@D/components/inter-ui/buttons/PrimaryIconButton.vue';
+    import BackdropCloseButton from '@D/components/inter-ui/buttons/BackdropCloseButton.vue';
 
     export default defineComponent({
         setup: function() {
@@ -69,7 +67,7 @@
             ImagePlayer: defineAsyncComponent(() => {
                 return import('@D/components/lightbox/parts/ImagePlayer.vue')
             }),
-            PrimaryIconButton: PrimaryIconButton
+            BackdropCloseButton: BackdropCloseButton
         }
     });
 </script>

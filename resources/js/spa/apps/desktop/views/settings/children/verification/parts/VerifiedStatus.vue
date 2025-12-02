@@ -1,5 +1,5 @@
 <template>
-    <div class="block">
+    <div class="border border-bord-sc rounded-2xl">
         <div class="p-6">
             <div class="inline-block relative">
                 <AvatarMedium v-bind:avatarSrc="userData.avatar_url"></AvatarMedium>
@@ -13,7 +13,7 @@
             <p class="text-par-s text-lab-sc" v-html="$t('settings.forms.verification_complete.desc')"></p>
         </div>
         <Border height="h-4" opacity="opacity-80"></Border>
-        <div class="block px-6 py-4">
+        <div class="block px-6 py-4 mb-6">
             <InfoList>
                 <InfoListItem
                     iconName="user-01"
@@ -26,8 +26,8 @@
             </InfoList>
         </div>
         <div class="flex gap-4 px-6 pb-6">
-			<a v-bind:href="{ name: 'home_page' }">
-				<PrimaryPillButton v-bind:buttonText="$t('labels.return_home')" buttonSize="lm"></PrimaryPillButton>
+			<a v-bind:href="{ name: 'home_index' }">
+				<PrimaryPillButton v-bind:buttonText="$t('labels.return_home')"></PrimaryPillButton>
 			</a>
         </div>
     </div>

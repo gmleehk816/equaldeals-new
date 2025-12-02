@@ -1,19 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { Layouts } from '@D/core/constants/layouts.js';
 
-import HomePage from '@D/views/home/HomePage.vue';
-import ProfilePage from '@D/views/profile/ProfilePage.vue';
-import PublicationPage from '@D/views/publication/PublicationPage.vue';
-import SettingsPage from '@D/views/settings/SettingsPage.vue';
-
-import MessengerPage from '@D/views/messenger/MessengerPage.vue';
-import MarketplacePage from '@D/views/marketplace/MarketplacePage.vue';
-import JobsPage from '@D/views/jobs/JobsPage.vue';
-import Error404Page from '@D/views/errors/err404/Error404Page.vue';
-
-import WalletRoutes from '@D/router/wallet/index.js';
-import StoryRoutes from '@D/router/stories/index.js';
-
 const Router = createRouter({
 	history: createWebHistory(),
     scrollBehavior(to, from, savedPosition) {
@@ -23,376 +10,421 @@ const Router = createRouter({
     },
 	routes: [
         {
+			path: '/bookmarks',
+			component: function() {
+                return import('@D/views/bookmarks/BookmarksIndex.vue');
+            },
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+            },
+            name: 'bookmarks_index'
+		},
+        {
 			path: '/',
-			component: HomePage,
+			component: function() {
+				return import('@D/views/home/HomeIndex.vue');
+			},
 			alias: '/home',
             meta: {
                 layout: Layouts.MAIN,
                 auth: true
             },
-            name: 'home_page'
+            name: 'home_index'
 		},
         {
 			path: '/jobs',
-			component: JobsPage,
+			component: function () {
+                return import('@D/views/jobs/children/board/JobsIndex.vue');
+            },
 			alias: '/jobs',
             meta: {
-                layout: Layouts.CATALOG,
-                auth: true,
-                feature: 'jobs',
-                fluidLayout: true
-            },
-            name: 'jobs_page',
-            redirect: { name: 'jobs_index' },
-            children: [
-                {
-                    path: ':job_id?',
-                    component: function() {
-                        return import('@D/views/jobs/children/jobsboard/JobsIndex.vue');
-                    },
-                    name: 'jobs_index',
-                    props: true
-                }
-            ]
-		},
-        {
-			path: '/marketplace',
-			component: MarketplacePage,
-			alias: '/marketplace',
-            meta: {
-                layout: Layouts.CATALOG,
-                auth: true,
-                feature: 'marketplace',
-                fluidLayout: true
-            },
-            name: 'marketplace_page',
-            redirect: { name: 'marketplace_index' },
-            children: [
-                {
-                    path: 'index',
-                    component: function() {
-                        return import('@D/views/marketplace/children/marketplace/MarketplaceIndex.vue');
-                    },
-                    name: 'marketplace_index',
-                    props: true
-                }
-            ]
-		},
-        {
-			path: '/messenger',
-			component: MessengerPage,
-			alias: '/messenger',
-            meta: {
-                contextNavbar: true,
-                sectionName: 'messenger',
                 layout: Layouts.MAIN,
                 auth: true,
+                feature: 'jobs',
+            },
+            name: 'jobs_index'
+		},
+        {
+            path: '/saved/jobs',
+            component: function() {
+                return import('@D/views/jobs/children/saved/JobBookmarks.vue');
+            },
+            name: 'saved_jobs',
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+                feature: 'jobs',
+            }
+        },
+        {
+            path: '/jobs/:job_id',
+            component: function() {
+                return import('@D/views/jobs/children/job/JobShow.vue');
+            },
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+                feature: 'jobs',
+            },
+            name: 'jobs_show',
+            props: true
+        },
+        {
+			path: '/marketplace',
+			component: function() {
+                return import('@D/views/marketplace/children/catalog/MarketplaceIndex.vue');
+            },
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+                feature: 'marketplace'
+            },
+            name: 'marketplace_index',
+		},
+        {
+            props: true,
+			path: '/marketplace/product/:product_id',
+			component: function() {
+                return import('@D/views/marketplace/children/product/ProductShow.vue');
+            },
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+                feature: 'marketplace'
+            },
+            name: 'marketplace_show',
+		},
+        {
+            path: '/saved/products',
+            component: function() {
+                return import('@D/views/marketplace/children/saved/ProductBookmarks.vue');
+            },
+            name: 'saved_products',
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+                feature: 'marketplace',
+            }
+        },
+        {
+			path: '/messenger',
+			component: function() {
+                return import('@D/views/messenger/MessengerIndex.vue');
+            },
+			alias: '/messenger',
+            meta: {
+                sectionName: 'messenger',
+                layout: Layouts.MESSENGER,
+                auth: true,
                 fluidLayout: true
             },
-            name: 'messenger_page',
+            name: 'messenger_index',
             redirect: { 
                 name: 'messenger_inbox'
             },
             children: [
                 {
-                    path: 'inbox',
+                    path: 'archive',
                     component: function() {
-                        return import('@D/views/messenger/children/inbox/MessengerInboxPage.vue');
+                        return import('@D/views/messenger/children/archive/MessengerArchive.vue');
                     },
-                    name: 'messenger_inbox'
+                    name: 'messenger_archive',
+                    meta: {
+                        archive: true
+                    }
                 },
                 {
-                    path: 'direct/:chat_id',
+                    path: 'inbox',
                     component: function() {
-                        return import('@D/views/messenger/children/chat/MessengerChatPage.vue');
+                        return import('@D/views/messenger/children/inbox/MessengerInbox.vue');
                     },
-                    name: 'messenger_chat_page'
+                    name: 'messenger_inbox',
+                },
+                {
+                    path: 'group/create',
+                    component: function() {
+                        return import('@D/views/messenger/children/group/MessengerGroupCreate.vue');
+                    },
+                    name: 'messenger_group_create',
+                },
+                {
+                    path: 'group/:chat_id/edit',
+                    component: function() {
+                        return import('@D/views/messenger/children/group/MessengerGroupEdit.vue');
+                    },
+                    name: 'messenger_group_edit',
+                    props: true,
+                },
+                {
+                    path: 'group/:chat_id/show',
+                    component: function() {
+                        return import('@D/views/messenger/children/group/MessengerGroupShow.vue');
+                    },
+                    name: 'messenger_group_show',
+                    props: true,
+                },
+                {
+                    path: 'c/:chat_id',
+                    component: function() {
+                        return import('@D/views/messenger/children/chat/MessengerChat.vue');
+                    },
+                    name: 'messenger_chat'
                 }
             ]
 		},
         {
 			path: '/settings',
-			component: SettingsPage,
+			component: function() {
+                return import('@D/views/settings/SettingsIndex.vue');
+            },
 			alias: '/settings',
             meta: {
-                contextNavbar: true,
                 sectionName: 'settings',
-                layout: Layouts.MAIN,
+                layout: Layouts.FLAT,
                 auth: true,
-                rightOffset: true
+                rightOffset: true,
+                fluidLayout: true
             },
-            name: 'settings_page',
-            redirect: { name: 'account_settings_page' },
+            name: 'settings_index',
+            redirect: {
+                name: 'settings_account'
+            },
             children: [
                 {
-                    path: 'account_settings',
+                    path: 'account-settings',
                     component: function() {
-                        return import('@D/views/settings/children/account/AccountSettingsPage.vue');
+                        return import('@D/views/settings/children/account/AccountSettings.vue');
                     },
-                    name: 'account_settings_page'
+                    name: 'settings_account'
                 },
                 {
-                    path: 'account_credentials',
+                    path: 'authorship',
                     component: function() {
-                        return import('@D/views/settings/children/navigators/credentials/CredentialsSettingsPage.vue');
+                        return import('@D/views/settings/children/authorship/AuthorshipSettings.vue');
                     },
-                    name: 'account_credentials_page'
+                    name: 'settings_authorship'
+                },
+                {
+                    path: 'credentials',
+                    component: function() {
+                        return import('@D/views/settings/children/navigators/credentials/CredentialSettings.vue');
+                    },
+                    name: 'settings_credentials'
                 },
                 {
                     path: 'email',
                     component: function() {
-                        return import('@D/views/settings/children/email/EmailSettingsPage.vue');
+                        return import('@D/views/settings/children/email/EmailSettings.vue');
                     },
-                    name: 'email_settings_page'
+                    name: 'settings_email'
                 },
                 {
-                    path: 'confirm_email',
+                    path: 'confirm-email',
                     component: function() {
-                        return import('@D/views/settings/children/confirm_email/ConfirmEmailSettingsPage.vue');
+                        return import('@D/views/settings/children/confirm_email/EmailConfirmation.vue');
                     },
-                    name: 'confirm_email_settings_page'
+                    name: 'settings_email_confirm'
                 },
                 {
                     path: 'phone',
                     component: function() {
-                        return import('@D/views/settings/children/phone/PhoneSettingsPage.vue');
+                        return import('@D/views/settings/children/phone/PhoneSettings.vue');
                     },
-                    name: 'phone_settings_page'
+                    name: 'settings_phone'
                 },
                 {
-                    path: 'confirm_phone',
+                    path: 'confirm-phone',
                     component: function() {
-                        return import('@D/views/settings/children/confirm_phone/ConfirmPhoneSettingsPage.vue');
+                        return import('@D/views/settings/children/confirm_phone/PhoneConfirmation.vue');
                     },
-                    name: 'confirm_phone_settings_page'
+                    name: 'settings_phone_confirm'
                 },
                 {
                     path: 'password',
                     component: function() {
-                        return import('@D/views/settings/children/password/PasswordSettingsPage.vue');
+                        return import('@D/views/settings/children/password/PasswordSettings.vue');
                     },
-                    name: 'password_settings_page'
+                    name: 'settings_password'
                 },
                 {
                     path: 'notifications',
                     component: function() {
-                        return import('@D/views/settings/children/navigators/notifications/NotificationsSettingsPage.vue');
+                        return import('@D/views/settings/children/navigators/notifications/NotificationSettings.vue');
                     },
-                    name: 'notifications_settings_page'
+                    name: 'settings_notifications'
                 },
                 {
-                    path: 'push_notifications',
+                    path: 'push-notifications',
                     component: function() {
-                        return import('@D/views/settings/children/push_notifications/PushNotificationsSettingsPage.vue');
+                        return import('@D/views/settings/children/push_notifications/PushNotifications.vue');
                     },
-                    name: 'push_notifications_settings_page'
+                    name: 'settings_push_notifications'
                 },
                 {
-                    path: 'email_notifications',
+                    path: 'email-notifications',
                     component: function() {
-                        return import('@D/views/settings/children/email_notifications/EmailNotificationsSettingsPage.vue');
+                        return import('@D/views/settings/children/email_notifications/EmailNotifications.vue');
                     },
-                    name: 'email_notifications_settings_page'
+                    name: 'settings_email_notifications'
                 },
                 {
-                    path: 'account_privacy',
+                    path: 'privacy',
                     component: function() {
-                        return import('@D/views/settings/children/account_privacy/AccountPrivacySettingsPage.vue');
+                        return import('@D/views/settings/children/account_privacy/AccountPrivacy.vue');
                     },
-                    name: 'account_privacy_settings_page'
+                    name: 'settings_privacy'
                 },
                 {
                     path: 'language',
                     component: function() {
-                        return import('@D/views/settings/children/language/LanguageSettingsPage.vue');
+                        return import('@D/views/settings/children/language/LanguageSettings.vue');
                     },
-                    name: 'language_settings_page'
+                    name: 'settings_language'
                 },
                 {
-                    path: 'social_media',
+                    path: 'social-media',
                     component: function() {
-                        return import('@D/views/settings/children/social_media/SocialMediaSettingsPage.vue');
+                        return import('@D/views/settings/children/social_media/SocialMediaSettings.vue');
                     },
-                    name: 'social_media_settings_page'
+                    name: 'settings_social_media'
                 },
                 {
                     path: 'theme',
                     component: function() {
-                        return import('@D/views/settings/children/theme/ThemeSettingsPage.vue');
+                        return import('@D/views/settings/children/theme/ThemeSettings.vue');
                     },
-                    name: 'theme_settings_page'
+                    name: 'settings_theme'
                 },
                 {
-                    path: 'personal_info',
+                    path: 'personal-info',
                     component: function() {
-                        return import('@D/views/settings/children/navigators/personal_info/PersonalInfoSettingsPage.vue');
+                        return import('@D/views/settings/children/navigators/personal_info/PersonalInfoSettings.vue');
                     },
-                    name: 'personal_info_settings_page'
+                    name: 'settings_personal_info'
                 },
                 {
                     path: 'birthdate',
                     component: function() {
-                        return import('@D/views/settings/children/birthdate/BirthdateSettingsPage.vue');
+                        return import('@D/views/settings/children/birthdate/BirthdateSettings.vue');
                     },
-                    name: 'birthdate_settings_page'
+                    name: 'settings_birthdate'
                 },
                 {
                     path: 'city',
                     component: function() {
-                        return import('@D/views/settings/children/city/CitySettingsPage.vue');
+                        return import('@D/views/settings/children/city/CitySettings.vue');
                     },
-                    name: 'city_settings_page'
+                    name: 'settings_city'
                 },
                 {
                     path: 'country',
                     component: function() {
-                        return import('@D/views/settings/children/country/CountrySettingsPage.vue');
+                        return import('@D/views/settings/children/country/CountrySettings.vue');
                     },
-                    name: 'country_settings_page'
+                    name: 'settings_country'
                 },
                 {
                     path: 'verification',
                     component: function() {
-                        return import('@D/views/settings/children/verification/VerificationPage.vue');
+                        return import('@D/views/settings/children/verification/Verification.vue');
                     },
-                    name: 'verification_page'
+                    name: 'settings_verification'
                 },
                 {
                     path: 'sessions',
                     component: function() {
-                        return import('@D/views/settings/children/sessions/SessionsPage.vue');
+                        return import('@D/views/settings/children/sessions/SessionsSettings.vue');
                     },
-                    name: 'sessions_settings_page'
+                    name: 'settings_sessions'
                 },
                 {
                     path: 'blocked',
                     component: function() {
-                        return import('@D/views/settings/children/blocked/BlockedPeoplePage.vue');
+                        return import('@D/views/settings/children/blocked/BlockSettings.vue');
                     },
-                    name: 'blocked_settings_page'
+                    name: 'settings_blocked'
                 },
                 {
-                    path: 'account-actions',
+                    path: 'actions',
                     component: function() {
-                        return import('@D/views/settings/children/actions/ActionsSettingsPage.vue');
+                        return import('@D/views/settings/children/actions/ActionSettings.vue');
                     },
-                    name: 'actions_settings_page'
+                    name: 'settings_actions'
                 },
                 {
                     path: 'hotkeys',
                     component: function() {
-                        return import('@D/views/settings/children/hotkeys/HotkeysSettingsPage.vue');
+                        return import('@D/views/settings/children/hotkeys/HotkeySettings.vue');
                     },
-                    name: 'hotkey_settings_page'
+                    name: 'settings_hotkey'
                 },
                 {
                     path: 'api',
                     component: function() {
-                        return import('@D/views/settings/children/api/ApiSettingsPage.vue');
+                        return import('@D/views/settings/children/api/ApiSettings.vue');
                     },
-                    name: 'api_settings_page'
+                    name: 'settings_api'
                 }
             ]
 		},
         {
 			path: '/publication/:hash_id',
-			component: PublicationPage,
-            meta: {
-                layout: Layouts.MAIN,
-                auth: true
-            },
-            name: 'publication_page'
-		},
-        {
-			path: '/placeholder',
 			component: function() {
-                return import('@D/views/placeholder/PlaceholderPage.vue');
+                return import('@D/views/publication/PublicationIndex.vue');
             },
             meta: {
                 layout: Layouts.MAIN,
                 auth: true
             },
-            name: 'placeholder_page'
-		},
-        {
-			path: '/bookmarks',
-			component: function() {
-                return import('@D/views/bookmarks/BookmarksPage.vue');
-            },
-            meta: {
-                layout: Layouts.MAIN,
-                auth: true,
-            },
-            redirect: { name: 'bookmarks_posts_page' },
-            name: 'bookmarks_page',
-            children: [
-                {
-                    path: 'posts',
-                    component: function() {
-                        return import('@D/views/bookmarks/children/posts/PostBookmarksPage.vue');
-                    },
-                    name: 'bookmarks_posts_page'
-                },
-                {
-                    path: 'jobs',
-                    component: function() {
-                        return import('@D/views/bookmarks/children/jobs/JobBookmarksPage.vue');
-                    },
-                    name: 'bookmarks_jobs_page'
-                },
-                {
-                    path: 'products',
-                    component: function() {
-                        return import('@D/views/bookmarks/children/products/ProductBookmarksPage.vue');
-                    },
-                    name: 'bookmarks_products_page'
-                }
-            ]
+            name: 'publication_index'
 		},
         {
 			path: '/about-author',
 			component: function() {
-                return import('@D/views/mtl/MansurTerlaPage.vue');
+                return import('@D/views/mtl/MTLIndex.vue');
             },
             meta: {
                 layout: Layouts.INFO,
                 auth: false
             },
-            name: 'about_author_page'
+            name: 'mtl_index'
 		},
         {
 			path: '/live-stream',
 			component: function() {
-                return import('@D/views/live/LiveStreamPage.vue');
+                return import('@D/views/live/LiveIndex.vue');
             },
             meta: {
                 layout: Layouts.MAIN,
                 auth: true
             },
-            name: 'live_stream_page'
+            name: 'live_index'
 		},
         {
 			path: '/explore',
-            name: 'explore_page',
+            name: 'explore_index',
 			component: function() {
-                return import('@D/views/explore/ExplorePage.vue');
+                return import('@D/views/explore/ExploreIndex.vue');
             },
-            redirect: { name: 'explore_posts_page' },
+            redirect: {
+                name: 'explore_posts'
+            },
             props: true,
             children: [
                 {
                     path: 'posts',
                     component: function() {
-                        return import('@D/views/explore/children/posts/ExplorePostPage.vue');
+                        return import('@D/views/explore/children/posts/ExplorePosts.vue');
                     },
-                    name: 'explore_posts_page'
+                    name: 'explore_posts'
                 },
                 {
                     path: 'people',
                     component: function() {
-                        return import('@D/views/explore/children/people/ExplorePeoplePage.vue');
+                        return import('@D/views/explore/children/people/ExplorePeople.vue');
                     },
-                    name: 'explore_people_page'
+                    name: 'explore_people'
                 }
             ],
             meta: {
@@ -401,58 +433,71 @@ const Router = createRouter({
             }
 		},
         {
-			path: '/videos',
-			component: function() {
-                return import('@D/views/videos/VideosPage.vue');
+            path: '/wallet',
+            component: function() {
+                return import('@D/views/wallet/WalletIndex.vue');
             },
+            alias: '/wallet',
             meta: {
                 layout: Layouts.MAIN,
                 auth: true,
-                feature: 'videos'
+                feature: 'wallet'
             },
-            name: 'videos_page'
-		},
-        WalletRoutes,
-        StoryRoutes,
+            name: 'wallet_index',
+        },
+        {
+            path: '/stories/:story_uuid',
+            component: function() {
+                return import('@D/views/stories/StoriesIndex.vue');
+            },
+            name: 'stories_index',
+            meta: {
+                layout: Layouts.STORIES,
+                auth: true
+            },
+            props: true
+        },
         {
 			path: '/@:id([a-zA-Z0-9._]+)',
-			component: ProfilePage,
+			component: function() {
+                return import('@D/views/profile/ProfileIndex.vue');
+            },
             meta: {
                 layout: Layouts.MAIN,
                 auth: true
             },
-            name: 'profile_page',
+            name: 'profile_index',
             props: true,
-            redirect: { name: 'profile_posts_page' },
+            redirect: { name: 'profile_posts' },
             children: [
                 {
                     path: 'posts:?',
                     component: function() {
                         return import('@D/views/profile/parts/tabs/ProfilePosts.vue');
                     },
-                    name: 'profile_posts_page'
+                    name: 'profile_posts'
                 },
                 {
                     path: 'media',
                     component: function() {
                         return import('@D/views/profile/parts/tabs/ProfileMedia.vue');
                     },
-                    name: 'profile_media_page'
+                    name: 'profile_media'
                 },
                 {
-                    path: 'activity',
+                    path: 'info',
                     component: function() {
-                        return import('@D/views/profile/parts/tabs/ProfileActivity.vue');
+                        return import('@D/views/profile/parts/tabs/ProfileInfo.vue');
                     },
-                    name: 'profile_activity_page'
+                    name: 'profile_info'
                 },
             ]
 		},
         {
             path: '/bootstrap-error',
-            name: 'server_error_bootstrap',
+            name: 'bootstrap_error',
             component: function() {
-                return import('@D/views/errors/bootstrap/BootstrapErrorPage.vue');
+                return import('@D/views/errors/bootstrap/BootstrapErrorIndex.vue');
             },
             meta: {
                 layout: Layouts.FLAT,
@@ -461,8 +506,10 @@ const Router = createRouter({
         },
         {
             path: '/:pathMatch(.*)*',
-            name: 'server_error_404',
-            component: Error404Page,
+            name: 'error_404',
+            component: function() {
+                return import('@D/views/errors/err404/Error404Index.vue');
+            },
 			meta: {
                 layout: Layouts.MAIN,
                 auth: true
@@ -478,7 +525,7 @@ Router.beforeEach((to, from, next) => {
 
     if(feature) {
         if(! config(`features.${feature}.enabled`)) {
-            return next({ name: 'server_error_404' });
+            return next({ name: 'error_404' });
         }
         else {
             next();

@@ -12,7 +12,7 @@
     <div class="block relative">
         <input
             x-model.trim="inputText"
-            class="block w-full bg-input-pr border-none h-12 md:h-14 rounded-md outline-hidden text-par-s md:text-par-m text-lab-pr px-4 md:px-6 {{ $classes }}"
+            class="block w-full bg-input-pr border-none h-12 rounded-lg outline-hidden text-par-s md:text-par-m text-lab-pr px-4 {{ $classes }}"
             placeholder="{{ $placeholder }}"
             name="{{ $name }}"
             x-bind:type="inputType"

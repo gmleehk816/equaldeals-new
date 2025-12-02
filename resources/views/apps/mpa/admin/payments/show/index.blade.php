@@ -1,7 +1,7 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-	<div class="mb-8">
+	<div class="mb-4">
         <x-page-title titleText=" {{ __('admin/payments.show_title') }}"></x-page-title>
         <x-page-desc>
             {{ __('admin/payments.show_desc') }}
@@ -14,7 +14,7 @@
 				<x-entity.previews.payment :paymentData="$paymentData"></x-entity.previews.payment>
 			</x-slot:sideContent>
 
-			<div class="mb-4">
+			<div class="mb-8">
 				<x-entity.header 
 					avatarUrl="{{ $paymentData->user->avatar_url }}" 
 					name="{{ $paymentData->user->name }}"

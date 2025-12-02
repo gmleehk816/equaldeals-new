@@ -43,46 +43,31 @@ class MarketController extends Controller
         ]);
     }
 
-    public function getBookmarksCount()
-    {
-        $bookmarkedProductCount = Product::listable()->whereHas('bookmarks', function ($query) {
-            $query->where('user_id', me()->id);
-        })->count();
-        
-        return $this->responseSuccess([
-            'data' => [
-                'count' => $bookmarkedProductCount
-            ]
-        ]);
-    }
-
     public function getProductData(Request $request, $productId)
-    { 
-        $productData = Product::active()->withRelations()->find($productId);
-
-        // TODO: This is a temporary solution to allow the user to view the product if it is rejected.
-        // We need to improve this in the future.
-        
-        if(! $productData->approval->isApproved()) {
-            if(! me()->isAdmin() && ! me()->id == $productData->user_id) {
-                return $this->responseResourceNotFoundError('Product', $productId);
-            }
-        }
+    {
+        $productData = Product::active()->withRelations()->findByHashId($productId);
 
         if($productData) {
+            // TODO: This is a temporary solution to allow the user to view the product if it is rejected.
+            // We need to improve this in the future.
+            
+            if(! $productData->approval->isApproved()) {
+                if(! me()->isAdmin() && ! me()->id == $productData->user_id) {
+                    return $this->responseResourceNotFoundError('Product', $productId);
+                }
+            }
+
             return $this->responseSuccess([
                 'data' => ProductResource::make($productData)
             ]);
         }
 
-        else{
-            return $this->responseResourceNotFoundError('Product', $productId);
-        }
+        return $this->responseResourceNotFoundError('Product', $productId);
     }
 
     public function getCategories(Request $request)
     {
-        $categories = Category::marketplace()->take(16)->get();
+        $categories = Category::active()->marketplace()->take(16)->get();
 
         return $this->responseSuccess([
             'data' => CategoryCollection::make($categories)

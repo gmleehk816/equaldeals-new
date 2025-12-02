@@ -35,7 +35,7 @@
                 {{ __('business/table.th.product_type') }}
             </x-table.th>
             <x-table.th classes="text-right">
-                {{ __('business/table.th.actions') }}
+                {{ __('labels.table.actions') }}
             </x-table.th>
         </x-table.thead>
         <x-table.tbody>

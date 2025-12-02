@@ -1,8 +1,4 @@
 <div>
-    <div class="mb-6">
-        <x-page-title titleText="{{ __('business/settings.edit_title') }}"></x-page-title>
-    </div>
-
     <form wire:submit.prevent="submitForm" enctype="multipart/form-data">
         @csrf
         <x-accordion.form title="{{ __('business/settings.form.base_info') }}">
@@ -166,9 +162,7 @@
                     </a>
                 </div>
                 <div class="text-cap-l text-lab-sc">
-                    <p class="mb-4">
-                        {!! __('business/settings.form.tos_agreement') !!}
-                    </p>
+                    {!! __('business/settings.form.tos_agreement') !!}
                 </div>
             </div>
         </x-accordion.form>

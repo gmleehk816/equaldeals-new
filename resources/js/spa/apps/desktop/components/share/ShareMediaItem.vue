@@ -1,12 +1,12 @@
 <template>
-	<a v-bind:href="mediaItem.url + link" target="_blank" class="block px-3 py-2 border-b border-fill-sc hover:bg-fill-qt">
+	<a v-bind:href="mediaItem.url + link" target="_blank" class="block px-4 py-2 hover:bg-fill-qt">
 		<div class="flex items-center">
 			<div class="shrink-0">
-				<div class="inline-flex-center size-8 rounded-full bg-fill-pr">
+				<div class="inline-flex-center size-small-avatar rounded-full bg-fill-pr">
 					<SvgIcon v-bind:name="mediaItem.icon" type="social" classes="size-icon-small text-lab-pr"></SvgIcon>
 				</div>
 			</div>
-			<span class="text-lab-pr ml-2 font-normal text-par-s">
+			<span class="text-lab-pr ml-2 font-medium text-par-n">
 				{{  mediaItem.name }}
 			</span>
 			<span class="shrink-0 ml-auto">

@@ -93,4 +93,37 @@ return [
 		'title' => 'Remove ban?',
 		'description' => 'Are you sure you want to remove this ban? You can add it again later.',
 	],
+	'authorize_user' => [
+		'title' => 'Authorize user?',
+		'description' => 'Authors get a place in recommendations, their materials become available to subscribers. At the same time, you can always cancel authorship of this account whenever you want.',
+		'confirm_btn_text' => 'Yes, authorize',
+	],
+	'unauthorize_user' => [
+		'title' => 'Unauthorize user?',
+		'description' => 'Are you sure you want to unauthorize this user? This action will remove the user from the authors list.',
+		'confirm_btn_text' => 'Yes, unauthorize',
+	],
+	'reject_authorization' => [
+		'title' => 'Reject request?',
+		'description' => 'Are you sure you want to reject authorization request from this user? You can authorize user whenever you want.',
+		'confirm_btn_text' => 'Yes, reject',
+	],
+	'verify_user' => [
+		'title' => 'Verify user?',
+		'description' => 'Verification is a way to verify that a user is who they say they are. Verified users also have a special verification badge in their profile.',
+		'confirm_btn_text' => 'Yes, verify',
+	],
+	'unverify_user' => [
+		'title' => 'Unverify user?',
+		'description' => 'This action will remove the verification badge from the user\'s profile.',
+		'confirm_btn_text' => 'Yes, unverify',
+	],
+	'delete_category' => [
+		'title' => 'Delete category?',
+		'description' => 'Are you sure you want to delete this category? Related entities will not be deleted but they will moved to the Uncategorized category.',
+	],
+	'delete_chat' => [
+		'title' => 'Delete chat?',
+		'description' => 'This chat will be deleted for all participants also. Including messages and other related data as messages, group, etc.',
+	],
 ];

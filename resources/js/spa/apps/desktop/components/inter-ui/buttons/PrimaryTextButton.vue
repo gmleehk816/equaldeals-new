@@ -1,6 +1,6 @@
 <template>
-    <button v-bind:type="buttonType" v-bind:disabled="disableButton" class="inline-flex outline-hidden items-center gap-1 leading-none disabled:opacity-60" v-bind:class="[btnColor, (iconPosition === 'left') ? 'flex-row-reverse' : '' ]">
-        <span class="text-par-s">
+    <button v-bind:type="buttonType" v-bind:disabled="disableButton" class="inline-flex justify-center outline-hidden items-center gap-1 cursor-pointer leading-none disabled:cursor-not-allowed disabled:opacity-60" v-bind:class="[((buttonFluid) ? 'w-full' : ''),btnColor, (iconPosition === 'left') ? 'flex-row-reverse' : '' ]">
+        <span class="text-par-n font-medium">
             {{ buttonText }}
         </span>
         <template v-if="$slots.buttonIcon">
@@ -21,6 +21,10 @@
     export default defineComponent({
         props: {
             loading: {
+                type: Boolean,
+                default: false
+            },
+            buttonFluid: {
                 type: Boolean,
                 default: false
             },

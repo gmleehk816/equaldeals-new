@@ -7,6 +7,11 @@ return [
 	'user' => [
 		'delete_success' => 'User deleted successfully!',
 		'delete_self' => 'You cannot delete your own account!',
+		'authorize_success' => 'User authorized successfully!',
+		'unauthorize_success' => 'User unauthorized successfully!',
+		'authorize_reject' => 'Request is rejected successfully!',
+		'verify_success' => 'User verified successfully!',
+		'unverify_success' => 'User unverified successfully!',
 	],
 	'post' => [
 		'delete_success' => 'Post deleted successfully!',
@@ -49,5 +54,16 @@ return [
 	],
 	'ban' => [
 		'delete_success' => 'Ban deleted successfully! Please reset cache to make changes effective.',
+	],
+	'category' => [
+		'create_success' => 'Category created successfully!',
+		'update_success' => 'Category updated successfully!',
+		'delete_success' => 'Category deleted successfully!',
+	],
+	'page' => [
+		'update_success' => 'Page updated successfully!',
+	],
+	'chat' => [
+		'delete_success' => 'Chat deleted successfully!',
 	],
 ];

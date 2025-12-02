@@ -4,7 +4,7 @@
 			<div class="shrink-0 size-6 rounded-full overflow-hidden">
 				<img class="w-full" v-bind:src="userData.avatar_url" alt="Avatar">
 			</div>
-			<div class="flex-1 text-lab-pr text-par-s pl-2 tracking-tighter truncate leading-normal">
+			<div class="flex-1 text-lab-pr text-par-s pl-2 truncate leading-normal">
 				<span class="font-medium">
 					{{ userData.name }}
 				</span>

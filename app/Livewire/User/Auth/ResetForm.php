@@ -46,11 +46,6 @@ class ResetForm extends Component
 
         EmailConfirmation::where('email', $this->confirmationData->email)->delete();
 
-        // event(new UserPasswordChanged([
-        //     'user' => $this->userData,
-        //     'password' => $this->newPassword
-        // ]));
-
         Auth::login($this->userData);
 
         $this->redirect(route('user.desktop.index'));

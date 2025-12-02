@@ -27,7 +27,7 @@ const useAppStore = defineStore('app', {
                 authStore.setUser(state.appData.auth.user);
             }).catch(function(error) {
                 if(error.response) {
-                    router.push({ name: 'server_error_bootstrap' });
+                    router.push({ name: 'bootstrap_error' });
                 }
             });
         }

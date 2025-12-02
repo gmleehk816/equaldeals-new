@@ -5,118 +5,76 @@
                 <PageTitle v-bind:hasBack="true" v-bind:backHome="true" v-bind:titleText="$t('labels.messages')"></PageTitle>
             </div>
 
-            <div v-if="! isWSEstablished" class="mb-4">
+            <div v-if="! isWSEstablished">
                 <WSConnectionAlert></WSConnectionAlert>
             </div>
         </template>
 
         <template v-slot:sidebarBody>
-            <div v-if="state.isLoading" class="block">
-                <ChatItemSkeleton v-for="i in 7"></ChatItemSkeleton>
+            <div class="border-b border-b-bord-pr mb-4">
+                <ContentTabs>
+                    <TabsButton v-on:click="state.activeTab = 'chats'" v-bind:isActive="state.activeTab === 'chats'">
+                        {{ $t('chat.tabs.chats') }}
+                    </TabsButton>
+                    <TabsButton v-on:click="state.activeTab = 'groups'" v-bind:isActive="state.activeTab === 'groups'">
+                        {{ $t('chat.tabs.groups') }}
+                    </TabsButton>
+                    <TabsButton v-on:click="state.activeTab = 'requests'" v-bind:isActive="state.activeTab === 'requests'">
+                        {{ $t('chat.tabs.requests') }} <template v-if="requestsCount">({{ requestsCount }})</template>
+                    </TabsButton>
+                </ContentTabs>
             </div>
-            <div v-else class="block">
-                <template v-if="isEmptyInbox">
-                    <div class="py-80 text-center">
-                        <p class="text-par-s tracking-tighter text-lab-sc">
-                            {{  $t('chat.no_chat_history') }}
-                        </p>
-                    </div>
-                </template>
-                <template v-else>
-                    <div class="px-4 border-b border-b-bord-pr pb-4">
-                        <QuickSearch v-on:cancelsearch="handleSearchCancel" v-model.lazy="chatsSearchQuery" v-bind:placeholder="$t('chat.search')"></QuickSearch>
-                    </div>
-                    <template v-if="isSearching">
-                        <ChatItem v-if="searchResults.length" v-for="chatData in searchResults" v-bind:chatData="chatData"></ChatItem>
-
-                        <div v-else class="py-80 text-center">
-                            <p class="text-par-s tracking-tighter text-lab-sc">
-                                {{  $t('chat.no_chats_found') }}
-                            </p>
-                        </div>
-                    </template>
-                    <template v-else>
-                        <ChatItem v-for="chatData in chatsHistory" v-bind:chatData="chatData"></ChatItem>
-                    </template>
-                </template>
-            </div>
+            <template v-if="state.activeTab === 'chats' || state.activeTab === 'groups'">
+                <ChatsHistory v-bind:historyType="state.activeTab" v-bind:key="state.activeTab"></ChatsHistory>
+            </template>
+            <template v-else-if="state.activeTab === 'requests'">
+                <ChatRequests></ChatRequests>
+            </template>
         </template>
     </SidebarContainer>
 </template>
 
 <script>
-    import { defineComponent, onMounted, ref, computed, reactive, watch } from 'vue';
+    import { defineComponent, reactive, computed, onMounted } from 'vue';
     import { useInboxStore } from '@D/store/chats/inbox.store.js';
 
     import PageTitle from '@D/components/layout/PageTitle.vue';
     import SidebarContainer from '@D/components/general/contextual-sidebar/SidebarContainer.vue';
-    import ChatItemSkeleton from '@D/views/messenger/history/parts/ChatItemSkeleton.vue';
-    import ChatItem from '@D/views/messenger/history/parts/ChatItem.vue';
     import WSConnectionAlert from '@D/views/messenger/history/parts/WSConnectionAlert.vue';
-    import FluidEmptyState from '@D/components/page-states/empty/FluidEmptyState.vue';
-    import QuickSearch from '@D/components/general/search/QuickSearch.vue';
+    import ContentTabs from '@D/components/general/tabs/content/ContentTabs.vue';
+    import TabsButton from '@D/components/general/tabs/content/parts/TabsButton.vue';
+    import ChatsHistory from '@D/views/messenger/history/parts/ChatsHistory.vue';
+    import ChatRequests from '@D/views/messenger/history/parts/ChatRequests.vue';
 
     export default defineComponent({
         setup: function() {
-            const state = reactive({
-                isLoading: false
-            });
 
-            const chatsSearchQuery = ref('');
             const inboxStore = useInboxStore();
-            const searchResults = ref([]);
-            const chatsHistory = computed(() => {
-                return inboxStore.chatsHistory;
-            });
-            
-            const isSearching = computed(() => {
-                return chatsSearchQuery.value.length > 0;
-            });
 
-            watch(chatsSearchQuery, (queryValue) => {
-                searchResults.value = chatsHistory.value.filter((item) => {
-                    if(item.chat_info.name.toLowerCase().includes(queryValue.toLowerCase())) {
-                        return true;
-                    }
-                });
-            });
-
-            onMounted(async () => {
-                state.isLoading = true;
-
-                if(inboxStore.chatsHistory.length === 0) {
-                    await inboxStore.fetchChatsHistory();
-                }
-
-                state.isLoading = false;
+            onMounted(() => {
+                inboxStore.fetchChatRequestsCount();
             });
 
             return {
-                state: state,
-                isSearching: isSearching,
-                chatsHistory: chatsHistory,
-                searchResults: searchResults,
-                chatsSearchQuery: chatsSearchQuery,
-                isEmptyInbox: computed(() => {
-                    return chatsHistory.value.length === 0;
+                requestsCount: computed(() => {
+                    return inboxStore.chatRequestsCount;
+                }),
+                state: reactive({
+                    activeTab: 'chats'
                 }),
                 isWSEstablished: computed(() => {
                     return (window.ColibriBRConnected !== false);
                 }),
-                handleSearchCancel: () => {
-                    chatsSearchQuery.value = '';
-                    searchResults.value = [];
-                }
             }
         },
         components: {
             PageTitle: PageTitle,
             SidebarContainer: SidebarContainer,
-            ChatItem: ChatItem,
-            ChatItemSkeleton: ChatItemSkeleton,
-            FluidEmptyState: FluidEmptyState,
             WSConnectionAlert: WSConnectionAlert,
-            QuickSearch: QuickSearch
+            ContentTabs: ContentTabs,
+            ChatsHistory: ChatsHistory,
+            ChatRequests: ChatRequests,
+            TabsButton: TabsButton
         }
     });
 </script>

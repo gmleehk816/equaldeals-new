@@ -1,5 +1,5 @@
 <template>
-	<div class="popup-background-tr rounded-md w-72 shadow-2xl border border-bord-sc">
+	<div class="popup-background-sc rounded-2xl w-80 shadow-2xl overflow-hidden">
 		<slot></slot>
 	</div>
 </template>

@@ -1,25 +1,26 @@
 <template>
-	<div v-if="followRecommendations.length" class="block mb-4">
-		<div class="block border border-bord-pr rounded-2xl">
-			<template v-if="state.isLoading">
-				<div class="flex justify-center py-8">
-					<PrimarySpinAnimation></PrimarySpinAnimation>
-				</div>
-			</template>
-			<template v-else>
-				<div class="flex justify-between text-par-n px-4 py-3">
-					<h5 class="text-lab-pr2 font-semibold">
-						{{ $t('labels.recommendations') }}
-					</h5>
-					<RouterLink v-bind:to="{ name: 'explore_people_page' }" class="text-brand-900 cursor-pointer">
-						{{ $t('labels.all') }}
-					</RouterLink>
-				</div>
-				<div class="pb-2">
-					<FollowListItem v-for="userData in followRecommendations" v-bind:key="userData.id" v-bind:userData="userData"></FollowListItem> 
-				</div>
-			</template>
-		</div>
+	<div v-if="followRecommendations.length" class="mb-4">
+		<template v-if="state.isLoading">
+			<div class="flex justify-center py-8">
+				<PrimarySpinAnimation></PrimarySpinAnimation>
+			</div>
+		</template>
+		<template v-else>
+			<div class="mb-2">
+				<h5 class="text-lab-pr2 font-semibold text-par-l">
+					{{ $t('labels.follow_recommendations') }}
+				</h5>
+			</div>
+			<div>
+				<FollowListItem v-for="userData in followRecommendations" v-bind:key="userData.id" v-bind:userData="userData"></FollowListItem> 
+			</div>
+
+			<div>
+				<RouterLink v-bind:to="{ name: 'explore_people' }" class="text-par-s hover:underline text-lab-sc cursor-pointer">
+					{{ $t('labels.more_suggestions') }}
+				</RouterLink>
+			</div>
+		</template>
 	</div>
 </template>
 

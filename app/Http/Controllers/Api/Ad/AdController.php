@@ -31,9 +31,7 @@ class AdController extends Controller
         // This is to ensure that we always have an ad to show.
 
         if(! $adData) {
-            $adData = Ad::published()->when($prevAdId, function ($query) use ($prevAdId) {
-                $query->where('id', '!=', $prevAdId);
-            })->with('media')->inRandomOrder()->first();
+            $adData = Ad::published()->with('media')->inRandomOrder()->first();
         }
 
         // If no any kind of ad is found, return not found error.

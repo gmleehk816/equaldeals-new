@@ -21,9 +21,9 @@ use App\Support\Num;
 use App\Rules\X\XRule;
 use App\Models\Comment;
 use Illuminate\Http\Request;
-use Illuminate\Http\Response;
 use App\Http\Controllers\Controller;
 use App\Services\Reaction\ReactionService;
+use App\Actions\Comment\DeleteCommentAction;
 use App\Traits\Http\Api\SupportsApiResponses;
 use Illuminate\Auth\Access\AuthorizationException;
 use App\Http\Resources\User\Timeline\CommentResource;
@@ -74,7 +74,7 @@ class CommentController extends Controller
         $comment->text_language = $postData->getContentLanguage();
         $comment->save();
 
-        $postData->comments_count = ($postData->comments_count + 1);
+        $postData->comments_count = $postData->comments()->count();
         $postData->save();
 
         if(! $postData->is_owner && empty($parentId)) {
@@ -109,11 +109,11 @@ class CommentController extends Controller
                 $this->authorize('delete', $commentData);
 
                 $postData = $commentData->post;
-                
-                $postData->comments_count = max(0, ($postData->comments_count - 1));
-                $postData->save();
         
-                $commentData->delete();
+                (new DeleteCommentAction($commentData))->execute();
+
+                $postData->comments_count = $postData->comments()->count();
+                $postData->save();
         
                 return $this->responseSuccess([
                     'data' => [

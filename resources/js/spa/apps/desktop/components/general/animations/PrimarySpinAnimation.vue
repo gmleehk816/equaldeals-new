@@ -7,7 +7,7 @@
 <script>
     import { defineComponent } from 'vue';
     
-    import SpinnerIcon from '@D/components/icons/SpinnerIcon.vue';
+    import SpinnerIcon from '@/kernel/vue/components/icons/SpinnerIcon.vue';
 
     export default defineComponent({
         props: {

@@ -19,7 +19,7 @@ class JobController extends Controller
 
     public function getCategories(Request $request)
     {
-        $categories = Category::jobs()->take(16)->get();
+        $categories = Category::active()->jobs()->take(16)->get();
 
         return $this->responseSuccess([
             'data' => CategoryCollection::make($categories)
@@ -37,20 +37,20 @@ class JobController extends Controller
         ]);
     }
 
-    public function getJob($jobHashId)
+    public function getJobData($jobHashId)
     {
         $jobData = JobListing::active()->findByHashId($jobHashId);
 
-        // TODO: This is a temporary solution to allow the user to view the Job if it is rejected.
-        // We need to improve this in the future.
-        
-        if(! $jobData->approval->isApproved()) {
-            if(! me()->isAdmin() && ! me()->id == $jobData->user_id) {
-                return $this->responseResourceNotFoundError('Job', $jobHashId);
+        if($jobData) {
+            // TODO: This is a temporary solution to allow the user to view the Job if it is rejected.
+            // We need to improve this in the future.
+            
+            if(! $jobData->approval->isApproved()) {
+                if(! me()->isAdmin() && ! me()->id == $jobData->user_id) {
+                    return $this->responseResourceNotFoundError('Job', $jobHashId);
+                }
             }
-        }
-
-        if($jobData->exists()) {
+    
             return $this->responseSuccess([
                 'data' => JobResource::make($jobData)
             ]);
@@ -85,18 +85,5 @@ class JobController extends Controller
         else{
             return $this->responseResourceNotFoundError('Job', $jobId);
         }
-    }
-
-    public function getBookmarksCount()
-    {
-        $bookmarkedJobCount = JobListing::listable()->whereHas('bookmarks', function ($query) {
-            $query->where('user_id', me()->id);
-        })->count();
-        
-        return $this->responseSuccess([
-            'data' => [
-                'count' => $bookmarkedJobCount
-            ]
-        ]);
     }
 }

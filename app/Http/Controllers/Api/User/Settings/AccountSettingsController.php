@@ -16,6 +16,8 @@
 namespace App\Http\Controllers\Api\User\Settings;
 
 use Illuminate\Http\Request;
+use App\Enums\User\ASRStatus;
+use App\Models\AuthorshipRequest;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Validator;
@@ -156,7 +158,7 @@ class AccountSettingsController extends Controller
         $fileDeleteService = app(FileDeleteService::class);
 
         $imageData = $imageUploadService->load($request->avatar->getRealPath())
-            ->setStorageDisk(config('user.disks.avatar'))
+            ->setStorageDisk(static_storage_disk())
             ->setNamespace('uploads/users/avatars')
             ->crop(config('user.avatar_config.crop_size'), config('user.avatar_config.crop_size'))
             ->compress(config('user.avatar_config.compress_rate'))
@@ -164,7 +166,7 @@ class AccountSettingsController extends Controller
 
         if(! empty($imageData)) {
             if(! me()->hasDefaultAvatar() && ! empty($this->me->avatar)) {
-                $fileDeleteService->setStorageDisk(config('user.disks.avatar'))->deleteFile($this->me->avatar);
+                $fileDeleteService->setStorageDisk(static_storage_disk())->deleteFile($this->me->avatar);
             }
 
             $this->me->update([
@@ -173,7 +175,7 @@ class AccountSettingsController extends Controller
 
             return $this->responseSuccess([
                 'data' => [
-                    'avatar_url' => storage_url($imageData['image_path'], config('user.disks.avatar'))
+                    'avatar_url' => storage_url($imageData['image_path'], static_storage_disk())
                 ]
             ]);
         }
@@ -190,7 +192,7 @@ class AccountSettingsController extends Controller
         $fileDeleteService = app(FileDeleteService::class);
 
         $imageData = $imageUploadService->load($request->cover->getRealPath())
-            ->setStorageDisk(config('user.disks.cover'))
+            ->setStorageDisk(static_storage_disk())
             ->setNamespace('uploads/users/covers')
             ->crop(config('user.cover_config.width'), config('user.cover_config.height'))
             ->compress(config('user.cover_config.compress_rate'))
@@ -198,7 +200,7 @@ class AccountSettingsController extends Controller
 
         if(! empty($imageData)) {
             if(! me()->hasDefaultCover() && ! empty($this->me->cover)) {
-                $fileDeleteService->setStorageDisk(config('user.disks.cover'))->deleteFile($this->me->cover);
+                $fileDeleteService->setStorageDisk(static_storage_disk())->deleteFile($this->me->cover);
             }
 
             $this->me->update([
@@ -207,7 +209,7 @@ class AccountSettingsController extends Controller
 
             return $this->responseSuccess([
                 'data' => [
-                    'cover_url' => storage_url($imageData['image_path'], config('user.disks.cover'))
+                    'cover_url' => storage_url($imageData['image_path'], static_storage_disk())
                 ]
             ]);
         }
@@ -287,5 +289,38 @@ class AccountSettingsController extends Controller
         }
 
         return $linkedAccounts;
+    }
+
+    public function getAuthorshipSettings()
+    {
+        if(me()->isAuthor()) {
+            $authorshipStatus = 'authorized';
+        }
+        else {
+            $requestData = $this->me->authorshipRequest;
+
+            $authorshipStatus = ($requestData) ? $requestData->status->value : 'not_requested';
+        }
+
+        return $this->responseSuccess([
+            'data' => [
+                'status' => $authorshipStatus
+            ]
+        ]);
+    }
+
+    public function requestAuthorship()
+    {
+        $requestedData = $this->me->authorshipRequest;
+
+        if(! $requestedData) {
+            me()->authorshipRequest()->create([
+                'user_id' => $this->me->id
+            ]);
+        }
+
+        return $this->responseSuccess([
+            'data' => null
+        ]);
     }
 }

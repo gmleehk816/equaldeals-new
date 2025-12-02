@@ -7,4 +7,5 @@ return [
         'y' => 30,
         'x' => 30
     ],
+    'fonts' => require_once var_path('config/assets/fonts.php'),
 ];

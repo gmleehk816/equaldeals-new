@@ -7,21 +7,21 @@
 
         <title>{{ config('app.name') }}</title>
 
-        <!-- <link rel="preconnect" href="https://fonts.googleapis.com">
-        <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-        <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@100..900&display=swap" rel="stylesheet"> -->
         @include('layouts.parts.meta')        
         @include('layouts.parts.favicons')
 
         @vite([
             'resources/js/admin/main.js',
-            'resources/fonts/sf-pro/stylesheet.css'
+            'resources/js/mpa/rich.editor.js',
+            config('assets.fonts.sans'),
+            config('assets.fonts.mono')
         ])
 
         @if(theme_name() == 'dark')
             <link rel="stylesheet" href="{{ asset('build/assets/admin-main-dark.css') }}?v={{ $buildNumber }}">
         @else
             @vite('resources/css/admin/main.css')
+            @vite('resources/css/mpa/rich.editor.css')
         @endif
 
         @stack('styles')
@@ -31,21 +31,32 @@
         @livewireStyles
     </head>
 
-    <body @class(['bg-bg-pr pt-16'])>
+    <body @class(['pt-24 pb-6', (theme_name() == 'dark' ? 'bg-black' : 'bg-fill-fv')])>
+        @if(theme_name() == 'light')
+            <img src="{{ asset('assets/backgrounds/modal-bg.png') }}" alt="Background" class="fixed user-select-none pointer-events-none opacity-50 w-full inset-0 -z-10">
+        @endif
+
         <x-main>
             @include('adminLayout::parts.sidebar')
     
             @include('adminLayout::parts.header')
 
             <x-container>
-                <x-messages.primary></x-messages.primary>
-                <div class="app-min-vh">
+                <div class="px-8">
+                    <x-messages.primary></x-messages.primary>
+                </div>
+                <div class="app-min-vh px-8">
                     @yield('pageContent')
+                </div>
+
+                <div class="fixed bg-bg-pr border-t border-bord-tr bottom-0 right-0 left-sidebar-width px-16 h-6 flex items-center">
+                    <span class="block text-lab-sc text-cap-s">{{ __('admin/info.you_are_admin')}}</span>
                 </div>
             </x-container>
     
             <x-modals.confirm.confirm></x-modals.confirm.confirm>
-    
+            
+            
             @livewireScripts
         </x-main>
     </body>

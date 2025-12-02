@@ -2,7 +2,6 @@ import { defineStore } from 'pinia';
 import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
 import { useInboxStore } from '@D/store/chats/inbox.store.js';
 
-const inboxStore = useInboxStore();
 const useChatStore = defineStore('chats_chat', {
 	state: () => {
 		return {
@@ -10,22 +9,15 @@ const useChatStore = defineStore('chats_chat', {
 			chatData: {},
 			chatMessages: [],
 			chatParticipants: [],
-			payloadData: {
-				deleteMessage: {
-
-				}
-			}
+			inboxStore: useInboxStore()
 		};
 	},
 	getters: {
 		isDirect: function() {
-			return this.chatData.type === 'direct';
+			return this.chatData.type == 'direct';
 		},
 		hasDescription: function() {
 			return this.chatData.chat_info.description.length > 0;
-		},
-		isFollowedBy: function() {
-			return this.chatData.chat_info.meta.relationship.follow.followed_by;
 		},
 		otherParticipants: function() {
 			return this.chatData.relations.participants;
@@ -86,12 +78,14 @@ const useChatStore = defineStore('chats_chat', {
 				}
 			});
 		},
-		deleteMessage: async function(messageId) {
+		deleteMessage: async function(messageId, deleteForAll = false) {
 			let state = this;
 
 			await colibriAPI().messenger().with({
 				message_id: messageId,
-				payload: state.payloadData.deleteMessage
+				payload: {
+					delete_for_all: deleteForAll
+				}
 			}).delete('chat/message/delete').then((response) => {
 				if(! response.data.data.is_global_delete) {
 					let messageIndex = state.chatMessages.findIndex((item) => {
@@ -105,6 +99,24 @@ const useChatStore = defineStore('chats_chat', {
 			}).catch(function(error) {
 				if(error.response) {
 					alert(error.response.data.message);
+				}
+			});
+		},
+		archiveChat: async function(chatId) {
+			await colibriAPI().messenger().delete(`chat/${chatId}/archive`).then((response) => {
+				this.inboxStore.removeChatFromHistory(chatId);
+			}).catch(function(error) {
+				if(error.response) {
+					throw new Error(error.response.data.message);
+				}
+			});
+		},
+		unarchiveChat: async function(chatId) {
+			await colibriAPI().messenger().delete(`chat/${chatId}/unarchive`).then((response) => {
+				this.inboxStore.fetchChatsHistory();
+			}).catch(function(error) {
+				if(error.response) {
+					throw new Error(error.response.data.message);
 				}
 			});
 		},
@@ -125,7 +137,7 @@ const useChatStore = defineStore('chats_chat', {
 			await colibriAPI().messenger().delete(`chat/${state.chatId}/delete`).then(function(response) {
 				state.chatMessages = [];
 
-				inboxStore.removeChatFromHistory(state.chatId);
+				state.inboxStore.removeChatFromHistory(state.chatId);
 			}).catch(function(error) {
 				if(error.response) {
 					throw new Error(error.response.data.message);
@@ -172,10 +184,12 @@ const useChatStore = defineStore('chats_chat', {
 			}
 		},
 		appendMessage: function(messageData = {}) {
-			this.chatMessages.push(messageData);
+			let state = this;
 
-			let chatData = inboxStore.chatsHistory.find((item) => {
-				return messageData.chat_uuid === item.chat_id;
+			state.chatMessages.push(messageData);
+
+			let chatData = state.inboxStore.chatsHistory.find((item) => {
+				return messageData.chat_uuid == item.chat_id;
 			});
 
 			if(chatData) {

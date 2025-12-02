@@ -50,7 +50,7 @@
                             let chatData = response.data.data;
     
                             router.push({
-                                name: 'messenger_chat_page',
+                                name: 'messenger_chat',
                                 params: {
                                     chat_id: chatData.chat_id
                                 }

@@ -137,7 +137,7 @@
                     </x-slot:feedbackInfo>
                 </x-form.text-input>
             </div>
-            <div class="mb-10">
+            <div class="block">
                 <div class="flex mb-6 gap-2">
                     @if($this->upsertType == 'create')
                         <x-ui.buttons.pill

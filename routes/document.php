@@ -23,4 +23,5 @@ Route::name('document.')->prefix('document')->group(function() {
     Route::view('/cookies-policy', 'apps.mpa.document.cookies.index')->name('cookies.index');
     Route::view('/developers-api', 'apps.mpa.document.developers.index')->name('developers.index');
     Route::view('/verification-rules', 'apps.mpa.document.verification.index')->name('verification.index');
+    Route::view('/become-author', 'apps.mpa.document.author.index')->name('author.index');
 });

@@ -1,5 +1,5 @@
 <template>
-	<div class="block rounded-lg overflow-hidden border border-bord-card">
+	<div class="overflow-hidden border-t border-bord-card">
 		<div v-for="mediaItem in postMedia" v-bind:key="mediaItem.id" class="flex items-center justify-between p-2.5">
 			<div class="size-8 shrink-0">
                 <FileFormatIcon extension="mp3"></FileFormatIcon>

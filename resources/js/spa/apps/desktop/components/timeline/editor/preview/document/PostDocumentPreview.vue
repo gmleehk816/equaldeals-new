@@ -8,7 +8,7 @@
                 <span class="text-lab-pr2 text-par-s block font-medium mb-1 truncate capitalize">
                     {{ mediaItem.metadata.file_name }}
                 </span>
-                <span class="text-lab-sc text-cap-l tracking-tighter uppercase block truncate">
+                <span class="text-lab-sc text-cap-l uppercase block truncate">
                     {{ $filters.fileSize(mediaItem.size) }} / {{ mediaItem.extension }}
 
                     <template v-if="PostTypeUtils.isAudio(mediaItem.type)">
@@ -36,7 +36,7 @@
                 default: {}
             }
         },
-        emits: ['deletemedia'],
+        emits: ['delete'],
         setup: function(props, context) {
             const postMedia = computed(() => {
                 return props.postMedia;
@@ -45,7 +45,7 @@
             return {
                 postMedia: postMedia,
                 deleteDocument: (mediaItem) => {
-                    context.emit('deletemedia', mediaItem);
+                    context.emit('delete', mediaItem);
                 },
                 PostTypeUtils: PostTypeUtils
             };

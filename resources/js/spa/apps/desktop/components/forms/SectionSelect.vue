@@ -1,6 +1,6 @@
 <template>
     <div class="cursor-pointer flex items-center justify-between border border-bord-pr px-5 py-4 rounded-xl gap-3">
-        <div class="shrink-0 size-icon-normal text-lab-sc">
+        <div class="shrink-0 size-icon-normal text-lab-pr">
             <SvgIcon v-bind:name="iconName" v-bind:type="iconType"/>
         </div>
         <div class="flex-1">

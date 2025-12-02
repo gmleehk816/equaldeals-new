@@ -4,10 +4,10 @@
 	<div class="mb-6">
 		<x-page-title titleText="{{ __('business/wallet.index_title') }}"></x-page-title>
 	</div>
-	<div class="block bg-input-pr rounded-2xl p-6">
+	<div class="block bg-bg-pr rounded-2xl p-6">
 		<div class="mb-4 flex">
 			<div class="flex-1">
-				<h2 class="text-5xl 2xl:text-7xl leading-none tracking-tighter font-bold text-mint">
+				<h2 class="text-5xl 2xl:text-7xl leading-none tracking-tighter font-bold text-lab-pr2">
 					{{ $walletData->balance->getFormattedAmount() }}
 				</h2>
 				<p class="text-par-n text-lab-sc">

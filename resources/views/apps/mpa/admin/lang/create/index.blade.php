@@ -1,7 +1,7 @@
 @extends('adminLayout::index')
 
 @section('pageContent')
-	<div class="mb-8">
+	<div class="mb-4">
 		<x-page-title titleText=" {{ __('admin/lang.create_title') }}"></x-page-title>
 		<x-page-desc>
 			{{ __('admin/lang.create_desc') }}
@@ -30,7 +30,6 @@
 						<x-form.radio-group labelText="{{ __('admin/lang.form.direction') }} *">
 							<x-form.radio
 									name="direction"
-									wire:model="direction"
 									defaultValue="ltr"
 									:checked="true"
 								labelText="LTR">
@@ -38,7 +37,6 @@
 							<x-form.radio
 									name="direction"
 									defaultValue="rtl"
-									wire:model="direction"
 								labelText="RTL">
 							</x-form.radio>
 						</x-form.radio-group>

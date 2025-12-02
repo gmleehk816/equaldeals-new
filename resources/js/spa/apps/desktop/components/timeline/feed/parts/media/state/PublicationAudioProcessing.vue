@@ -13,10 +13,8 @@
 
 <script>
     import { defineComponent, ref, onMounted, onUnmounted } from 'vue';
-    import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
     import { useAuthStore } from '@D/store/auth/auth.store.js';
     import { useTimelineStore } from '@D/store/timeline/timeline.store.js';
-    import { useI18n } from 'vue-i18n';
     import BRD from '@/kernel/websockets/brd/index.js';
 
     export default defineComponent({
@@ -27,9 +25,6 @@
             }
         },
         setup: function(props) {
-            const { t } = useI18n();
-
-            const toastNotifier = new ToastNotifier();
             const timelineStore = useTimelineStore();
             const authStore = useAuthStore();
             const mediaItem = ref(props.mediaItem);
@@ -39,10 +34,10 @@
             onMounted(() => {
                 if(window.ColibriBRD) {
                     ColibriBRD.private(BRD.getChannel('AUTH_USER', [userId])).listen(BRD.getEvent('TIMELINE_MEDIA_PROCESSED'), function (event) {
-                        if(event.data.post_id == mediaItem.value.post_id) {
+                        if(event.data.mediaable_id == mediaItem.value.mediaable_id) {
                             timelineStore.setPostMedia(event.data);
                             
-                            toastNotifier.notifyShort(t('toast.media.post_published'));
+                            toastSuccess(__t('toast.post_published'));
                         }
                     });
                 }
@@ -57,8 +52,6 @@
             return {
                 mediaItem: mediaItem
             }
-        },
-        components: {
         }
     });
 </script>

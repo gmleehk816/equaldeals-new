@@ -32,7 +32,7 @@ class ForgotForm extends Component
 
         $userData = User::where('email', $this->emailAddress)->first();
 
-        EmailConfirmation::create([
+        $emailConfirmation = EmailConfirmation::create([
             'email' => $this->emailAddress,
             'token' => $emailToken
         ]);
@@ -42,6 +42,6 @@ class ForgotForm extends Component
             'link' => route('user.auth.reset', ['token' => $emailToken])
         ]));
 
-        $this->redirect(route('user.auth.forgot-success', ['token' => $emailToken]));
+        $this->redirect(route('user.auth.forgot-success', ['hashId' => $emailConfirmation->hash_id]));
     }
 }

@@ -1,12 +1,12 @@
 @extends('businessLayout::index')
 
 @section('pageContent')
-    <x-content>
+    <div class="w-content">
         <div class="rounded-2xl overflow-hidden">
             <div class="bg-lab-pr text-bg-pr p-6">
                 <div class="mb-2">
                     <div class="size-large-avatar border-bg-sc/30 border-4 rounded-full overflow-hidden">
-                        <img src="{{ me()->avatar_url }}" class="w-full" alt="Avatar">
+                        <x-general.avatars.img src="{{ me()->avatar_url }}" class="w-full" alt="Avatar" />
                     </div>
                 </div>
                 <h4 class="text-title-3 tracking-tighter font-medium">
@@ -17,7 +17,7 @@
                     {{ __('business/dashboard.welcome_title') }}
                 </p>
             </div>
-            <div class="bg-input-pr p-6">
+            <div class="bg-bg-pr p-6">
                 <p class="text-par-n mb-3 text-lab-pr2">
                     {!! __('business/dashboard.about_business_account') !!}
                 </p>
@@ -26,7 +26,7 @@
                 </a>
             </div>
         </div>
-        <div class="border border-bord-pr rounded-2xl p-6 mt-4 hover:border-brand-900 cursor-pointer smoothing">
+        <div class="bg-bg-pr rounded-2xl p-6 mt-4 hover:border-brand-900 cursor-pointer smoothing">
             <a href="{{ route('document.help.index') }}" class="w-full flex items-center">
                 <div class="flex-1 pr-6">
                     <h4 class="text-par-l tracking-tighter text-brand-900 font-medium mb-1">
@@ -41,11 +41,11 @@
                 </div>
             </a>
         </div>
-        
-        <div class="mt-3">
-            <span class="text-cap-l italic text-lab-sc">
-                {{ __('business/dashboard.features_restriction_info') }}
-            </span>
-        </div>
-    </x-content>
+    </div>
+
+    <div class="mt-3">
+        <span class="text-cap-l italic text-lab-sc">
+            {{ __('business/dashboard.features_restriction_info') }}
+        </span>
+    </div>
 @endsection

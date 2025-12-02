@@ -29,6 +29,8 @@ class MessageGlobalDeleteAction
 	{
 		$this->messageData->reactions()->delete();
 
+		$this->messageData->linkSnapshot()->delete();
+
 		$this->messageData->update([
 			'content' => '',
 			'is_deleted' => true

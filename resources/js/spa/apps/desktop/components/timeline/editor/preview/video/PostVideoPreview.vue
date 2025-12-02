@@ -25,7 +25,7 @@
 
 	import MediaBlurOverlay from '@D/components/timeline/editor/animations/MediaBlurOverlay.vue';
 	import MediaDeleteButton from '@D/components/timeline/editor/buttons/MediaDeleteButton.vue';
-	import VideoDurationTime from '@D/components/media/video/VideoDurationTime.vue';
+	import VideoDurationTime from '@/kernel/vue/components/media/video/VideoDurationTime.vue';
 
 	export default defineComponent({
 		props: {

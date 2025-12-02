@@ -18,7 +18,7 @@
     import { defineComponent, computed } from 'vue';
 
     import MediaDeleteButton from '@D/components/timeline/editor/buttons/MediaDeleteButton.vue';
-    import GiphyAttribution from '@D/components/attributions/GiphyAttribution.vue';
+    import GiphyAttribution from '@/kernel/vue/components/attributes/GiphyAttribution.vue';
 
     import MediaBlurOverlay from '@D/components/timeline/editor/animations/MediaBlurOverlay.vue';
 
@@ -29,7 +29,7 @@
                 default: {}
             }
         },
-        emits: ['deletemedia'],
+        emits: ['delete'],
         setup: function(props, context) {
             const postMedia = computed(() => {
                 return props.postMedia;
@@ -38,7 +38,7 @@
             return {
                 postMedia: postMedia,
                 deleteMedia: (mediaItem) => {
-                    context.emit('deletemedia', mediaItem);
+                    context.emit('delete', mediaItem);
                 }
             };
         },

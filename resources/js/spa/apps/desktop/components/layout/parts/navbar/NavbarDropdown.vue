@@ -1,94 +1,51 @@
 <template>
-    <Menu as="div" class="relative cursor-pointer z-50 text-lab-sc">
-        <MenuButton>
-            <span class="flex items-center ">
-                <span class="size-icon-normal shrink-0 opacity-80">
-                    <SvgIcon name="dots-horizontal" type="solid"></SvgIcon>
-                </span>
-                <span class="text-par-l ml-3">
-                    {{ $t('labels.more') }}
-                </span>
+    <div class="relative cursor-pointer leading-none">
+        <span class="flex items-center opacity-50 hover:opacity-100 text-lab-pr2" v-on:click.stop="state.mainMenu.toggle">
+            <span class="size-icon-normal shrink-0">
+                <SvgIcon name="dots-horizontal" type="solid"></SvgIcon>
             </span>
-        </MenuButton>
+            <span class="text-par-l ml-3">
+                {{ $t('labels.more') }}
+            </span>
+        </span>
 
-        <PrimaryTransition>
-            <MenuItems class="origin-bottom-right bottom-full left-0 relative dropdown-menu w-80 z-50">
-                <div v-if="isAdmin" class="block">
-                    <MenuItem v-slot="{ active, close }">
-                        <button class="group flex w-full items-center px-4 py-1">
-                            <a v-bind:href="adminPanelUrl" target="_blank" class="block w-full" v-on:click="close">
-                                <span class="w-full flex items-center overflow-hidden">
-                                    <span class="shrink-0 size-icon-normal">
-                                        <SvgIcon type="line" name="shield-02" classes="size-full"></SvgIcon>
-                                    </span>
-                                    <span class="dropdown-item-label">
-                                        {{ $t('labels.admin_panel') }}
-                                    </span>
-                                </span>
-                            </a>
-                        </button>
-                    </MenuItem>
-                </div>
-                <div class="block">
-                    <MenuItem v-slot="{ active, close }">
-                        <button class="group flex w-full items-center px-4 py-1">
-                            <RouterLink v-bind:to="{ name: 'settings_page' }" class="block w-full" v-on:click="close">
-                                <span class="w-full flex items-center overflow-hidden">
-                                    <span class="shrink-0 size-icon-normal">
-                                        <SvgIcon type="line" name="settings-01" classes="size-full"></SvgIcon>
-                                    </span>
-                                    <span class="dropdown-item-label">
-                                        {{ $t('labels.account_settings') }}
-                                    </span>
-                                </span>
-                            </RouterLink>
-                        </button>
-                    </MenuItem>
-                </div>
-                <div v-if="$config('features.wallet.enabled')" class="block">
-                    <MenuItem v-slot="{ active, close }">
-                        <button class="group flex w-full items-center px-4 py-1">
-                            <RouterLink v-bind:to="{ name: 'wallet_page' }"  class="block w-full" v-on:click="close">
-                                <span class="w-full flex items-center overflow-hidden">
-                                    <span class="shrink-0 size-icon-normal">
-                                        <SvgIcon type="line" name="wallet-02" classes="size-full"></SvgIcon>
-                                    </span>
-                                    <span class="dropdown-item-label">
-                                        {{ $t('labels.wallet') }}
-                                    </span>
-                                </span>
-                            </RouterLink>
-                        </button>
-                    </MenuItem>
-                </div>
-                <div class="block">
-                    <MenuItem>
-                        <button v-on:click="logoutUser" class="group flex w-full items-center px-4 py-1">
-                            <span class="w-full flex items-center overflow-hidden">
-                                <span class="shrink-0 size-icon-normal">
-                                    <SvgIcon name="log-out-01" type="solid" classes="size-full"></SvgIcon>
-                                </span>
-                                <span class="dropdown-item-label">
-                                    {{ $t('labels.logout') }}
-                                </span>
-                            </span>
-                        </button>
-                    </MenuItem>
-                </div>
-            </MenuItems>
-        </PrimaryTransition>
-    </Menu>
+        <div v-if="state.mainMenu.status" v-on:click.stop="state.mainMenu.close" v-outside-click="state.mainMenu.close" class="absolute top-full left-6 z-50">
+            <DropdownMenu>
+                <template v-if="isAdmin">
+                    <a v-bind:href="adminPanelUrl" target="_blank">
+                        <DropdownMenuItem iconName="shield-02" v-bind:textLabel="$t('labels.admin_panel')"></DropdownMenuItem>
+                    </a>
+                    <Border/>
+                </template>
+                <RouterLink v-bind:to="{ name: 'settings_index' }" class="block w-full">
+                    <DropdownMenuItem iconName="settings-01" v-bind:textLabel="$t('labels.account_settings')"></DropdownMenuItem>
+                </RouterLink>
+                <RouterLink v-bind:to="{ name: 'wallet_index' }"  class="block w-full">
+                    <DropdownMenuItem iconName="wallet-02" iconType="line" v-bind:textLabel="$t('labels.wallet')"></DropdownMenuItem>
+                </RouterLink>
+                <Border/>
+                <DropdownMenuItem v-on:click="logoutUser" itemColor="text-red-900" iconName="log-out-01" iconType="solid" v-bind:textLabel="$t('labels.logout')"></DropdownMenuItem>
+            </DropdownMenu>
+        </div>
+    </div>
 </template>
 <script>
-    import { defineComponent, computed } from 'vue';
+    import { defineComponent, computed, reactive } from 'vue';
     import { useRouter } from 'vue-router';
     import { useAuthStore } from '@D/store/auth/auth.store.js';
-    import { Menu, MenuButton, MenuItems, MenuItem } from '@headlessui/vue';
+    import { useMenu } from '@/kernel/vue/composables/menu/index.js';
+
+    import DropdownButton from '@D/components/general/dropdowns/parts/DropdownButton.vue';
+    import DropdownMenu from '@D/components/general/dropdowns/parts/DropdownMenu.vue';
+    import DropdownMenuItem from '@D/components/general/dropdowns/parts/DropdownMenuItem.vue';
 
     export default defineComponent({
         setup: function(props) {
             const Router = useRouter();
             const authStore = useAuthStore();
+            const state = reactive({
+                mainMenu: useMenu()
+            });
 
             return {
                 isAdmin: computed(() => {
@@ -101,14 +58,14 @@
                     await authStore.logoutUser();
 
                     window.location.href = embedder('routes.user_auth_index');
-                }
+                },
+                state: state
             }
         },
         components: {
-            Menu: Menu,
-            MenuButton: MenuButton,
-            MenuItems: MenuItems,
-            MenuItem: MenuItem
+            DropdownButton: DropdownButton,
+            DropdownMenu: DropdownMenu,
+            DropdownMenuItem: DropdownMenuItem
         }
     });
 </script>

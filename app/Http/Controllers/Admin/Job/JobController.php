@@ -11,12 +11,32 @@ use App\Actions\JobListing\DeleteJobAction;
 
 class JobController extends Controller
 {
+    private $filters = [];
+
     public function index(Request $request)
     {
-        $jobs = JobListing::active()->with(['user', 'category'])->paginate(10);
+        $approval = $request->string('approval')->value;
+        $approval = in_array($approval, array_column(JobApproval::cases(), 'value')) ? $approval : 'all';
+
+        $this->filters = [
+            'search' => $request->string('search')->value,
+            'approval' => $approval,
+        ];
+
+        $jobs = JobListing::active()->when(($this->filters['approval'] != 'all'), function($query) {
+            $query->where('approval', JobApproval::tryFrom($this->filters['approval']));
+        })->when((! empty($this->filters['search'])), function ($query) {
+            $query->where(function($query) {
+                $query->where('title', 'like', "%{$this->filters['search']}%")
+                    ->orWhere('overview', 'like', "%{$this->filters['search']}%")
+                    ->orWhere('location', 'like', "%{$this->filters['search']}%")
+                    ->orWhere('description', 'like', "%{$this->filters['search']}%");
+            });
+        })->with(['user', 'category'])->latest('id')->paginate(10);
 
         return view('admin::jobs.index.index', [
-            'jobs' => $jobs
+            'jobs' => $jobs,
+            'filters' => $this->filters
         ]);
     }
 

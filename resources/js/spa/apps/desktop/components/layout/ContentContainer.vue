@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-		<div v-bind:class="width" class="border border-bord-pr bg-bg-pr rounded-2xl">
+		<div v-bind:class="width">
 			<slot></slot>
 		</div>
 	</div>

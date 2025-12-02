@@ -56,7 +56,7 @@ class TipController extends Controller
                 'image' => ['required', 'image', config('user.validation.avatar.mimes'), config('user.validation.avatar.max')]
             ]);
 
-            $avatarFilePath = $request->image->store('uploads/users/avatars', config('user.disks.avatar'));
+            $avatarFilePath = $request->image->store('uploads/users/avatars', static_storage_disk());
 
             if(! empty($avatarFilePath)) {
                 $updateData['avatar'] = $avatarFilePath;
@@ -67,7 +67,7 @@ class TipController extends Controller
 
         return $this->responseSuccess([
             'data' => [
-                'avatar_url' => (empty($skip) ? storage_url($this->me->avatar, config('user.disks.avatar')) : null)
+                'avatar_url' => (empty($skip) ? storage_url($this->me->avatar, static_storage_disk()) : null)
             ]
         ]);
     }

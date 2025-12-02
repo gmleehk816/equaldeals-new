@@ -1,5 +1,5 @@
 <template>
-	<div class="block py-2.5 px-3 border-b border-fill-sc">
+	<div class="block py-4 px-3">
 		<h3 class="text-par-n font-semibold text-lab-pr2 text-center">
 			{{ title}}
 		</h3>

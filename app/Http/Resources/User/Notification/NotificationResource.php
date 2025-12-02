@@ -32,7 +32,11 @@ class NotificationResource extends JsonResource
             'metadata' => $this->getMetadata(),
             'date' => [
                 'time_ago' => $this->created_at->getTimeAgo(),
-                'timestamp' => $this->created_at->getTimestamp()
+                'timestamp' => $this->created_at->getTimestamp(),
+                'is_today' => $this->created_at->isToday(),
+                'is_yesterday' => $this->created_at->isYesterday(),
+                'is_this_week' => $this->created_at->isThisWeek(),
+                'is_this_month' => $this->created_at->isThisMonth()
             ]
         ];
 

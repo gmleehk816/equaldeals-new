@@ -1,23 +1,29 @@
 <template>
 	<div class="flex items-center gap-2 leading-none">
 		<div class="w-8 shrink-0 relative">
-			<div class="opacity-80 hover:opacity-100">
+			<div class="opacity-30 hover:opacity-100">
 				<DropdownButton v-on:click.stop="toggleMainDropdown"></DropdownButton>
 			</div>
 			<div class="absolute top-full right-0 z-50" v-if="state.isDropdownOpen">
                 <DropdownMenu v-outside-click="toggleMainDropdown" v-on:click="toggleMainDropdown">
 					<template v-if="permissions.can_sanction">
 						<DropdownMenuItem v-on:click="applySanctions" itemColor="text-red-900" iconName="shield-01" v-bind:textLabel="$t('dd.user.apply_sanctions')"></DropdownMenuItem>
+						<Border/>
 					</template>
 					<template v-if="permissions.can_message">
 						<DropdownMenuItem v-on:click="sendMessage" iconName="message-chat-circle" v-bind:loading="state.sendingMessage" v-bind:textLabel="$t('dd.user.send_message')"></DropdownMenuItem>
 					</template>
-					<template v-if="permissions.can_message">
+					<template v-if="permissions.can_mention">
 						<DropdownMenuItem v-on:click="mentionUser" iconName="at-sign" v-bind:textLabel="$t('dd.user.mention', { username: profileData.username})"></DropdownMenuItem>
 					</template>
+					<Border/>
 					<DropdownMenuItem v-on:click="copyProfileLink" iconName="link-01" iconType="solid" v-bind:textLabel="$t('dd.user.copy_link')"></DropdownMenuItem>
-					<DropdownMenuItem v-on:click="showProfileDetails" iconName="info-circle" v-bind:textLabel="$t('dd.user.about')"></DropdownMenuItem>
+					<RouterLink v-bind:to="{ name: 'profile_info', params: { id: profileData.username } }">
+						<DropdownMenuItem iconName="info-circle" v-bind:textLabel="$t('dd.user.about')"></DropdownMenuItem>
+					</RouterLink>
+					
 					<template v-if="permissions.can_block">
+						<Border/>
 						<DropdownMenuItem v-bind:disabled="true" v-on:click="$comingSoon" itemColor="text-red-900" iconName="slash-circle-01" v-bind:textLabel="$t('dd.user.block', { username: profileData.username })"></DropdownMenuItem>
 					</template>
 					<template v-if="permissions.can_report">
@@ -46,8 +52,6 @@
 	import { useRouter } from 'vue-router';
 	import { colibriEventBus } from '@/kernel/events/bus/index.js';
 	import { colibriAPI } from '@/kernel/services/api-client/native/index.js';
-	import { ToastNotifier } from '@D/core/services/toast-notification/index.js';
-	import { useI18n } from 'vue-i18n';
 
 	import FollowPillButton from '@D/components/inter-ui/buttons/follows/FollowPillButton.vue';
 	import PrimaryPillButton from '@D/components/inter-ui/buttons/PrimaryPillButton.vue';
@@ -59,8 +63,6 @@
 
 	export default defineComponent({
 		setup: function() {
-			const { t } = useI18n();
-			const toastNotifier = new ToastNotifier();
 			const router = useRouter();
 			const profileData = inject('profileData');
 			const state = reactive({
@@ -76,9 +78,6 @@
                     state.isDropdownOpen = !state.isDropdownOpen;
                 },
 				permissions: profileData.value.meta.permissions,
-				showProfileDetails: () => {
-					colibriEventBus.emit('profile-page:show-details');
-				},
 				sendMessage: async () => {
 					state.sendingMessage = true;
 
@@ -88,7 +87,7 @@
 						let chatData = response.data.data;
 
 						router.push({
-							name: 'messenger_chat_page',
+							name: 'messenger_chat',
 							params: {
 								chat_id: chatData.chat_id
 							}
@@ -114,7 +113,7 @@
 							user_id: profileData.value.id
 						}).delete('profile/delete').then((response) => {
 							router.push({
-								name: 'home_page'
+								name: 'home_index'
 							});
 						}).catch((error) => {
 							if(error.response) {
@@ -130,7 +129,7 @@
 				},
 				copyProfileLink: () => {
 					navigator.clipboard.writeText(profileData.value.profile_url).then(() => {
-                        toastNotifier.notifyShort(t('toast.profile_link_copied'), 1000);
+                        toastSuccess(__t('toast.profile_link_copied'), 1000);
                     });
 				},
 				reportProfile: () => {

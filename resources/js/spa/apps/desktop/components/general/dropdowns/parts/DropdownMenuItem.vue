@@ -1,13 +1,13 @@
 <template>
-	<div class="w-full flex items-center overflow-hidden px-4 py-1 hover:bg-fill-qt border-b border-b-bord-pr last:border-none"
+	<div class="w-full flex first:pt-2 last:pb-2 items-center overflow-hidden px-5 py-1.5 transition-colors duration-200 hover:bg-fill-qt"
 		v-bind:class="[itemColor, (loading ? 'cursor-wait opacity-70' : 'cursor-pointer'), (disabled ? 'cursor-not-allowed opacity-70' : '')]">
-		<span class="py-2 block text-par-n flex-1 truncate mr-2">
+		<span class="py-2 block text-par-m font-medium flex-1 truncate mr-2">
 			{{ textLabel }}
 		</span>
 		<div v-if="loading" class="shrink-0 pr-3 leading-zero">
 			<div class="colibri-primary-animation"></div>
 		</div>
-		<span v-else class="shrink-0 size-icon-small">
+		<span v-else class="shrink-0 size-5">
 			<SvgIcon v-bind:type="iconType" v-bind:name="iconName" classes="size-full"></SvgIcon>
 		</span>
 	</div>

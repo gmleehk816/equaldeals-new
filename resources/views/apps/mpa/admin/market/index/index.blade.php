@@ -8,7 +8,26 @@
         </x-page-desc>
     </div>
 
+	<div class="mb-4">
+		<x-tabs.tabs>
+			<x-tabs.tab-item :active="$filters['approval'] == 'all'" href="{{ route('admin.market.index') }}" textLabel="{{ __('admin/filter.filters.market.tabs.all') }}"></x-tabs.tab-item>
+			<x-tabs.tab-item :active="$filters['approval'] == 'approved'" href="{{ route('admin.market.index', ['approval' => 'approved']) }}" textLabel="{{ __('admin/filter.filters.market.tabs.approved') }}"></x-tabs.tab-item>
+			<x-tabs.tab-item :active="$filters['approval'] == 'rejected'" href="{{ route('admin.market.index', ['approval' => 'rejected']) }}" textLabel="{{ __('admin/filter.filters.market.tabs.rejected') }}"></x-tabs.tab-item>
+			<x-tabs.tab-item :active="$filters['approval'] == 'pending'" href="{{ route('admin.market.index', ['approval' => 'pending']) }}" textLabel="{{ __('admin/filter.filters.market.tabs.pending') }}"></x-tabs.tab-item>
+		</x-tabs.tabs>
+	</div>
+
 	<x-table.table>
+		<x-slot:filter>
+			<div class="mb-4">
+				<form action="{{ route('admin.market.index') }}" method="GET">
+					<x-search.searchbar :value="$filters['search']" :cancelUrl="route('admin.market.index')" />
+					<div class="mt-1">
+						<x-search.desc description="{{ __('admin/filter.filters.market.description') }}" />
+					</div>
+				</form>
+			</div>
+		</x-slot:filter>
 		<x-table.thead>
 			<x-table.th>{{ __('table.labels.seller') }}</x-table.th>
 			<x-table.th>{{ __('table.labels.title') }}</x-table.th>

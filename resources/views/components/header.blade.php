@@ -1,22 +1,19 @@
 @props([
-	'controls' => null,
-	'logo' => "",
-	'name' => 'Header',
-	'link' => '#'
+	'controls' => null
 ])
 
-<header class="mb-6 fixed top-0 right-0 left-sidebar-width bg-bg-pr/80 backdrop-blur-md z-50">
+<header class="mb-6 fixed top-0 right-0 left-sidebar-width z-50 bg-transparent backdrop-blur-md">
     <div class="flex items-center py-3 h-16">
-        <a href="{{ $link }}" class="flex items-center gap-2 w-72 pl-8">
-            <img class="h-5" src="{{ $logo }}" alt="Image">
-            <span class="font-bold text-lab-pr">
-                {{ $name }}
-            </span>
-        </a>
 		@if(isset($controls))
-			<div class="pr-8 ml-auto">
-				<div class="flex items-center gap-6 leading-none">
+			<div class="pr-16 ml-auto">
+				<div class="flex items-center gap-4 leading-none">
 					{{ $controls }}
+
+					<a target="_blank" href="{{ me()->profile_url }}" class="shrink-0 cursor-pointer items-center">
+						<div class="size-[40px] rounded-full overflow-hidden">
+							<img class="w-full" src="{{ me()->avatar_url }}" alt="Image">
+						</div>
+					</a>
 				</div>
 			</div>
 		@endif

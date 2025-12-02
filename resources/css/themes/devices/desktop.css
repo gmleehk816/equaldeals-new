@@ -3,16 +3,19 @@
 	
 	--spacing-sidebar-width: 350px;
 	--margin-sidebar-width: 350px;
-	--width-action-bar: 60px;
-	--spacing-action-bar: 60px;
+	--width-action-bar: 64px;
+	--spacing-action-bar: 64px;
+
+	--width-messenger-sidebar: 414px;
+	--spacing-messenger-sidebar: 414px;
 	
 	--margin-page-offset: 340px;
 	--spacing-page-offset: 340px;
-	--spacing-content: 560px;
-	--spacing-content-side: 360px;
+	--spacing-content: 600px;
+	--spacing-content-side: 400px;
 	--width-catalog: 1280px;
 	--spacing-catalog: 1280px;
-	--spacing-sided-content: 920px;
+	--spacing-sided-content: 960px;
 	--spacing-lightbox-content: 43.75rem;
 	--spacing-content-grid: 64.075rem;
 	--spacing-large-avatar: 6.875rem;

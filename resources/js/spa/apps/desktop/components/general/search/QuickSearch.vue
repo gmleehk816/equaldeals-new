@@ -1,19 +1,19 @@
 <template>
-	<div class="block bg-fill-tr overflow-hidden rounded-full relative">
-		<div class="z-10 absolute left-4 top-0 bottom-0 inline-flex-center">
+	<div class="block bg-fill-qt overflow-hidden rounded-xl relative">
+		<div class="z-10 absolute left-3 top-0 bottom-0 inline-flex-center">
 			<span class="size-icon-small text-lab-tr">
 				<SvgIcon name="search-lg"></SvgIcon>
 			</span>
 		</div>
-		<input
-			v-on:input="updateModelValue"
+		<input v-on:input="updateModelValue"
 			v-bind:value="modelValue"
-			class="block w-full bg-transparent outline-hidden text-par-s text-lab-pr px-10 h-10"
-			v-bind:placeholder="placeholder"
-		type="text">
+			class="block w-full bg-transparent placeholder-shown:text-center outline-hidden text-par-m text-lab-pr px-10 h-10"
+		v-bind:placeholder="placeholder" type="text">
 
-		<button v-if="modelValue.length" v-on:click="cancelSearch" type="button" class="inline-flex outline-hidden bg-fill-pr text-lab-tr rounded-full size-x-small-avatar absolute top-2 right-2">
-			<SvgIcon name="x"></SvgIcon>
+		<button v-if="modelValue.length" v-on:click="cancelSearch" type="button" class="inline-flex-center cursor-pointer outline-hidden bg-fill-pr text-lab-tr rounded-full size-x-small-avatar absolute top-2 right-2">
+			<span class="size-icon-small text-lab-tr">
+				<SvgIcon name="x"></SvgIcon>
+			</span>
 		</button>
 	</div>
 </template>
@@ -32,7 +32,7 @@
                 default: ''
             },
 		},
-		emits: ['cancelsearch', 'update:modelValue'],
+		emits: ['cancel', 'update:modelValue'],
 		setup(props, context) {
 			return {
 				modelValue: computed(() => {
@@ -42,7 +42,7 @@
                     context.emit('update:modelValue', event.target.value);
                 },
 				cancelSearch: () => {
-					context.emit('cancelsearch');
+					context.emit('cancel');
 				}
 			};
 		}

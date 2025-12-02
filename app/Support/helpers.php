@@ -233,6 +233,24 @@ if (! function_exists('story_log')) {
     }
 }
 
+if (! function_exists('timeline_log')) {
+    function timeline_log(string $message, array $context = []) {
+        Log::channel('timeline')->info($message, $context);
+    }
+}
+
+if (! function_exists('requests_log')) {
+    function requests_log(string $message, array $context = []) {
+        Log::channel('requests')->info($message, $context);
+    }
+}
+
+if (! function_exists('chat_log')) {
+    function chat_log(string $message, array $context = []) {
+        Log::channel('chat')->info($message, $context);
+    }
+}
+
 if (! function_exists('default_currency')) {
     function default_currency() {
         
@@ -276,5 +294,11 @@ if (! function_exists('social_links')) {
         $socialLinks = require(var_path('config/user/social_links.php'));
 
         return collect($socialLinks)->where('status', true)->toArray();
+    }
+}
+
+if (! function_exists('static_storage_disk')) {
+    function static_storage_disk() {
+        return config('filesystems.static_storage_disk');
     }
 }

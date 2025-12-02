@@ -29,12 +29,6 @@
     import ViewItemSkeleton from '@D/views/stories/parts/modals/parts/views/ViewItemSkeleton.vue';
 
     export default defineComponent({
-        props: {
-            storyItem: {
-                type: Object,
-                default: {}
-            }
-        },
         emits: ['hide'],
         setup: function() {
             const storiesStore = useStoriesStore();

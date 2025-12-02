@@ -1,6 +1,6 @@
 <template>
     <div class="block">
-        <label v-if="hasLabel" class="mb-2 font-normal tracking-normal block text-lab-pr3 text-par-s">{{ labelText }}</label>
+        <label v-if="hasLabel" class="mb-2 font-medium block text-lab-pr2 text-par-m">{{ labelText }}</label>
 
         <div class="block">
             <RadioGroup v-model="selectedOption" class="inline-flex divide-x divide-bord-card overflow-hidden rounded-xl">
@@ -8,10 +8,12 @@
                     v-for="radioOption in options"
                     v-bind:key="radioOption.value"
                     v-slot="{ checked }" 
-                    v-bind:value="radioOption.value"
-                class="bg-input-pr px-6 py-4 cursor-pointer text-par-s">
+                v-bind:value="radioOption.value">
 
-                    <span v-bind:class="checked ? 'text-brand-900' : 'text-lab-pr'">{{ radioOption.label }}</span>
+                    <span class="bg-input-pr cursor-pointer px-6 py-4 inline-block text-par-m font-semibold"
+                        v-bind:class="[checked ? 'text-brand-900' : 'text-lab-sc font-medium']">
+                        {{ radioOption.label }} {{ checked ? '✓' : '' }}
+                    </span>
                 </RadioGroupOption>
             </RadioGroup>
         </div>
@@ -21,7 +23,7 @@
                 <span v-if="$slots.feedbackIcon" class="mr-2.5">
                     <slot name="feedbackIcon"></slot>
                 </span>
-                <span class="text-cap-l text-lab-sc">
+                <span class="text-par-s text-lab-sc">
                     <slot name="feedbackInfo"></slot>
                 </span>
             </span>

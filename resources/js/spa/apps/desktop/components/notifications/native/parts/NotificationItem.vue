@@ -1,5 +1,5 @@
 <template>
-    <div class="block border-b border-b-bord-pr hover:bg-fill-fv smoothing px-4 py-2.5">
+    <div class="hover:bg-fill-fv smoothing px-4 py-2.5">
         <div class="flex relative">
             <div v-if="! notificationData.is_read" class="absolute top-1 -left-3">
                 <span class="size-1.5 rounded-full bg-brand-900 inline-block"></span>
@@ -9,8 +9,8 @@
             </div>
             <div class="flex-1 ml-2 leading-none">
                 <div class="block">
-                    <span class="font-medium text-par-n text-lab-pr tracking-normal mr-1">
-                        {{ notificationData.actor.name }}<template v-if="notificationData.actor.verified">&nbsp;<VerificationBadge size="sm"></VerificationBadge></template>
+                    <span class="font-medium text-par-n text-lab-pr mr-1">
+                        {{ notificationData.actor.name }}<template v-if="notificationData.actor.verified">&nbsp;<VerificationBadge size="xs"></VerificationBadge></template>
                     </span>
                     <span v-on:click="handleRouting" class="text-par-s text-lab-pr2 leading-4 cursor-pointer hover:text-lab-pr">
                         {{ notificationData.message }}<template v-if="notificationData.entity.content">
@@ -65,7 +65,7 @@
             const notificationRoute = computed(() => {
                 if(['post.reacted', 'post.commented', 'post.mentioned'].includes(props.notificationData.type)) {
                     return {
-                        name: 'publication_page',
+                        name: 'publication_index',
                         params: {
                             hash_id: props.notificationData.entity.hash_id
                         }
@@ -73,7 +73,7 @@
                 }
                 else if(['comment.mentioned', 'comment.reacted'].includes(props.notificationData.type)) {
                     return {
-                        name: 'publication_page',
+                        name: 'publication_index',
                         params: {
                             hash_id: props.notificationData.entity.post_hash_id
                         }
@@ -81,7 +81,7 @@
                 }
                 else if(['story.mentioned'].includes(props.notificationData.type)) {
                     return {
-                        name: 'stories_index_page',
+                        name: 'stories_index',
                         params: {
                             story_uuid: props.notificationData.entity.story_uuid
                         }
@@ -89,7 +89,7 @@
                 }
                 else if(['user.followed-requested', 'account-linked', 'user.followed', 'user.follow-accepted'].includes(props.notificationData.type)) {
                     return {
-                        name: 'profile_page',
+                        name: 'profile_index',
                         params: {
                             id: props.notificationData.entity.username
                         }
@@ -97,8 +97,8 @@
                 }
                 else if(['important.wallet-deposit'].includes(props.notificationData.type)) {
                     return {
-                        name: 'wallet_page'
-                    }
+                        name: 'wallet_index'
+                    };
                 }
 
                 return '#';

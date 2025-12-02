@@ -9,10 +9,10 @@
                     <span class="text-lab-pr2 text-par-s block font-medium mb-1.5 truncate capitalize">
                         {{ mediaItem.metadata.file_name }}
                     </span>
-                    <span class="text-lab-sc text-cap-l tracking-tighter uppercase block truncate">
+                    <span class="text-lab-sc text-cap-l uppercase block truncate">
                         {{ $filters.fileSize(mediaItem.size) }} - {{ mediaItem.extension }}
 
-                        <span v-bind:title="$t('labels.downloads_count', { count: mediaItem.metadata.downloads })">
+                        <span v-if="mediaItem.metadata.downloads" v-bind:title="$t('labels.downloads_count', { count: mediaItem.metadata.downloads })">
                             / {{ mediaItem.metadata.downloads }} &DownArrow;
                         </span>
                     </span>

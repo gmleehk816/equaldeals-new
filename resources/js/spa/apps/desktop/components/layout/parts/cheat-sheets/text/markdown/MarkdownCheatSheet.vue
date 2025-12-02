@@ -26,12 +26,9 @@
 </template>
 <script>
     import { defineComponent, onMounted, onUnmounted, ref } from 'vue';
-    import ContentModal from '@D/components/general/modals/ContentModal.vue';
 
     export default defineComponent({
-        props: {
-        },
-        setup: function(props) {
+        setup: function() {
             const textFormatters = ref([
                 {
                     groupTitle: 'labels.text_formatting',
@@ -104,9 +101,6 @@
             return {
                 textFormatters: textFormatters
             };
-        },
-        components: {
-            ContentModal: ContentModal
         }
     });
 </script>
