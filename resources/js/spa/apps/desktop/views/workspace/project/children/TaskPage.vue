@@ -1,6 +1,11 @@
 <template>
     <div class="row">
         <div class="col-lg-12">
+            <router-link :to="{name:'project_add_task_page'}" class="btn btn-primary">Add Checklist</router-link>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
             <div class="table-responsive">
                 <table class="table">
                     <thead>
