@@ -62,7 +62,7 @@ export default {
 };
 </script>
 <style scoped>
-
+@import "bootstrap/dist/css/bootstrap.min.css";
 /* Full-page container */
 .custom {
     position: absolute;

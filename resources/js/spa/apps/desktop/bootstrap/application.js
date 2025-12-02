@@ -14,10 +14,6 @@ import ColibriPlusDesktop from '@D/bootstrap/boot/ColibriPlusDesktop.vue';
 import PrimeVue from 'primevue/config';
 import globalProperties from '@D/plugins/global.properties.js';
 
-
-// Import Bootstrap AFTER app is defined so Tailwind can override it
-import "bootstrap/dist/css/bootstrap.min.css";
-
 const Application = createApp(ColibriPlusDesktop);
 Application.config.globalProperties.$global = config;
 

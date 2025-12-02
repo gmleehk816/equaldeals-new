@@ -299,7 +299,7 @@ export default {
 </script>
 
 <style scoped>
-
+@import "bootstrap/dist/css/bootstrap.min.css";
 
 .theme-light {
   background-color: #fff;
