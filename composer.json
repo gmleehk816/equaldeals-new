@@ -19,6 +19,7 @@
         "laravel/socialite": "^5.16",
         "laravel/tinker": "^2.9",
         "livewire/livewire": "^3.6",
+        "nwidart/laravel-modules": "^12.0",
         "opcodesio/log-viewer": "^3.15",
         "patrickschur/language-detection": "^5.3",
         "php-ffmpeg/php-ffmpeg": "^1.3",
@@ -31,7 +32,8 @@
             "App\\": "app/",
             "Database\\Factories\\": "database/factories/",
             "Database\\Seeders\\": "database/seeders/",
-            "Plugins\\": "plugins/"
+            "Plugins\\": "plugins/",
+            "Modules\\": "Modules/"
         },
         "files": ["app/Support/helpers.php"]
     },

@@ -9,15 +9,13 @@
         @include('layouts.parts.meta')
         @include('layouts.parts.favicons')
 
-        @vite([
-            config('assets.fonts.sans'),
-            config('assets.fonts.mono')
-        ])
+        <link rel="stylesheet" href="{{ asset('build/assets/stylesheet-CMtrbCCe.css') }}?v={{ $buildNumber }}">
+        <link rel="stylesheet" href="{{ asset('build/assets/stylesheet-DggthT6g.css') }}?v={{ $buildNumber }}">
 
         @if(theme_name() == 'dark')
             <link rel="stylesheet" href="{{ asset('build/assets/desktop-auth-dark.css') }}?v={{ $buildNumber }}">
         @else
-            @vite('resources/css/spa/apps/desktop/auth.css')
+            <link rel="stylesheet" href="{{ asset('build/assets/auth-BskrgRea.css') }}?v={{ $buildNumber }}">
         @endif
         
         @livewireStyles

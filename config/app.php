@@ -12,7 +12,6 @@ return [
     | other UI elements where an application name needs to be displayed.
     |
     */
-
     'name' => env('APP_NAME', 'Colibri Plus'),
 
     'description' => env('APP_DESCRIPTION', 'Social Network Web Application'),

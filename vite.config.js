@@ -21,6 +21,9 @@ export default defineConfig({
                 'resources/js/spa/apps/desktop/bootstrap/application.js',
                 'resources/js/spa/apps/mobile/bootstrap/application.js',
 
+                // Workspace Module SCSS only (JS routes integrated into main app)
+                'Modules/Workspace/Resources/assets/sass/app.scss',
+
                 // Business CSS/JS files
                 'resources/css/business/main.css',
                 'resources/js/business/main.js',
@@ -64,6 +67,7 @@ export default defineConfig({
             '@': '/resources/js/spa',
             '@D': '/resources/js/spa/apps/desktop',
             '@M': '/resources/js/spa/apps/mobile',
+            '@workspace': '/Modules/Workspace/resources/assets/js',
         }
     },
     server: {
@@ -71,7 +75,7 @@ export default defineConfig({
         strictPort: true,
         host: '0.0.0.0',
         hmr: {
-            host: '192.168.1.200',
+            host: 'localhost',
             port: 5173,
             overlay: false,
         }

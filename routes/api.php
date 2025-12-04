@@ -19,6 +19,45 @@ use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 
+// Workspace module routes (public)
+use Modules\Workspace\App\Http\Controllers\Api\Workspace\WorkspaceController;
+use Modules\Workspace\App\Http\Controllers\Api\Project\ProjectController;
+use Modules\Workspace\App\Http\Controllers\Api\Workspace\Task\TaskController;
+
+
+// Workspace module test route (public)
+Route::middleware(['throttle:60,1'])->get('/workspace/test', function() {
+    return response()->json(['message' => 'Workspace API is working!', 'timestamp' => now()]);
+});
+
+// Workspace module API routes (public)
+Route::middleware(['throttle:60,1'])->group(function() {
+    
+    Route::prefix('workspace')->group(function() {
+        Route::get('/get/all/{user_id}', [WorkspaceController::class, 'index'])->name('api.workspace.index');
+        Route::post('/store', [WorkspaceController::class, 'store'])->name('api.workspace.store');
+        Route::get('/edit/{id}', [WorkspaceController::class, 'edit'])->name('api.workspace.edit');
+        Route::post('/update', [WorkspaceController::class, 'update'])->name('api.workspace.update');
+        Route::delete('/delete/{id}', [WorkspaceController::class, 'delete'])->name('api.workspace.delete');
+    });
+
+    Route::prefix('project')->group(function() {
+        Route::get('/get/all/{workspace_id}', [ProjectController::class, 'index'])->name('api.project.index');
+        Route::post('/store', [ProjectController::class, 'store'])->name('api.project.store');
+        Route::get('/edit/{id}', [ProjectController::class, 'edit'])->name('api.project.edit');
+        Route::post('/update', [ProjectController::class, 'update'])->name('api.project.update');
+        Route::delete('/delete/{id}', [ProjectController::class, 'delete'])->name('api.project.delete');
+    });
+
+    Route::prefix('task')->group(function() {
+        Route::get('/get/all/{workspace_id}', [TaskController::class, 'index'])->name('api.task.index');
+        Route::post('/store', [TaskController::class, 'store'])->name('api.task.store');
+        Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('api.task.edit');
+        Route::post('/update', [TaskController::class, 'update'])->name('api.task.update');
+        Route::delete('/delete/{id}', [TaskController::class, 'delete'])->name('api.task.delete');
+    });
+});
+
 Route::post('/sanctum/token', function (Request $request) {
     $request->validate([
         'email' => 'required|email',

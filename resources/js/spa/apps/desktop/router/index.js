@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router';
 import { Layouts } from '@D/core/constants/layouts.js';
+import { routes as workspaceRoutes } from '@workspace/router/index.js';
 
 const Router = createRouter({
 	history: createWebHistory(),
@@ -9,6 +10,7 @@ const Router = createRouter({
         }
     },
 	routes: [
+        ...workspaceRoutes,
         {
 			path: '/bookmarks',
 			component: function() {
