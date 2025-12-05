@@ -10,18 +10,6 @@ const Router = createRouter({
         }
     },
 	routes: [
-        ...workspaceRoutes,
-        {
-			path: '/bookmarks',
-			component: function() {
-                return import('@D/views/bookmarks/BookmarksIndex.vue');
-            },
-            meta: {
-                layout: Layouts.MAIN,
-                auth: true,
-            },
-            name: 'bookmarks_index'
-		},
         {
 			path: '/',
 			component: function() {
@@ -33,6 +21,18 @@ const Router = createRouter({
                 auth: true
             },
             name: 'home_index'
+		},
+        ...workspaceRoutes,
+        {
+			path: '/bookmarks',
+			component: function() {
+                return import('@D/views/bookmarks/BookmarksIndex.vue');
+            },
+            meta: {
+                layout: Layouts.MAIN,
+                auth: true,
+            },
+            name: 'bookmarks_index'
 		},
         {
 			path: '/jobs',

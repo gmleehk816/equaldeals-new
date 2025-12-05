@@ -1,11 +1,15 @@
 <?php
 
-namespace Modules\Workspace\Models;
+namespace Modules\Workspace\App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
+// use Modules\Workspace\Database\Factories\WorkspaceFactory;
 
 class Tasks extends Model
 {
+    use HasFactory;
+
     protected $table = "tasks";
     protected $fillable = [
         'project_id','board_id','assignee_id','creator_id','title','due_date','priority','status','is_completed','is_active',

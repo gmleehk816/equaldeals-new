@@ -40,6 +40,11 @@ PiniaInstance.use(postDeleteListener);
 
 Application.use(PiniaInstance);
 
+// Register workspace store eagerly so it appears in Vue DevTools
+import { useWorkspaceStore } from '@workspace/stores/workspace.js';
+// Initialize the store
+useWorkspaceStore(PiniaInstance);
+
 Application.directive('outside-click', outsideClickDirective);
 Application.use(globalProperties);
 Application.use(Router);

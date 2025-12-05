@@ -1,10 +1,10 @@
 const workspaceGlobal = {
-    app_url: window.BackendEmbeds?.apiBaseUrl || '/api',
+    app_url:'https://equaldeals.local/api',
     csrfToken: window.BackendEmbeds?.csrfToken || '',
-    locale: window.BackendEmbeds?.locale || 'en',
-    theme: window.BackendEmbeds?.theme || 'light',
+    //locale: window.BackendEmbeds?.locale || 'en',
+    //theme: window.BackendEmbeds?.theme || 'light',
     // Workspace-specific configs
-    workspaceApiPrefix: '/workspace',
+    //workspaceApiPrefix: '/workspace',
 }
 
 export default workspaceGlobal;

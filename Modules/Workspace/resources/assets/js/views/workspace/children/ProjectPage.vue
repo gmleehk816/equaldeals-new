@@ -1,172 +1,201 @@
 <template>
-  <div class="container-fluid py-4">
 
-    <main class="row">
-      <div class="col-12">
-        
-        <!-- Loading Skeleton -->
-        <div v-if="loading" class="mb-4">
-          <SkeletonLoader width="50%" height="15" margin="5" />
-          <SkeletonLoader width="60%" height="15" margin="5" />
-          <SkeletonLoader
-            width="100%"
-            height="15"
-            margin="5"
-            v-for="i in 7"
-            :key="i"
-          />
-        </div>
+  <!-- Loading Skeleton -->
+  <div v-if="loading" class="mb-4">
+    <SkeletonLoader width="50%" height="15" margin="5" />
+    <SkeletonLoader width="60%" height="15" margin="5" />
+    <SkeletonLoader
+      width="100%"
+      height="15"
+      margin="5"
+      v-for="i in 7"
+      :key="i"
+    />
+  </div>
 
-        <!-- Project List -->
-        <div v-if="activeTab === 'list' && loading === false">
+  <!-- Project List -->
+  <div v-else class="p-4">
 
-          <div class="d-flex justify-content-between align-items-center mb-4">
-            <h2 class="fw-bold mb-0">All Projects</h2>
-            <button @click="openProjectForm(false)" class="btn btn-primary">
-              ➕ Create Project
-            </button>
-          </div>
+    <!-- Header -->
+    <div class="flex justify-between items-center mb-4">
+      <h2 class="text-xl font-bold">All Projects</h2>
 
-          <!-- No projects -->
-          <div v-if="projects.length === 0" class="text-center text-muted py-5">
-            No Projects Found
-          </div>
+      <button
+        @click="openProjectForm(false)"
+        class="bg-blue-600 text-white px-4 py-2 rounded-md shadow hover:bg-blue-700 transition"
+      >
+        ➕ Create Project
+      </button>
+    </div>
 
-          <!-- Table -->
-          <div v-if="projects.length > 0" class="card shadow-sm">
-            <div class="table-responsive">
-                <table class="table table-hover align-middle mb-0">
-                <thead >
-                    <tr>
-                    <th>Project Name</th>
-                    <th>Start Date</th>
-                    <th>End Date</th>
-                    <th>Description</th>
-                    <th style="width: 150px;">Actions</th>
-                    </tr>
-                </thead>
+    <!-- No projects -->
+    <div v-if="projects.length === 0" class="text-center text-gray-500 py-8">
+      No Projects Found
+    </div>
 
-                <tbody>
-                    <tr v-for="p in projects" :key="p.id">
-                    <td>
-                        <a 
-                            :href="$router.resolve({ name: 'project_manage_page', params: { project_id: p.id } }).href" 
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            >
-                            {{ p.name }}
-                        </a>
-                    </td>
-                    <td>{{ p.start_date }}</td>
-                    <td>{{ p.end_date }}</td>
-                    <td>{{ p.description }}</td>
+    <!-- Table -->
+    <div v-if="projects.length > 0" class="bg-white rounded-lg shadow">
+      <div class="overflow-x-auto">
 
-                    <td class="d-flex">
-                        <button 
-                            class="btn btn-sm btn-outline-primary"
-                            @click="openNewTab(p.id)"
-                            >
-                            Details
-                        </button>
-                        <button
-                        @click="openEditProjectForm(p)"
-                        class="btn btn-sm btn-outline-primary"
-                        >
-                        Edit
-                        </button>
+        <table class="min-w-full border border-gray-200 rounded-lg shadow-sm">
+          <thead class="bg-gray-100 border-b">
+            <tr>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Project Name</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Start Date</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">End Date</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Description</th>
+              <th class="px-4 py-3 text-left text-sm font-medium text-gray-700">Actions</th>
+            </tr>
+          </thead>
 
-                        <button
-                        @click="deleteProject(p.id)"
-                        class="btn btn-sm btn-outline-danger"
-                        >
-                        Delete
-                        </button>
-                    </td>
-                    </tr>
-                </tbody>
-
-                </table>
-            </div>
-          </div>
-
-        </div>
-
-      </div>
-    </main>
-
-    <!-- MODAL -->
-    <div
-      v-if="showForm"
-      class="modal fade show d-block"
-      tabindex="-1"
-      style="background: rgba(0, 0, 0, 0.4);"
-    >
-      <div class="modal-dialog modal-lg modal-dialog-centered">
-        <div class="modal-content" :class="theme">
-
-          <div class="modal-header">
-            <h5 class="modal-title">
-              {{ editingProject ? "Edit Project" : "Create Project" }}
-            </h5>
-            <button type="button" class="btn-close" @click="closeForm"></button>
-          </div>
-
-          <div class="modal-body">
-
-            <div class="mb-3">
-              <label class="form-label">Project Name</label>
-              <input type="text" v-model="form.name" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Start Date</label>
-              <input type="date" v-model="form.start_date" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">End Date</label>
-              <input type="date" v-model="form.end_date" class="form-control" />
-            </div>
-
-            <div class="mb-3">
-              <label class="form-label">Description</label>
-              <textarea
-                rows="3"
-                v-model="form.description"
-                class="form-control"
-              ></textarea>
-            </div>
-
-          </div>
-
-          <div class="modal-footer">
-            <button @click="closeForm" class="btn btn-secondary">Cancel</button>
-
-            <SpinnerLoad v-if="isSubmitting"></SpinnerLoad>
-
-            <button
-              v-if="isEditing && !isSubmitting"
-              @click="updateProject"
-              class="btn btn-primary"
+          <tbody>
+            <tr
+              v-for="p in projects"
+              :key="p.id"
+              class="hover:bg-gray-50 border-b last:border-0"
             >
-              Update
-            </button>
+              <td class="px-4 py-3 text-sm text-gray-800">
+                <a
+                  :href="$router.resolve({ name: 'project_manage_page', params: { project_id: p.id } }).href"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  class="text-blue-600 hover:underline"
+                >
+                  {{ p.name }}
+                </a>
+              </td>
 
-            <button
-              v-else-if="!isSubmitting"
-              @click="saveProject"
-              class="btn btn-primary"
-            >
-              Save
-            </button>
-          </div>
+              <td class="px-4 py-3 text-sm text-gray-800">{{ p.start_date }}</td>
+              <td class="px-4 py-3 text-sm text-gray-800">{{ p.end_date }}</td>
+              <td class="px-4 py-3 text-sm text-gray-800">{{ p.description }}</td>
 
-        </div>
+              <td class="px-4 py-3 text-sm text-gray-800 flex gap-2">
+                <button
+                  @click="openNewTab(p.id)"
+                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Details
+                </button>
+
+                <button
+                  @click="openEditProjectForm(p)"
+                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                >
+                  Edit
+                </button>
+
+                <button
+                  @click="deleteProject(p.id)"
+                  class="px-3 py-1 bg-red-600 text-white rounded hover:bg-red-700"
+                >
+                  Delete
+                </button>
+              </td>
+            </tr>
+          </tbody>
+        </table>
+
       </div>
     </div>
 
   </div>
+
+  <!-- MODAL -->
+  <div
+    v-if="showForm"
+    class="fixed inset-0 bg-black/60 flex items-center justify-center z-50"
+  >
+    <div class="bg-white dark:bg-gray-900 w-full max-w-3xl rounded-lg shadow-lg">
+
+      <!-- Modal Header -->
+      <div class="flex justify-between items-center border-b px-6 py-4">
+        <h5 class="text-lg font-bold">
+          {{ editingProject ? "Edit Project" : "Create Project" }}
+        </h5>
+        <button
+          @click="closeForm"
+          class="text-gray-500 hover:text-gray-700 text-xl"
+        >
+          ✕
+        </button>
+      </div>
+
+      <!-- Modal Body -->
+      <div class="px-6 py-4 space-y-4">
+
+        <div>
+          <label class="block mb-1 font-medium">Project Name</label>
+          <input 
+            type="text" 
+            v-model="form.name" 
+            class="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1 font-medium">Start Date</label>
+          <input 
+            type="date" 
+            v-model="form.start_date" 
+            class="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1 font-medium">End Date</label>
+          <input 
+            type="date" 
+            v-model="form.end_date" 
+            class="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300"
+          />
+        </div>
+
+        <div>
+          <label class="block mb-1 font-medium">Description</label>
+          <textarea
+            rows="3"
+            v-model="form.description"
+            class="w-full px-3 py-2 border rounded-md focus:ring focus:ring-blue-300"
+          ></textarea>
+        </div>
+
+      </div>
+
+      <!-- Modal Footer -->
+      <div class="flex justify-end items-center gap-3 border-t px-6 py-4">
+
+        <button
+          @click="closeForm"
+          class="px-4 py-2 rounded-md bg-gray-300 hover:bg-gray-400"
+        >
+          Cancel
+        </button>
+
+        <SpinnerLoad v-if="isSubmitting"></SpinnerLoad>
+
+        <button
+          v-if="isEditing && !isSubmitting"
+          @click="updateProject"
+          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          Update
+        </button>
+
+        <button
+          v-else-if="!isSubmitting"
+          @click="saveProject"
+          class="px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700"
+        >
+          Save
+        </button>
+
+      </div>
+
+    </div>
+  </div>
+
 </template>
+
 
 <script>
 import axios from "axios";
@@ -305,7 +334,6 @@ export default {
 </script>
 
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
 
 .theme-light {
   background-color: #fff;

@@ -1,10 +1,8 @@
 <template>
   <div class="custom" :class="theme">
-    <div class="container-fluid">
-      <div class="row">
-
+      <div class="grid grid-cols-[20%_80%] gap-2">
         <!-- SIDEBAR -->
-        <div class="col-lg-2 p-0 c-side-bar">
+        <div class="c-side-bar">
           <!-- Add Workspace Button -->
           <div class="p-3 border-bottom bg-light">
             <AddWorkspace ref="childRef" @getAllworkspace="getAllworkspace" />
@@ -24,25 +22,25 @@
           </div>
 
           <!-- Workspace List -->
-          <div v-else class="workspace-list p-3">
-            <ul class="list-group">
-
+          <div v-else class="">
+            <ul class="space-y-2 px-3">
+              
               <li
                 v-for="(item, index) in workspaces"
                 :key="index"
-                class="list-group-item d-flex justify-content-between align-items-center mb-2 shadow-sm rounded"
+                class="flex justify-between items-center rounded-lg px-2 shadow-sm"
               >
                 <router-link
                   :to="{ name: 'project_page', params: { workspace_id: item.id } }"
-                  class="text-decoration-none fw-semibold"
+                  class="font-semibold text-gray-800 hover:text-blue-600"
                 >
                   {{ item.name }}
                 </router-link>
 
-                <div class="btn-group">
+                <div class="flex items-center gap-2">
                   <button
                     @click="openEditModal(item)"
-                    class="btn btn-sm btn-outline-primary"
+                    class="p-2 rounded-md border border-blue-500 text-blue-500 hover:bg-blue-50"
                     title="Edit workspace"
                   >
                     <SvgIcon name="pencil-01" type="solid" classes="size-icon-small" />
@@ -50,7 +48,7 @@
 
                   <button
                     @click="deleteWorkspace(item.id)"
-                    class="btn btn-sm btn-outline-danger"
+                    class="p-2 rounded-md border border-red-500 text-red-500 hover:bg-red-50"
                     title="Delete workspace"
                   >
                     <SvgIcon name="x" type="solid" classes="size-icon-small" />
@@ -63,12 +61,12 @@
         </div>
 
         <!-- MAIN CONTENT -->
-        <div class="col-lg-10 p-4">
+        <div>
           <RouterView />
         </div>
 
       </div>
-    </div>
+   
   </div>
 </template>
 
@@ -157,7 +155,6 @@ export default {
 </script>
 
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
 .custom {
     position: absolute;
     left: 0; 
