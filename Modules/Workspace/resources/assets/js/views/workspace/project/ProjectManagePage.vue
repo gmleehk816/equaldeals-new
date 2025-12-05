@@ -1,8 +1,8 @@
 <template>
-  <div class="row gx-0 custom" :class="theme">
+  <div class="grid grid-cols-[20%_80%] gap-2 custom" :class="theme">
 
     <!-- Sidebar -->
-    <div class="col-lg-2 c-side-bar p-0">
+    <div class="c-side-bar p-0">
       <div class="sidebar-header text-center py-4 border-bottom">
         <h5 class="fw-bold mb-0">Project Menu</h5>
       </div>
@@ -39,7 +39,7 @@
     </div>
 
     <!-- Page Content -->
-    <div class="col-lg-10 p-4" :class="theme">
+    <div class="" :class="theme">
       <RouterView />
     </div>
 
@@ -70,7 +70,7 @@ export default {
 };
 </script>
 <style scoped>
-@import "bootstrap/dist/css/bootstrap.min.css";
+
 /* Full-page container */
 .custom {
     position: absolute;

@@ -23,7 +23,7 @@ export const routes = [
             ]
         },
         {
-            path: '/workspace/project/:project_id',
+            path: '/project/:project_id',
             component: ProjectManagePage,
             meta: {
                 layout: Layouts.MAIN,
@@ -61,7 +61,7 @@ export const routes = [
 ];
 
 const router = createRouter({
-    history: createWebHistory('/workspace'),
+    history: createWebHistory('/'),
     routes,
 });
 

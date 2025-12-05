@@ -22,7 +22,7 @@ use Illuminate\Validation\ValidationException;
 // Workspace module routes (public)
 use Modules\Workspace\App\Http\Controllers\Api\Workspace\WorkspaceController;
 use Modules\Workspace\App\Http\Controllers\Api\Project\ProjectController;
-use Modules\Workspace\App\Http\Controllers\Api\Workspace\Task\TaskController;
+use Modules\Workspace\App\Http\Controllers\Api\Task\TaskController;
 
 
 // Workspace module test route (public)
@@ -50,7 +50,7 @@ Route::middleware(['throttle:60,1'])->group(function() {
     });
 
     Route::prefix('task')->group(function() {
-        Route::get('/get/all/{workspace_id}', [TaskController::class, 'index'])->name('api.task.index');
+        Route::get('/get/all/{project_id}', [TaskController::class, 'index'])->name('api.task.index');
         Route::post('/store', [TaskController::class, 'store'])->name('api.task.store');
         Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('api.task.edit');
         Route::post('/update', [TaskController::class, 'update'])->name('api.task.update');

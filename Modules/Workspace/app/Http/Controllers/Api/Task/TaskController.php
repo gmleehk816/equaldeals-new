@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Workspace\app\Http\Controllers\Api\Workspace\Task;
+namespace Modules\Workspace\App\Http\Controllers\Api\Task;
 
 use App\Http\Controllers\Controller;
 use App\Traits\Http\Api\SupportsApiResponses;
 use Illuminate\Http\Request;
-use Modules\Workspace\Models\Tasks;
+use Modules\Workspace\App\Models\Tasks;
 
 class TaskController extends Controller
 {
@@ -17,25 +17,25 @@ class TaskController extends Controller
         $this->model = Tasks::class;        
     }
 
-    public function index($user_id)
+    public function index($project_id)
     {    
-        $workspaces = $this->model::where('user_id', $user_id)->get();
+        $model = $this->model::where('project_id', $project_id)->get();
         return $this->responseSuccess([
-            'data' => $workspaces,
+            'data' => $model,
         ]);
     }
     public function store(Request $request)
     {  
         $request->validate([
-            'user_id' => 'required|integer',
-            'name' => 'required|string|max:255',
-            'visibility_scope' => 'required|string',
+            'project_id' => 'required|integer',
+            'title' => 'required|string|max:255',
+            'due_date' => 'required|string',
             'description' => 'nullable|string',
         ]);
         $data = $request->all();
-        if($workspace = $this->model::create($data)){
+        if($model = $this->model::create($data)){
              return $this->responseSuccess([
-                'data' => $workspace,
+                'data' => $model,
             ],200);
         }else{
             return $this->responseError([
@@ -46,38 +46,38 @@ class TaskController extends Controller
     }
     public function edit($id)
     {    
-        $workspace = $this->model::find($id);
+        $model = $this->model::find($id);
         
         return $this->responseSuccess([
-            'data' => $workspace,
+            'data' => $model,
         ]);
     }
     public function update(Request $request)
     {
+        
         $request->validate([
-            'edit_id'          => 'required|integer',
-            'name'             => 'required|string|max:255',
-            'visibility_scope' => 'required|string',
+            'edit_id'          => 'required',
+            'title'             => 'nullable|string|max:255',
+            'due_date' => 'nullable|string',
             'description'      => 'nullable|string',
         ]);
 
-        $workspace = $this->model::find($request->edit_id);
-
-        if (!$workspace) {
+        $model = $this->model::find($request->edit_id);
+        if (!$model) {
             return $this->responseError([
                 'message' => 'Record not found.'
             ], 404);
         }
 
         $data = $request->only([
-            'name',
-            'visibility_scope',
+            'title',
+            'due_date',
             'description'
         ]);
 
-        if($workspace->update($data)){
+        if($model->update($data)){
             return $this->responseSuccess([
-                'data' => $workspace,
+                'data' => $model,
             ], 200);
         }else{
             return $this->responseError([
@@ -88,15 +88,15 @@ class TaskController extends Controller
     }
     public function delete($id)
     {
-        $workspace = $this->model::find($id);
+        $model = $this->model::find($id);
 
-        if (!$workspace) {
+        if (!$model) {
             return $this->responseError([
                 'message' => 'Record not found.'
             ], 404);
         }
 
-        if($workspace->delete()){
+        if($model->delete()){
             return $this->responseSuccess([
                 'message'=>'Record deleted successfully'
             ], 200);
