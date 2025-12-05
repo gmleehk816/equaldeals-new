@@ -22,7 +22,7 @@ export default defineConfig({
                 'resources/js/spa/apps/mobile/bootstrap/application.js',
 
                 // Workspace Module SCSS only (JS routes integrated into main app)
-                'Modules/Workspace/Resources/assets/sass/app.scss',
+                'Modules/Workspace/resources/assets/sass/app.scss',
 
                 // Business CSS/JS files
                 'resources/css/business/main.css',
@@ -37,15 +37,15 @@ export default defineConfig({
 
                 'resources/fonts/sf-pro/stylesheet.css',
                 'resources/fonts/sf-mono/stylesheet.css',
-                
-                
+
+
                 // Document CSS
                 'resources/css/document/main.css',
                 'resources/js/document/main.js',
 
                 'resources/css/admin/main.css',
                 'resources/js/admin/main.js',
-                
+
                 'resources/js/mpa/apexcharts.js',
                 'resources/js/mpa/rich.editor.js',
                 'resources/css/mpa/rich.editor.css'
@@ -57,7 +57,7 @@ export default defineConfig({
             buildStart() {
                 // Generate a random build number and save it to the storage/frontend/build.num file
                 // This is used to prevent caching of the build none packed with vite like dark theme css file.
-                
+
                 fs.writeFileSync('./storage/frontend/build.num', Math.floor(Math.random() * 1000000).toString());
             }
         }
@@ -87,11 +87,11 @@ export default defineConfig({
     },
     build: {
         rollupOptions: {
-            onwarn: function(warning, warn) {
+            onwarn: function (warning, warn) {
                 if (VITE_LOG_BUILD_WARNINGS) {
                     const today = new Date().toISOString().slice(0, 10);
                     const logFile = `./node/npm/build-logs/${today}.log`;
-    
+
                     fs.appendFileSync(logFile, warning.message);
                 };
             }
