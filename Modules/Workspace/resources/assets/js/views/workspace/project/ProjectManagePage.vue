@@ -1,10 +1,9 @@
 <template>
   <div class="grid grid-cols-[20%_80%] gap-2 custom" :class="theme">
-
     <!-- Sidebar -->
     <div class="c-side-bar p-0">
       <div class="sidebar-header text-center py-4 border-bottom">
-        <h5 class="fw-bold mb-0">Project Menu</h5>
+        <h3 class="fw-bold mb-0 font-bold">{{ currentProject.name ?? 'N/A' }}</h3>
       </div>
 
       <ul class="nav flex-column py-3">
@@ -42,17 +41,21 @@
     <div class="" :class="theme">
       <RouterView />
     </div>
-
   </div>
 </template>
 <script>
 import workspaceGlobal from "@workspace/config/global.js";
+import axios from "axios";
+import { useWorkspaceStore } from "@workspace/stores/workspace.js";
+
 export default {
   components: {
-    workspaceGlobal
+    workspaceGlobal,
   },
   data() {
-    return {};
+    return {
+      currentProject: "",
+    };
   },
   computed: {
     project_id() {
@@ -63,23 +66,31 @@ export default {
       // if (this.$global.theme === 'dark') return 'theme-dark';
       return "theme-light";
     },
-    global(){
-        return workspaceGlobal;
-    }
+    global() {
+      return workspaceGlobal;
+    },
+    store() {
+      const store = useWorkspaceStore();
+      return store;
+    },
+  },
+  methods: {
+  },
+   mounted() {
+    this.currentProject = localStorage.getItem('project_' + this.project_id) ? JSON.parse(localStorage.getItem('project_' + this.project_id)) : '';
   },
 };
 </script>
 <style scoped>
-
 /* Full-page container */
 .custom {
-    position: absolute;
-    left: 0; 
-    top: 0;
-    z-index: 9999;
-    width: 100%;
-    height: 100%;
-    overflow-y: auto;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 9999;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
 }
 
 /* Sidebar */
@@ -124,4 +135,3 @@ export default {
   color: #ffffff;
 }
 </style>
-

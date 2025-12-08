@@ -1,4 +1,6 @@
 import { defineStore } from 'pinia';
+import axios from 'axios';
+import  workspaceGlobal  from '@workspace/config/global.js';
 
 const useWorkspaceStore = defineStore('workspace', {
     state: () => ({
@@ -11,12 +13,15 @@ const useWorkspaceStore = defineStore('workspace', {
             title: '',
             due_date: '',
             description: ''
-        }
+        },
     }),
     
     getters: {
         getTaskForm() {
             return this.task_form;
+        },
+        getProject() {
+            return this.project;
         }
     },
     
@@ -49,7 +54,29 @@ const useWorkspaceStore = defineStore('workspace', {
         
         setTasks(tasks) {
             this.tasks = tasks || [];
+        },
+        async getProjectById(project_id) {
+            const url = `${workspaceGlobal.app_url}/project/by/${project_id}`;
+
+            try {
+                const response = await axios.get(url);
+
+                // Safely parse data whether it's already JSON or a string
+                let res = response.data.data;
+        
+                console.log("Fetched project data:", res);
+
+                // Store using safe key
+                localStorage.setItem(
+                    `project_${project_id}`,
+                    JSON.stringify(res)
+                );
+
+            } catch (error) {
+                console.error("Error fetching project data:", error);
+            }
         }
+        
     },
 });
 export { useWorkspaceStore };

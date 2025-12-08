@@ -118,18 +118,29 @@ class TaskController extends Controller
         }            
     
         $model->assignee_id = $assignee_id;
-        $model->save();
-        
-        return $this->responseSuccess([
-            'data' => $model,
-        ]);
+        if($model->save()){
+            return $this->responseSuccess([
+                'data' => $model,
+            ]);
+        }
+    
     }
-    public function taskPriority($project_id)
+    public function taskPriority($task_id, $priority_id)
     {
-        $model = $this->model::where('project_id', $project_id)->get(['priority_id']);
         
-        return $this->responseSuccess([
-            'data' => $model,
-        ]);
+        $model = $this->model::find($task_id);
+        if (!$model) {
+            return $this->responseError([
+                'message' => 'Record not found.'
+            ], 404);
+        }            
+    
+        $model->priority = $priority_id;
+        if($model->save()){
+            return $this->responseSuccess([
+                'data' => $model,
+            ]);
+        }
+    
     }
 }

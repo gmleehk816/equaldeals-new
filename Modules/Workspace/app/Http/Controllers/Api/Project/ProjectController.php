@@ -83,6 +83,15 @@ class ProjectController extends Controller
         }
         
     }
+    public function getProjectById($project_id)
+    {    
+        $model = $this->model::find($project_id);
+        
+        return $this->responseSuccess([
+            'data' => $model,
+        ]);
+        
+    }
     public function delete($id)
     {
         $model = $this->model::find($id);

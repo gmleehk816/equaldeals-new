@@ -33,15 +33,17 @@
 
                         <td class="px-4 py-2 text-sm text-gray-800">{{ value.title }}</td>
                         <td class="px-4 py-2 text-sm text-gray-800">
-                            <select name="" id="">
+                            <SpinnerLoad v-if="spiner_asignee[value.id]"></SpinnerLoad>
+                            <select name="" v-model="value.assignee_id" @change="taskAssignee(value.id, $event.target.value)" v-else>
                                 <option>Select member</option>
-                                <option v-for="(member, mindex) in assignees" :key="mindex" :value="member.id" :selected="member.id === value.assignee_id">
+                                <option v-for="(member, mindex) in assignees" :key="mindex" :value="member.id">
                                     {{ member.name }}
                                 </option>
                             </select>
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-800">
-                            <select name="" id="">
+                             <SpinnerLoad v-if="spiner_priority[value.id]"></SpinnerLoad>
+                            <select name="" id="" @change="taskPriority(value.id, $event.target.value)" v-model="value.priority" v-else>
                                 <option>Select Priority</option>
                                 <option v-for="(priority, pindex) in priorities" :key="pindex" :value="priority.id" :selected="priority.id === value.priority_id">
                                     {{ priority.name }}
@@ -72,15 +74,19 @@ import axios from 'axios';
 import workspaceGlobal from "@workspace/config/global.js";
 import SkeletonLoader from "@workspace/components/SkeletonLoader.vue";
 import { useWorkspaceStore } from "@workspace/stores/workspace.js";
+import SpinnerLoad from "@workspace/components/skeleton/SpinnerLoad.vue";
 
 export default {
     components: {
         workspaceGlobal,
-        SkeletonLoader
+        SkeletonLoader,
+        SpinnerLoad
     },
   data() {
     return {
         tasks: [],
+        spiner_asignee:{},
+        spiner_priority:{},
         loading: false,
         assignees: [
             { id: 1, name: 'John Doe' },
@@ -149,6 +155,31 @@ export default {
         } catch (error) {
             console.error("Error deleting task:", error);
         }
+    },
+    taskAssignee(task_id, assignee_id){
+        this.spiner_asignee[task_id] = true;
+        const url = `${this.global.app_url}/task/assignee/${task_id}/${assignee_id}`;
+        axios.post(url)
+        .then(response => {
+            this.spiner_asignee[task_id] = false;
+        })
+        .catch(error => {
+            this.spiner_asignee[task_id] = false;
+            console.error('Error updating assignee:', error);
+        });     
+    },
+    taskPriority(task_id, priority_id){
+         this.spiner_priority[task_id] = true;
+        const url = `${this.global.app_url}/task/priority/${task_id}/${priority_id}`;
+        axios.post(url)
+        .then(response => {
+            this.spiner_priority[task_id] = false;
+        })
+        .catch(error => {
+             this.spiner_priority[task_id] = false;
+            console.error('Error updating priority:', error);
+        });
+
     } 
   },
     mounted() {
