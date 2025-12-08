@@ -54,6 +54,13 @@ export const routes = [
                         return import('../views/workspace/project/children/AddTaskPage.vue');
                     },
                     name: 'project_add_task_page',  
+                },
+                {
+                    path: 'member',
+                    component: function() {
+                        return import('../views/workspace/member/MemberPage.vue');
+                    },
+                    name: 'project_member_page',
                 }
             ]
                 

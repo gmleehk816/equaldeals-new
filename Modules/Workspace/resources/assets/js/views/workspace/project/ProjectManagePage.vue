@@ -30,7 +30,7 @@
           </router-link>
         </li>
         <li class="nav-item">
-          <router-link class="nav-link sidebar-link">
+          <router-link to="member" class="nav-link sidebar-link">
             <i class="bi bi-list-task me-2"></i>
             Team Members
           </router-link>

@@ -32,8 +32,22 @@
                     <tr v-for="(value, index) in tasks" :key="index" class="hover:bg-gray-50">
 
                         <td class="px-4 py-2 text-sm text-gray-800">{{ value.title }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-800">{{ value.assignee_id }}</td>
-                        <td class="px-4 py-2 text-sm text-gray-800">{{ value.priority }}</td>
+                        <td class="px-4 py-2 text-sm text-gray-800">
+                            <select name="" id="">
+                                <option>Select member</option>
+                                <option v-for="(member, mindex) in assignees" :key="mindex" :value="member.id" :selected="member.id === value.assignee_id">
+                                    {{ member.name }}
+                                </option>
+                            </select>
+                        </td>
+                        <td class="px-4 py-2 text-sm text-gray-800">
+                            <select name="" id="">
+                                <option>Select Priority</option>
+                                <option v-for="(priority, pindex) in priorities" :key="pindex" :value="priority.id" :selected="priority.id === value.priority_id">
+                                    {{ priority.name }}
+                                </option>
+                            </select>
+                        </td>
                         <td class="px-4 py-2 text-sm text-gray-800">{{ value.due_date }}</td>
                         <td class="px-4 py-2 text-sm text-blue-600">In Progress</td>
                         <td class="px-4 py-2 text-sm text-gray-600">{{ value.description }}</td>
@@ -68,6 +82,16 @@ export default {
     return {
         tasks: [],
         loading: false,
+        assignees: [
+            { id: 1, name: 'John Doe' },
+            { id: 2, name: 'Jane Smith' },
+            { id: 3, name: 'Alice Johnson' }
+        ],
+        priorities: [
+            { id: 1, name: 'Low' },
+            { id: 2, name: 'Medium' },
+            { id: 3, name: 'High' }
+        ]
     };
   },
   computed: {
