@@ -31,7 +31,7 @@ Route::middleware(['throttle:60,1'])->get('/workspace/test', function() {
 });
 
 // Workspace module API routes (public)
-Route::middleware(['throttle:60,1'])->group(function() {
+Route::middleware(['api.cors', 'throttle:60,1'])->group(function() {
     
     Route::prefix('workspace')->group(function() {
         Route::get('/get/all/{user_id}', [WorkspaceController::class, 'index'])->name('api.workspace.index');
@@ -45,6 +45,7 @@ Route::middleware(['throttle:60,1'])->group(function() {
         Route::get('/get/all/{workspace_id}', [ProjectController::class, 'index'])->name('api.project.index');
         Route::post('/store', [ProjectController::class, 'store'])->name('api.project.store');
         Route::get('/edit/{id}', [ProjectController::class, 'edit'])->name('api.project.edit');
+        Route::get('/by/{project_id}', [ProjectController::class, 'getProjectById']);
         Route::post('/update', [ProjectController::class, 'update'])->name('api.project.update');
         Route::delete('/delete/{id}', [ProjectController::class, 'delete'])->name('api.project.delete');
     });
@@ -55,6 +56,8 @@ Route::middleware(['throttle:60,1'])->group(function() {
         Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('api.task.edit');
         Route::post('/update', [TaskController::class, 'update'])->name('api.task.update');
         Route::delete('/delete/{id}', [TaskController::class, 'delete'])->name('api.task.delete');
+        Route::post('/assignee/{task_id}/{assignee_id}', [TaskController::class, 'taskAssignee']);
+        Route::post('/priority/{task_id}/{priority_id}', [TaskController::class, 'taskPriority']);
     });
 });
 
