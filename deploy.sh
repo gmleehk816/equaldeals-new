@@ -17,7 +17,7 @@ composer install --optimize-autoloader --no-plugins --no-scripts
 
 php artisan migrate --force
 
-php artisan config:clear
+php artisan optimize:clear
 
 supervisorctl restart all
 
@@ -27,5 +27,8 @@ export NVM_DIR="$HOME/.nvm"
 /root/.nvm/versions/node/v24.11.1/bin/npm install
 
 /root/.nvm/versions/node/v24.11.1/bin/npm run build
+
+chown -R www-data:www-data storage bootstrap/cache
+chmod -R 775 storage bootstrap/cache
 
 echo "Deploying completed"
