@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Workspace\App\Http\Controllers\Api\Workspace;
+namespace Modules\Workspace\app\Http\Controllers\Api\Workspace;
 
 use App\Http\Controllers\Controller;
 use App\Traits\Http\Api\SupportsApiResponses;
 use Illuminate\Http\Request;
-use Modules\Workspace\App\Models\Workspace;
+use Modules\Workspace\app\Models\Workspace;
 
 class WorkspaceController extends Controller
 {
