@@ -14,13 +14,17 @@ npm install
 
 npm run build
 
+php artisan optimize:clear
+
 php artisan migrate --force
 
 php artisan config:cache
 
-php artisan route:cache
+# php artisan route:cache
 
 php artisan view:cache
+
+sudo supervisorctl restart all
 
 php artisan up
 
