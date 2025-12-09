@@ -4,6 +4,8 @@ set -e
 
 echo "Deploying..."
 
+git config --global --add safe.directory /var/www/equaldeals.com
+
 git pull --rebase
 
 php artisan down

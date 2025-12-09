@@ -21,7 +21,4 @@ jobs:
 
     - name: Deploy to Server using SSH
       run: |
-        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} << 'EOF'
-          cd /var/www/equaldeals.com
-          ./deploy.sh
-        EOF
+        ssh -i ~/.ssh/deploy_key -o StrictHostKeyChecking=no ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_IP }} "bash -l -c 'cd /var/www/equaldeals.com && ./deploy.sh'"
