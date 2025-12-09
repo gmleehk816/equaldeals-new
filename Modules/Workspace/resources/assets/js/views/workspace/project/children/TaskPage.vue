@@ -51,7 +51,7 @@
                             </select>
                         </td>
                         <td class="px-4 py-2 text-sm text-gray-800">{{ value.due_date }}</td>
-                        <td class="px-4 py-2 text-sm text-blue-600">In Progress</td>
+                        <td class="px-4 py-2 text-sm text-blue-600">{{ value.status }}</td>
                         <td class="px-4 py-2 text-sm text-gray-600">{{ value.description }}</td>
                         <td class="px-4 py-2 flex gap-2">
                             <button class="cursor-pointer px-3 py-1 text-sm bg-blue-600 text-white rounded hover:bg-blue-700" @click="editForm(value.id)">

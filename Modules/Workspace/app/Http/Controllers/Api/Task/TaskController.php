@@ -30,6 +30,7 @@ class TaskController extends Controller
             'project_id' => 'required|integer',
             'title' => 'required|string|max:255',
             'due_date' => 'required|string',
+             'status' => 'required|string',
             'description' => 'nullable|string',
         ]);
         $data = $request->all();
@@ -59,6 +60,7 @@ class TaskController extends Controller
             'edit_id'          => 'required',
             'title'             => 'nullable|string|max:255',
             'due_date' => 'nullable|string',
+            'status' => 'nullable|string',
             'description'      => 'nullable|string',
         ]);
 
@@ -72,6 +74,7 @@ class TaskController extends Controller
         $data = $request->only([
             'title',
             'due_date',
+            'status',
             'description'
         ]);
 
@@ -137,6 +140,22 @@ class TaskController extends Controller
     
         $model->priority = $priority_id;
         if($model->save()){
+            return $this->responseSuccess([
+                'data' => $model,
+            ]);
+        }
+    
+    }
+    public function taskStatus(Request $request)
+    {
+        
+        $model = $this->model::where('project_id',$request->project_id)->where('status',$request->status)->get();
+        if (!$model) {
+            return $this->responseError([
+                'message' => 'Record not found.'
+            ], 404);
+        }            
+        if($model){
             return $this->responseSuccess([
                 'data' => $model,
             ]);
