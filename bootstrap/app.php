@@ -62,6 +62,10 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
                 App\Http\Middleware\UserOnlineMiddleware::class
             ]);
             
+            $middleware->api(prepend: [
+                App\Http\Middleware\ApiCors::class,
+            ]);
+            
             $middleware->statefulApi();
 
             $middleware->trustProxies('*');

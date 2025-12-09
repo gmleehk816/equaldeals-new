@@ -25,11 +25,11 @@ use Modules\Workspace\App\Http\Controllers\Api\Project\ProjectController;
 use Modules\Workspace\App\Http\Controllers\Api\Task\TaskController;
 
 
-// Workspace module API routes (public)
-Route::middleware(['api.cors', 'throttle:60,1'])->group(function() {
+// Workspace module API routes (public) - CORS handled globally in bootstrap/app.php
+Route::middleware(['throttle:60,1'])->group(function() {
     
     Route::prefix('workspace')->group(function() {
-        
+
         Route::get('/get/all/{user_id}', [WorkspaceController::class, 'index'])->name('api.workspace.index');
         Route::post('/store', [WorkspaceController::class, 'store'])->name('api.workspace.store');
         Route::get('/edit/{id}', [WorkspaceController::class, 'edit'])->name('api.workspace.edit');
