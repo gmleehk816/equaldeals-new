@@ -1,6 +1,6 @@
 <template>
     <div class="grid grid-cols-1 p-3 mt-5">
-        <h3>Add Task</h3>
+        <h3>Add Task </h3>
     </div>
     <div class="grid grid-cols-1 gap-4 p-3">
         
