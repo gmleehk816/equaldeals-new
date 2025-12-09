@@ -22,8 +22,6 @@ php artisan config:cache
 
 php artisan view:cache
 
-sudo supervisorctl restart all
-
 php artisan up
 
 echo "Deploying completed"
