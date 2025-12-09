@@ -25,11 +25,6 @@ use Modules\Workspace\App\Http\Controllers\Api\Project\ProjectController;
 use Modules\Workspace\App\Http\Controllers\Api\Task\TaskController;
 
 
-// Workspace module test route (public)
-Route::middleware(['throttle:60,1'])->get('/workspace/test', function() {
-    return response()->json(['message' => 'Workspace API is working!', 'timestamp' => now()]);
-});
-
 // Workspace module API routes (public)
 Route::middleware(['api.cors', 'throttle:60,1'])->group(function() {
     
@@ -58,6 +53,7 @@ Route::middleware(['api.cors', 'throttle:60,1'])->group(function() {
         Route::delete('/delete/{id}', [TaskController::class, 'delete'])->name('api.task.delete');
         Route::post('/assignee/{task_id}/{assignee_id}', [TaskController::class, 'taskAssignee']);
         Route::post('/priority/{task_id}/{priority_id}', [TaskController::class, 'taskPriority']);
+        Route::get('/status', [TaskController::class, 'taskStatus']);
     });
 });
 

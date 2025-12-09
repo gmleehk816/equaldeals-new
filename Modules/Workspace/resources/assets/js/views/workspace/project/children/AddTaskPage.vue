@@ -12,6 +12,16 @@
             <label for="taskDue" class="block mb-2">Due Date</label>
             <input type="date" class="w-[50%] px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" id="taskDue" placeholder="Enter due date" v-model="store.task_form.due_date">
         </div>
+
+        <div>
+            <label for="taskDue" class="block mb-2">Status</label>
+            <select name="" class="w-[50%] px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" v-model="store.task_form.status">
+                <option value="">Select Status</option>
+                <option v-for="(value, index) in statuses" :key="index" :value="value.name">
+                    {{ value.name }}
+                </option>
+            </select>
+        </div>
         <div class="mb-3">
             <label for="taskDescription" class="block mb-2">Task Description</label>
             <textarea class="w-[50%] px-4 py-2 border border-gray-300 rounded focus:ring-2 focus:ring-blue-500 focus:outline-none" id="taskDescription" rows="3" placeholder="Enter task description" v-model="store.task_form.description"></textarea>
@@ -44,6 +54,12 @@ export default {
   data() {
     return {
       spiner: false,
+      statuses: [
+        { id: 1, name: 'To Do' },
+        { id: 2, name: 'In Progress' },
+        { id: 4, name: 'In Review' },
+        { id: 3, name: 'Completed' }
+      ],
     };
   },
   computed: {

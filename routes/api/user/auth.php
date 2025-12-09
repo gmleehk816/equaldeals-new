@@ -16,6 +16,7 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
+
 Route::post('/logout', function (Request $request) {
     auth()->guard('web')->logout();
 

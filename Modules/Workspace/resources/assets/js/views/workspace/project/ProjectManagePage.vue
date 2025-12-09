@@ -9,17 +9,6 @@
       <ul class="nav flex-column py-3">
         <li class="nav-item">
           <router-link
-            :to="{ name: 'project_checklist_page', params: { project_id } }"
-            class="nav-link sidebar-link"
-            active-class="active-link"
-          >
-            <i class="bi bi-ui-checks-grid me-2"></i>
-            Checklist
-          </router-link>
-        </li>
-
-        <li class="nav-item">
-          <router-link
             :to="{ name: 'project_tasks_page', params: { project_id } }"
             class="nav-link sidebar-link"
             active-class="active-link"
@@ -29,11 +18,30 @@
           </router-link>
         </li>
         <li class="nav-item">
+          <router-link
+            :to="{ name: 'project_boards_page', params: { project_id } }"
+            class="nav-link sidebar-link"
+            active-class="active-link"
+          >
+            <i class="bi bi-ui-checks-grid me-2"></i>
+            Boards
+          </router-link>
+        </li>
+        <li class="nav-item">
+          <router-link :to="{ name: 'project_backlog_page', params: { project_id } }"
+            class="nav-link sidebar-link"
+          >
+            <i class="bi bi-ui-checks-grid me-2"></i>
+            Backlogs
+          </router-link>
+        </li>
+      
+        <!-- <li class="nav-item">
           <router-link to="member" class="nav-link sidebar-link">
             <i class="bi bi-list-task me-2"></i>
             Team Members
           </router-link>
-        </li>
+        </li> -->
       </ul>
     </div>
 

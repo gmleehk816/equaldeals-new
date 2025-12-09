@@ -12,14 +12,40 @@ export const routes = [
                     auth: true,
                 },
             name: 'workspace_home',
+            redirect: { name: 'list_workspace_page' },
             children: [
                 {
                     path: ':workspace_id',
                     component: function() {
-                        return import('../views/workspace/children/ProjectPage.vue');
+                        return import('../views/workspace/WorkspaceDetailPage.vue');
                     },
-                    name: 'project_page',
-                }
+                    name: 'workspace_detail_page',
+                    redirect: { name: 'workspace_projects_page' },
+                    children: [
+                        {
+                            path: 'projects',
+                            component: function() {
+                                return import('../views/workspace/project/ProjectPage.vue');
+                            },
+                            name: 'workspace_projects_page',
+                        },
+                        {
+                            path: 'member',
+                            component: function() {
+                                return import('../views/workspace/member/MemberPage.vue');
+                            },
+                            name: 'workspace_member_page',
+                        },
+                    ]
+                },
+                {
+                    path: 'all',
+                    component: function() {
+                        return import('../views/workspace/ListWorkspacePage.vue');
+                    },
+                    name: 'list_workspace_page',
+                },
+                
             ]
         },
         {
@@ -33,6 +59,7 @@ export const routes = [
                 fluidLayout: true
             },
             name: 'project_manage_page',
+            redirect: { name: 'project_tasks_page' },   
             children: [
                 {
                     path: 'tasks',
@@ -42,11 +69,11 @@ export const routes = [
                     name: 'project_tasks_page',
                 },
                 {
-                    path: 'checklist',
+                    path: 'boards',
                     component: function() {
-                        return import('../views/workspace/project/children/ChecklistPage.vue');
+                        return import('../views/workspace/project/children/BoardPage.vue');
                     },
-                    name: 'project_checklist_page', 
+                    name: 'project_boards_page', 
                 },
                 {
                     path: 'add-task',
@@ -56,12 +83,13 @@ export const routes = [
                     name: 'project_add_task_page',  
                 },
                 {
-                    path: 'member',
+                    path: 'backlog',
                     component: function() {
-                        return import('../views/workspace/member/MemberPage.vue');
+                        return import('../views/workspace/backlog/BacklogPage.vue');
                     },
-                    name: 'project_member_page',
+                    name: 'project_backlog_page',
                 }
+                
             ]
                 
         },

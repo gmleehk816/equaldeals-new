@@ -5,13 +5,14 @@ import  workspaceGlobal  from '@workspace/config/global.js';
 const useWorkspaceStore = defineStore('workspace', {
     state: () => ({
         isSaveUpdate: true,
-        tasks: [],
+        task:[],
         task_form: {
             edit_id: null,
             project_id: null,
             creator_id: null,
             title: '',
             due_date: '',
+            status: '',
             description: ''
         },
     }),
@@ -39,6 +40,7 @@ const useWorkspaceStore = defineStore('workspace', {
                 creator_id: null,
                 title: '',
                 due_date: '',
+                status: '',
                 description: ''
             };
         },
@@ -49,12 +51,10 @@ const useWorkspaceStore = defineStore('workspace', {
             this.task_form.creator_id = taskData.creator_id || this.task_form.creator_id;
             this.task_form.title = taskData.title || '';
             this.task_form.due_date = taskData.due_date || '';
+            this.task_form.status = taskData.status || '';
             this.task_form.description = taskData.description || '';
         },
         
-        setTasks(tasks) {
-            this.tasks = tasks || [];
-        },
         async getProjectById(project_id) {
             const url = `${workspaceGlobal.app_url}/project/by/${project_id}`;
 
@@ -74,6 +74,20 @@ const useWorkspaceStore = defineStore('workspace', {
 
             } catch (error) {
                 console.error("Error fetching project data:", error);
+            }
+        },
+        async getTaskByStatus(project_id, status) {
+            let url = `${workspaceGlobal.app_url}/task/status`;
+            let body = {
+                project_id: project_id,
+                status: status
+            }
+            try {
+                const response = await axios.get(url, { params: body });
+                return response.data.data || [];
+            } catch (error) {
+                console.error("Error fetching tasks by status:", error);
+                return [];
             }
         }
         

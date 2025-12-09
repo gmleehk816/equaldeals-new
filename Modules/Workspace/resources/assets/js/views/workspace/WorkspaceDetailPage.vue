@@ -5,9 +5,9 @@
         <div class="c-side-bar">
           <!-- Add Workspace Button -->
           <div class="p-3 border-bottom bg-light">
-            <h3>Workspace Dashboard</h3>
-            <router-link to="/home" class="text-blue-600 hover:underline mt-3 inline-block">
-              Go to Home
+            <h3>Workspace</h3>
+            <router-link :to="{ name: 'workspace_home' }" class="text-blue-600 hover:underline mt-3 inline-block">
+              Back to Workspaces
             </router-link>
           </div>
 
@@ -26,13 +26,18 @@
 
           <!-- Workspace List -->
           <div v-else class="">
-            <!-- <ul class="space-y-2 px-3">
+            <ul class="space-y-2 px-3">
               <li>
-                <router-link :to="{ name: 'list_workspace_page' }" class="font-semibold text-gray-800 hover:text-blue-600">
-                  All Workspaces
+                <router-link :to="{ name: 'workspace_projects_page' }" class="font-semibold text-gray-800 hover:text-blue-600">
+                  All Projects
                 </router-link>
               </li>
-            </ul> -->
+              <li>
+                <router-link :to="{ name: 'workspace_member_page' }" class="font-semibold text-gray-800 hover:text-blue-600">
+                  Workspace Members
+                </router-link>
+              </li>
+            </ul>
           </div>
         </div>
 

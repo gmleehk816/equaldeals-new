@@ -1,20 +1,17 @@
 <template>
-  <div class="mb-6">
-    <h3 class="text-xl font-semibold mb-3">My Workspaces</h3>
-
-    <button
-      @click="openAddModal"
-      class="bg-blue-600 text-white px-4 py-2 text-sm rounded-lg shadow hover:bg-blue-700 transition"
-    >
-      + Add Workspace
-    </button>
-
-    <br />
-
-    <router-link to="/home" class="text-blue-600 hover:underline mt-3 inline-block">
-      Go to Home
-    </router-link>
-  </div>
+    <div class="grid grid-cols-2 mt-5 p-2">
+      <div>
+        <h3 class="text-xl font-semibold mb-3">All Workspaces</h3>
+      </div>
+      <div class="">
+          <button
+            @click="openAddModal"
+            class="rounded px-3 py-2 float-end text-white bg-blue-600 cursor-pointer"
+          >
+            + Add Workspace
+          </button>
+      </div>
+    </div>
 
   <!-- Modal -->
   <div
