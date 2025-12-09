@@ -4,9 +4,6 @@ set -e
 
 echo "Deploying..."
 
-# Add root's Node.js to PATH
-export PATH="/root/.nvm/versions/node/v24.11.1/bin:$PATH"
-
 git config --global --add safe.directory /var/www/equaldeals.com
 
 git pull --rebase
