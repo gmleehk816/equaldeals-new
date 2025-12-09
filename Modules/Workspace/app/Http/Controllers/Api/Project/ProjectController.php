@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Workspace\App\Http\Controllers\Api\Project;
+namespace Modules\Workspace\app\Http\Controllers\Api\Project;
 
 use App\Http\Controllers\Controller;
 use App\Traits\Http\Api\SupportsApiResponses;
 use Illuminate\Http\Request;
-use Modules\Workspace\App\Models\Project;
+use Modules\Workspace\app\Models\Project;
 
 class ProjectController extends Controller
 {

@@ -1,11 +1,11 @@
 <?php
 
-namespace Modules\Workspace\App\Http\Controllers\Api\Task;
+namespace Modules\Workspace\app\Http\Controllers\Api\Task;
 
 use App\Http\Controllers\Controller;
 use App\Traits\Http\Api\SupportsApiResponses;
 use Illuminate\Http\Request;
-use Modules\Workspace\App\Models\Tasks;
+use Modules\Workspace\app\Models\Tasks;
 
 class TaskController extends Controller
 {

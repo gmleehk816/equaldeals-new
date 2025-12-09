@@ -20,9 +20,9 @@ use Illuminate\Support\Facades\Route;
 use Illuminate\Validation\ValidationException;
 
 // Workspace module routes (public)
-use Modules\Workspace\App\Http\Controllers\Api\Workspace\WorkspaceController;
-use Modules\Workspace\App\Http\Controllers\Api\Project\ProjectController;
-use Modules\Workspace\App\Http\Controllers\Api\Task\TaskController;
+use Modules\Workspace\app\Http\Controllers\Api\Workspace\WorkspaceController;
+use Modules\Workspace\app\Http\Controllers\Api\Project\ProjectController;
+use Modules\Workspace\app\Http\Controllers\Api\Task\TaskController;
 
 
 // Workspace module API routes (public) - CORS handled globally in bootstrap/app.php
