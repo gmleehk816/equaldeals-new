@@ -21,8 +21,11 @@ php artisan config:clear
 
 supervisorctl restart all
 
-npm install
+export NVM_DIR="$HOME/.nvm"
+[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
 
-npm run build
+/root/.nvm/versions/node/v24.11.1/bin/npm install
+
+/root/.nvm/versions/node/v24.11.1/bin/npm run build
 
 echo "Deploying completed"
