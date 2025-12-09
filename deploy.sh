@@ -12,7 +12,8 @@ git stash
 
 git pull --rebase
 
-composer install --optimize-autoloader
+export COMPOSER_ALLOW_SUPERUSER=1
+composer install --optimize-autoloader --no-plugins --no-scripts
 
 php artisan migrate --force
 
