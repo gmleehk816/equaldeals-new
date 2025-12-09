@@ -49,6 +49,7 @@ return Application::configure(basePath: dirname(__DIR__))->withRouting(
                 'api.key' => App\Http\Middleware\VerifyApiKey::class,
                 'admin' => App\Http\Middleware\AdminRoleMiddleware::class,
                 'log.request' => App\Http\Middleware\LogRequestMiddleware::class,
+                'api.cors' => App\Http\Middleware\ApiCors::class,
             ]);
             
             $middleware->web(append: [

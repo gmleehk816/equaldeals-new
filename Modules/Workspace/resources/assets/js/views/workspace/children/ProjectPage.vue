@@ -55,14 +55,9 @@
               class="hover:bg-gray-50 border-b last:border-0"
             >
               <td class="px-4 py-3 text-sm text-gray-800">
-                <a
-                  :href="$router.resolve({ name: 'project_manage_page', params: { project_id: p.id } }).href"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  class="text-blue-600 hover:underline"
-                >
+                <span class="cursor-pointer" @click="openNewTab(p.id)">
                   {{ p.name }}
-                </a>
+                </span>
               </td>
 
               <td class="px-4 py-3 text-sm text-gray-800">{{ p.start_date }}</td>
@@ -202,6 +197,7 @@ import axios from "axios";
 import SpinnerLoad from "@workspace/components/skeleton/SpinnerLoad.vue";
 import SkeletonLoader from "@workspace/components/SkeletonLoader.vue";
 import workspaceGlobal from "@workspace/config/global.js";
+import { useWorkspaceStore } from "@workspace/stores/workspace.js";
 
 export default {
   components: {
@@ -238,7 +234,11 @@ export default {
     },
     global(){
             return workspaceGlobal;
-        }
+    },
+    store(){
+      const store = useWorkspaceStore();
+      return store;
+    }    
   },
 
   watch: {
@@ -249,6 +249,7 @@ export default {
 
   methods: {
     openNewTab(id) {
+        this.store.getProjectById(id);
         const url = this.$router.resolve({
         name: "project_manage_page",
         params: { project_id: id }
