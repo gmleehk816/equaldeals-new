@@ -4,12 +4,8 @@ set -e
 
 echo "Deploying..."
 
-# Load NVM if available
-export NVM_DIR="$HOME/.nvm"
-[ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-
-# Or add Node to PATH if installed globally
-export PATH="/usr/local/bin:/usr/bin:$PATH"
+# Add root's Node.js to PATH
+export PATH="/root/.nvm/versions/node/v24.11.1/bin:$PATH"
 
 git config --global --add safe.directory /var/www/equaldeals.com
 
