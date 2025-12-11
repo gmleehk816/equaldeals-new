@@ -17,9 +17,9 @@ class TaskController extends Controller
         $this->model = Tasks::class;        
     }
 
-    public function index($project_id)
+    public function index($project_id,$group_id)
     {    
-        $model = $this->model::where('project_id', $project_id)->get();
+        $model = $this->model::where('project_id', $project_id)->where('group_id', $group_id)->get();
         return $this->responseSuccess([
             'data' => $model,
         ]);
@@ -149,7 +149,9 @@ class TaskController extends Controller
     public function taskStatus(Request $request)
     {
         
-        $model = $this->model::where('project_id',$request->project_id)->where('status',$request->status)->get();
+        $model = $this->model::where('project_id',$request->project_id)
+        ->where('group_id',$request->group_id)
+        ->where('status',$request->status)->get();
         if (!$model) {
             return $this->responseError([
                 'message' => 'Record not found.'

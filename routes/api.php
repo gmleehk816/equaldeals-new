@@ -22,6 +22,7 @@ use Illuminate\Validation\ValidationException;
 // Workspace module routes (public)
 use Modules\Workspace\app\Http\Controllers\Api\Workspace\WorkspaceController;
 use Modules\Workspace\app\Http\Controllers\Api\Project\ProjectController;
+use Modules\Workspace\app\Http\Controllers\Api\Project\ProjectGroupController;
 use Modules\Workspace\app\Http\Controllers\Api\Task\TaskController;
 
 
@@ -46,8 +47,16 @@ Route::middleware(['throttle:60,1'])->group(function() {
         Route::delete('/delete/{id}', [ProjectController::class, 'delete'])->name('api.project.delete');
     });
 
+    Route::prefix('project/group')->group(function() {
+        Route::get('/get/all/{project_id}', [ProjectGroupController::class, 'index']);
+        Route::post('/store', [ProjectGroupController::class, 'store']);
+        Route::get('/edit/{id}', [ProjectGroupController::class, 'edit']);
+        Route::post('/update', [ProjectGroupController::class, 'update']);
+        Route::delete('/delete/{id}', [ProjectGroupController::class, 'delete']);
+    });
+
     Route::prefix('task')->group(function() {
-        Route::get('/get/all/{project_id}', [TaskController::class, 'index'])->name('api.task.index');
+        Route::get('/get/all/{project_id}/{group_id}', [TaskController::class, 'index'])->name('api.task.index');
         Route::post('/store', [TaskController::class, 'store'])->name('api.task.store');
         Route::get('/edit/{id}', [TaskController::class, 'edit'])->name('api.task.edit');
         Route::post('/update', [TaskController::class, 'update'])->name('api.task.update');

@@ -9,6 +9,7 @@ const useWorkspaceStore = defineStore('workspace', {
         task_form: {
             edit_id: null,
             project_id: null,
+            group_id: null,
             creator_id: null,
             title: '',
             due_date: '',
@@ -27,9 +28,10 @@ const useWorkspaceStore = defineStore('workspace', {
     },
     
     actions: {
-        initializeTaskForm(projectId) {
+        initializeTaskForm(projectId, groupId) {
             const authUser = JSON.parse(localStorage.getItem('auth_user'));
             this.task_form.project_id = projectId;
+            this.task_form.group_id = groupId;
             this.task_form.creator_id = authUser ? authUser.id : null;
         },
         
@@ -37,6 +39,7 @@ const useWorkspaceStore = defineStore('workspace', {
             this.task_form = {
                 edit_id: null,
                 project_id: null,
+                group_id: null,
                 creator_id: null,
                 title: '',
                 due_date: '',
@@ -76,10 +79,11 @@ const useWorkspaceStore = defineStore('workspace', {
                 console.error("Error fetching project data:", error);
             }
         },
-        async getTaskByStatus(project_id, status) {
+        async getTaskByStatus(project_id,group_id, status) {
             let url = `${workspaceGlobal.app_url}/task/status`;
             let body = {
                 project_id: project_id,
+                group_id: group_id,
                 status: status
             }
             try {

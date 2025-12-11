@@ -104,6 +104,9 @@ export default {
     project_id() {
       return this.$route.params.project_id;
     },
+    group_id() {
+      return this.$route.params.group_id;
+    },
     global(){
         return workspaceGlobal;
     },
@@ -117,7 +120,7 @@ export default {
       this.loading = true;
       
       // API route: /api/workspace/get/all/{user_id}
-      const url = `${this.global.app_url}/task/get/all/${this.project_id}`;
+      const url = `${this.global.app_url}/task/get/all/${this.project_id}/${this.group_id}`;
 
       try {
         const response = await axios.get(url);

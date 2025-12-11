@@ -11,16 +11,14 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('workspaces', function (Blueprint $table) {
+        Schema::create('project_group', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->string('name');
-            $table->string('visibility_scope');
+            $table->integer('project_id')->nullable();
+            $table->string('name')->nullable();
+            $table->string('position')->nullable();
             $table->text('description')->nullable();
-            $table->boolean('is_active')->default(1);
+            $table->boolean('is_active')->nullable();
             $table->timestamps();
-            
-            $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
         });
     }
 
@@ -29,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('workspaces');
+        Schema::dropIfExists('project_group');
     }
 };

@@ -32,11 +32,14 @@ export default {
     },
     project_id() {
       return this.$route.params.project_id;
+    },
+    group_id() {
+      return this.$route.params.group_id;
     }
   },
   methods: {
     async getStatus() {
-        let res = await this.store.getTaskByStatus(this.project_id, 'In Review');
+        let res = await this.store.getTaskByStatus(this.project_id,this.group_id, 'In Review');
         this.tasks = res;
         console.log("Task ",this.tasks);
     }

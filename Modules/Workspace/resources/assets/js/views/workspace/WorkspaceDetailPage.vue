@@ -32,11 +32,7 @@
                   All Projects
                 </router-link>
               </li>
-              <li>
-                <router-link :to="{ name: 'workspace_member_page' }" class="font-semibold text-gray-800 hover:text-blue-600">
-                  Workspace Members
-                </router-link>
-              </li>
+              
             </ul>
           </div>
         </div>
@@ -101,7 +97,6 @@ export default {
     z-index: 99;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
 }
 
 .theme-light {
@@ -118,6 +113,9 @@ export default {
   height: 100vh;
   border-right: 1px solid #dee2e6;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
 }
 
 /* Workspace item UI */

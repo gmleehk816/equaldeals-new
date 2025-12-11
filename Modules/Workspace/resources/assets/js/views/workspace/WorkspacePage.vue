@@ -96,7 +96,6 @@ export default {
     z-index: 99;
     width: 100%;
     height: 100%;
-    overflow-y: auto;
 }
 
 .theme-light {
@@ -113,6 +112,9 @@ export default {
   height: 100vh;
   border-right: 1px solid #dee2e6;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  overflow-y: auto;
+  position: sticky;
+  top: 0;
 }
 
 /* Workspace item UI */
@@ -136,7 +138,6 @@ export default {
 
 /* Sidebar scroll */
 .workspace-list {
-  overflow-y: auto;
   max-height: calc(100vh - 120px);
 }
 </style>
