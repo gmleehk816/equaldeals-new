@@ -1,20 +1,24 @@
 <template>
+  <!-- Render child route (ProjectManagePage) if navigating to project details -->
+  <router-view v-if="$route.name !== 'workspace_projects_page'"></router-view>
 
-  <!-- Loading Skeleton -->
-  <div v-if="loading" class="mb-4">
-    <SkeletonLoader width="50%" height="15" margin="5" />
-    <SkeletonLoader width="60%" height="15" margin="5" />
-    <SkeletonLoader
-      width="100%"
-      height="15"
-      margin="5"
-      v-for="i in 7"
-      :key="i"
-    />
-  </div>
+  <!-- Show project list only when on workspace_projects_page -->
+  <div v-else>
+    <!-- Loading Skeleton -->
+    <div v-if="loading" class="mb-4">
+      <SkeletonLoader width="50%" height="15" margin="5" />
+      <SkeletonLoader width="60%" height="15" margin="5" />
+      <SkeletonLoader
+        width="100%"
+        height="15"
+        margin="5"
+        v-for="i in 7"
+        :key="i"
+      />
+    </div>
 
-  <!-- Project List -->
-  <div v-else class="p-4">
+    <!-- Project List -->
+    <div v-else class="p-4">
 
     <!-- Header -->
     <div class="flex justify-between items-center mb-4">
@@ -67,7 +71,7 @@
               <td class="px-4 py-3 text-sm text-gray-800 flex gap-2">
                 <button
                   @click="openNewTab(p.id)"
-                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700"
+                  class="px-3 py-1 bg-blue-600 text-white rounded hover:bg-blue-700 cursor-pointer"
                 >
                   Details
                 </button>
@@ -188,6 +192,7 @@
 
     </div>
   </div>
+  </div> <!-- Close v-else for project list -->
 
 </template>
 
@@ -238,24 +243,35 @@ export default {
     store(){
       const store = useWorkspaceStore();
       return store;
+    },
+    workspace_id() {
+      return this.$route.params.workspace_id;
     }    
   },
 
-  watch: {
-    $route() {
-      this.getAllProjects();
-    },
-  },
+  // watch: {
+  //   $route() {
+  //     this.getAllProjects();
+  //   },
+  // },
 
   methods: {
     openNewTab(id) {
         this.store.getProjectById(id);
-        const url = this.$router.resolve({
-        name: "project_manage_page",
-        params: { project_id: id }
-        }).href;
+
+         this.$router.push({
+            name: "project_manage_page",
+            params: { 
+              project_id: id 
+            }
+        });
         
-        window.open(url, "_blank");
+        // const url = this.$router.resolve({
+        // name: "project_manage_page",
+        // params: { project_id: id }
+        // }).href;
+        
+        // window.open(url, "_blank");
     },
     openProjectForm(project = null) {
       this.editingProject = project;

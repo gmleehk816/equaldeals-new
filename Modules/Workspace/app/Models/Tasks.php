@@ -12,7 +12,7 @@ class Tasks extends Model
 
     protected $table = "tasks";
     protected $fillable = [
-        'project_id','board_id','assignee_id','creator_id','title','due_date','priority','status','is_completed','is_active',
+        'project_id','board_id','group_id','assignee_id','creator_id','title','due_date','priority','status','is_completed','is_active',
         'description'
     ];
 

@@ -66,6 +66,9 @@ export default {
     project_id() {
       return this.$route.params.project_id;
     },
+    group_id() {
+      return this.$route.params.group_id;
+    },
     global(){
       return workspaceGlobal;
     },
@@ -104,7 +107,7 @@ export default {
     },
   },
   mounted() {
-    this.store.initializeTaskForm(this.$route.params.project_id);
+    this.store.initializeTaskForm(this.project_id, this.group_id);
   }
 };
 </script>
